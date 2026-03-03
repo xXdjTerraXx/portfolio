@@ -4,12 +4,14 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors')
+
 require('dotenv').config();
 const statusRouter = require('./routes/status')
 const weatherRouter = require('./routes/weather')
 const lastFmRouter = require('./routes/lastfm2.js')
 
 const app = express();
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

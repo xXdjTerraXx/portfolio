@@ -8,6 +8,10 @@ import SelectionArrowSpriteSheet from '../img/sprite_sheets/selection_arrow_spri
 import TVStandSpriteSheet from '../img/sprite_sheets/tv_stand_sprite_sheet.png'
 import PixelRainSpriteSheet from '../img/sprite_sheets/rain_sprite_sheet.png'
 import SpeakerSpriteSheet from '../img/sprite_sheets/speaker_sprite_sheet.png'
+import AquariumSpriteSheet from '../img/sprite_sheets/aquarium_sprite_sheet.png'
+import AquariumSceneBGSpriteSheet from '../img/sprite_sheets/aquarium_scene_spritesheet.png'
+import JournalSpriteSheet from '../img/sprite_sheets/journal_spritesheet.png'
+import NotesBoardSpriteSheet from '../img/sprite_sheets/notes_board_spritesheet.png'
 
 
 export const desk_spritesheet_json2 = 
@@ -1659,6 +1663,438 @@ export const speaker_sprite_sheet_json = { "frames": {
       "speaker_animated_5.aseprite", "speaker_animated_6.aseprite"
   ]}
 }
+
+export const aquarium_sprite_sheet_json = 
+{ "frames": {
+  "aquarium_0.png": {
+   "frame": { "x": 0, "y": 0, "w": 81, "h": 34 },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": { "x": 0, "y": 0, "w": 81, "h": 34 },
+   "sourceSize": { "w": 81, "h": 34 },
+   "duration": 100
+  },
+  "aquarium_1.png": {
+   "frame": { "x": 81, "y": 0, "w": 81, "h": 34 },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": { "x": 0, "y": 0, "w": 81, "h": 34 },
+   "sourceSize": { "w": 81, "h": 34 },
+   "duration": 100
+  },
+  "aquarium_2.png": {
+   "frame": { "x": 162, "y": 0, "w": 81, "h": 34 },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": { "x": 0, "y": 0, "w": 81, "h": 34 },
+   "sourceSize": { "w": 81, "h": 34 },
+   "duration": 100
+  },
+  "aquarium_3.png": {
+   "frame": { "x": 243, "y": 0, "w": 81, "h": 34 },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": { "x": 0, "y": 0, "w": 81, "h": 34 },
+   "sourceSize": { "w": 81, "h": 34 },
+   "duration": 100
+  },
+  "aquarium_4.png": {
+   "frame": { "x": 324, "y": 0, "w": 81, "h": 34 },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": { "x": 0, "y": 0, "w": 81, "h": 34 },
+   "sourceSize": { "w": 81, "h": 34 },
+   "duration": 100
+  },
+  "aquarium_5.png": {
+   "frame": { "x": 405, "y": 0, "w": 81, "h": 34 },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": { "x": 0, "y": 0, "w": 81, "h": 34 },
+   "sourceSize": { "w": 81, "h": 34 },
+   "duration": 100
+  },
+  "aquarium_6.png": {
+   "frame": { "x": 486, "y": 0, "w": 81, "h": 34 },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": { "x": 0, "y": 0, "w": 81, "h": 34 },
+   "sourceSize": { "w": 81, "h": 34 },
+   "duration": 100
+  },
+  "aquarium_7.png": {
+   "frame": { "x": 567, "y": 0, "w": 81, "h": 34 },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": { "x": 0, "y": 0, "w": 81, "h": 34 },
+   "sourceSize": { "w": 81, "h": 34 },
+   "duration": 100
+  },
+  "aquarium_8.png": {
+   "frame": { "x": 648, "y": 0, "w": 81, "h": 34 },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": { "x": 0, "y": 0, "w": 81, "h": 34 },
+   "sourceSize": { "w": 81, "h": 34 },
+   "duration": 100
+  },
+  "aquarium_9.png": {
+   "frame": { "x": 729, "y": 0, "w": 81, "h": 34 },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": { "x": 0, "y": 0, "w": 81, "h": 34 },
+   "sourceSize": { "w": 81, "h": 34 },
+   "duration": 100
+  },
+  "aquarium_10.png": {
+   "frame": { "x": 810, "y": 0, "w": 81, "h": 34 },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": { "x": 0, "y": 0, "w": 81, "h": 34 },
+   "sourceSize": { "w": 81, "h": 34 },
+   "duration": 100
+  },
+  "aquarium_11.png": {
+   "frame": { "x": 891, "y": 0, "w": 81, "h": 34 },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": { "x": 0, "y": 0, "w": 81, "h": 34 },
+   "sourceSize": { "w": 81, "h": 34 },
+   "duration": 100
+  },
+  "aquarium_12.png": {
+   "frame": { "x": 972, "y": 0, "w": 81, "h": 34 },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": { "x": 0, "y": 0, "w": 81, "h": 34 },
+   "sourceSize": { "w": 81, "h": 34 },
+   "duration": 100
+  },
+  "aquarium_13.png": {
+   "frame": { "x": 1053, "y": 0, "w": 81, "h": 34 },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": { "x": 0, "y": 0, "w": 81, "h": 34 },
+   "sourceSize": { "w": 81, "h": 34 },
+   "duration": 100
+  }
+},
+"meta": {
+ "app": "https://www.aseprite.org/",
+ "version": "1.3.13-x64",
+ "image": AquariumSpriteSheet,
+ "format": "RGBA8888",
+ "size": { "w": 1134, "h": 34 },
+ "scale": "1",
+ "frameTags": [
+ ],
+ "layers": [
+  { "name": "fish", "opacity": 255, "blendMode": "normal" },
+  { "name": "bubbles1", "opacity": 255, "blendMode": "normal" },
+  { "name": "aquarium", "opacity": 255, "blendMode": "normal" }
+ ],
+ "slices": [
+ ],
+},
+"animations": {
+  "main": [
+      "aquarium_0.png", "aquarium_1.png", "aquarium_2.png", "aquarium_3.png", "aquarium_4.png", 
+      "aquarium_5.png", "aquarium_6.png", "aquarium_7.png", "aquarium_8.png", "aquarium_9.png", "aquarium_10.png", "aquarium_11.png", 
+      "aquarium_12.png", "aquarium_13.png",
+  ]}
+}
+
+export const aquarium_scene_background_sprite_sheet_json =
+{ "frames": {
+  "aquarium_scene_bg_0.png": {
+   "frame": { "x": 0, "y": 0, "w": 175, "h": 150 },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": { "x": 0, "y": 0, "w": 175, "h": 150 },
+   "sourceSize": { "w": 175, "h": 150 },
+   "duration": 100
+  },
+  "aquarium_scene_bg_1.png": {
+   "frame": { "x": 175, "y": 0, "w": 175, "h": 150 },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": { "x": 0, "y": 0, "w": 175, "h": 150 },
+   "sourceSize": { "w": 175, "h": 150 },
+   "duration": 100
+  },
+  "aquarium_scene_bg_2.png": {
+   "frame": { "x": 350, "y": 0, "w": 175, "h": 150 },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": { "x": 0, "y": 0, "w": 175, "h": 150 },
+   "sourceSize": { "w": 175, "h": 150 },
+   "duration": 100
+  },
+  "aquarium_scene_bg_3.png": {
+   "frame": { "x": 525, "y": 0, "w": 175, "h": 150 },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": { "x": 0, "y": 0, "w": 175, "h": 150 },
+   "sourceSize": { "w": 175, "h": 150 },
+   "duration": 100
+  },
+  "aquarium_scene_bg_4.png": {
+   "frame": { "x": 700, "y": 0, "w": 175, "h": 150 },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": { "x": 0, "y": 0, "w": 175, "h": 150 },
+   "sourceSize": { "w": 175, "h": 150 },
+   "duration": 100
+  },
+  "aquarium_scene_bg_5.png": {
+   "frame": { "x": 875, "y": 0, "w": 175, "h": 150 },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": { "x": 0, "y": 0, "w": 175, "h": 150 },
+   "sourceSize": { "w": 175, "h": 150 },
+   "duration": 100
+  },
+  "aquarium_scene_bg_6.png": {
+   "frame": { "x": 1050, "y": 0, "w": 175, "h": 150 },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": { "x": 0, "y": 0, "w": 175, "h": 150 },
+   "sourceSize": { "w": 175, "h": 150 },
+   "duration": 100
+  },
+  "aquarium_scene_bg_7.png": {
+   "frame": { "x": 1225, "y": 0, "w": 175, "h": 150 },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": { "x": 0, "y": 0, "w": 175, "h": 150 },
+   "sourceSize": { "w": 175, "h": 150 },
+   "duration": 100
+  },
+  "aquarium_scene_bg_8.png": {
+   "frame": { "x": 1400, "y": 0, "w": 175, "h": 150 },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": { "x": 0, "y": 0, "w": 175, "h": 150 },
+   "sourceSize": { "w": 175, "h": 150 },
+   "duration": 100
+  },
+  "aquarium_scene_bg_9.png": {
+   "frame": { "x": 1575, "y": 0, "w": 175, "h": 150 },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": { "x": 0, "y": 0, "w": 175, "h": 150 },
+   "sourceSize": { "w": 175, "h": 150 },
+   "duration": 100
+  },
+  "aquarium_scene_bg_10.png": {
+   "frame": { "x": 1750, "y": 0, "w": 175, "h": 150 },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": { "x": 0, "y": 0, "w": 175, "h": 150 },
+   "sourceSize": { "w": 175, "h": 150 },
+   "duration": 100
+  },
+  "aquarium_scene_bg_11.png": {
+   "frame": { "x": 1925, "y": 0, "w": 175, "h": 150 },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": { "x": 0, "y": 0, "w": 175, "h": 150 },
+   "sourceSize": { "w": 175, "h": 150 },
+   "duration": 100
+  },
+  "aquarium_scene_bg_12.png": {
+   "frame": { "x": 2100, "y": 0, "w": 175, "h": 150 },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": { "x": 0, "y": 0, "w": 175, "h": 150 },
+   "sourceSize": { "w": 175, "h": 150 },
+   "duration": 100
+  },
+  "aquarium_scene_bg_13.png": {
+   "frame": { "x": 2275, "y": 0, "w": 175, "h": 150 },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": { "x": 0, "y": 0, "w": 175, "h": 150 },
+   "sourceSize": { "w": 175, "h": 150 },
+   "duration": 100
+  },
+  "aquarium_scene_bg_14.png": {
+   "frame": { "x": 2450, "y": 0, "w": 175, "h": 150 },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": { "x": 0, "y": 0, "w": 175, "h": 150 },
+   "sourceSize": { "w": 175, "h": 150 },
+   "duration": 100
+  }
+},
+"meta": {
+ "app": "https://www.aseprite.org/",
+ "version": "1.3.13-x64",
+ "image": AquariumSceneBGSpriteSheet,
+ "format": "RGBA8888",
+ "size": { "w": 2625, "h": 150 },
+ "scale": "1",
+ "frameTags": [
+ ],
+ "layers": [
+  { "name": "Layer 1", "opacity": 255, "blendMode": "normal" },
+  { "name": "Layer 3", "opacity": 255, "blendMode": "normal" },
+  { "name": "Layer 4", "opacity": 255, "blendMode": "normal" },
+  { "name": "Layer 2", "opacity": 255, "blendMode": "normal" }
+ ],
+ "slices": [
+ ]
+},
+"animations":{
+  "main": [
+      "aquarium_scene_bg_0.png", "aquarium_scene_bg_1.png", "aquarium_scene_bg_2.png", "aquarium_scene_bg_3.png", "aquarium_scene_bg_4.png", 
+      "aquarium_scene_bg_5.png", "aquarium_scene_bg_6.png", "aquarium_scene_bg_7.png", "aquarium_scene_bg_8.png", "aquarium_scene_bg_9.png", "aquarium_scene_bg_10.png", "aquarium_scene_bg_11.png", 
+      "aquarium_scene_bg_12.png", "aquarium_scene_bg_13.png", "aquarium_scene_bg_14.png", 
+  ]
+}
+}
+
+export const journal_spritesheet_json = { "frames": {
+   "journal_animation_0.png": {
+    "frame": { "x": 0, "y": 0, "w": 100, "h": 100 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 100, "h": 100 },
+    "sourceSize": { "w": 100, "h": 100 },
+    "duration": 100
+   },
+   "journal_animation_1.png": {
+    "frame": { "x": 100, "y": 0, "w": 100, "h": 100 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 100, "h": 100 },
+    "sourceSize": { "w": 100, "h": 100 },
+    "duration": 100
+   },
+   "journal_animation_2.png": {
+    "frame": { "x": 200, "y": 0, "w": 100, "h": 100 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 100, "h": 100 },
+    "sourceSize": { "w": 100, "h": 100 },
+    "duration": 100
+   },
+   "journal_animation_3.png": {
+    "frame": { "x": 300, "y": 0, "w": 100, "h": 100 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 100, "h": 100 },
+    "sourceSize": { "w": 100, "h": 100 },
+    "duration": 100
+   },
+   "journal_animation_4.png": {
+    "frame": { "x": 400, "y": 0, "w": 100, "h": 100 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 100, "h": 100 },
+    "sourceSize": { "w": 100, "h": 100 },
+    "duration": 100
+   },
+   "journal_animation_5.png": {
+    "frame": { "x": 500, "y": 0, "w": 100, "h": 100 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 100, "h": 100 },
+    "sourceSize": { "w": 100, "h": 100 },
+    "duration": 100
+   },
+   "journal_animation_6.png": {
+    "frame": { "x": 600, "y": 0, "w": 100, "h": 100 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 100, "h": 100 },
+    "sourceSize": { "w": 100, "h": 100 },
+    "duration": 100
+   },
+   "journal_animation_7.png": {
+    "frame": { "x": 700, "y": 0, "w": 100, "h": 100 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 100, "h": 100 },
+    "sourceSize": { "w": 100, "h": 100 },
+    "duration": 100
+   },
+   "journal_animation_8.png": {
+    "frame": { "x": 800, "y": 0, "w": 100, "h": 100 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 100, "h": 100 },
+    "sourceSize": { "w": 100, "h": 100 },
+    "duration": 100
+   }
+ },
+ "meta": {
+  "app": "https://www.aseprite.org/",
+  "version": "1.3.16.1-x64",
+  "image": JournalSpriteSheet,
+  "format": "RGBA8888",
+  "size": { "w": 900, "h": 100 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "open", "from": 0, "to": 7, "direction": "forward", "color": "#000000ff" },
+   { "name": "main", "from": 8, "to": 8, "direction": "forward", "color": "#000000ff" }
+  ],
+  "layers": [
+   { "name": "Layer 1", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ },
+  "animations":{
+    "main": [
+        "journal_animation_8.png"
+    ],
+    "open": [
+        "journal_animation_0.png", "journal_animation_1.png", "journal_animation_2.png", "journal_animation_3.png", "journal_animation_4.png", 
+        "journal_animation_5.png", "journal_animation_6.png", "journal_animation_7.png" 
+    ]
+}
+}
+
+export const notes_board_spritesheet_json = { "frames": {
+   "notes_board_0.png": {
+    "frame": { "x": 0, "y": 0, "w": 96, "h": 94 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 94 },
+    "sourceSize": { "w": 96, "h": 94 },
+    "duration": 100
+   }
+ },
+ "meta": {
+  "app": "https://www.aseprite.org/",
+  "version": "1.3.16.1-x64",
+  "image": NotesBoardSpriteSheet,
+  "format": "RGBA8888",
+  "size": { "w": 96, "h": 94 },
+  "scale": "1",
+  "frameTags": [
+  ],
+  "layers": [
+   { "name": "Layer 1", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ },
+ "animations":{
+    "main": [
+        "notes_board_0.png"
+    ]
+}
+}
+
+
+
+
+
+
+
+
 
 
 

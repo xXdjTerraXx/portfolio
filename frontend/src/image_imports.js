@@ -7,15 +7,18 @@ import BookShelfImg from './img/png/book_shelf.png'
 import BoxFanImg from './img/png/box_fan.png'
 import CablesImg from './img/png/cables.png'
 import CharacterImg from './img/png/character.png'
+import JournalImg from './img/png/journal.png'
 import LavaLampOff from './img/png/lava_lamp_off.png'
 import MonitorBackgroundImg from './img/png/monitor_background.png'
 import NightstandLavaLampImg from './img/png/nightstand_lava_lamp.png'
+import NotesBoardImg from './img/png/notes_board.png'
 import PCDeskImg from './img/png/pc_desk.png'
 import Plant1Img from './img/png/plant_1.png'
 import Plant2Img from './img/png/plant_2.png'
 import PosterImg from './img/png/posters.png'
 import TVStandImg from './img/png/tv_stand.png'
 import WindowImg from './img/png/window.png'
+import TapestryImg from './img/png/tapestry.png'
 import TestBG from './img/png/test_bg.png'
 import TextMask from './img/png/text_mask.png'
 import SpotifyPixel from './img/png/spotify_pixel.png'
@@ -29,11 +32,17 @@ import SpeakerMenuPause from './img/png/speaker_menu_pause.png'
 import SpeakerMenuStop from './img/png/speaker_menu_stop.png'
 import SpeakerMenuNext from './img/png/speaker_menu_next.png'
 import SpeakerMenuPrevious from './img/png/speaker_menu_previous.png'
+import StringLights_StringImg from './img/png/string_lights_string.png'
+import StringLights_LightsImg from './img/png/string_lights_lights.png'
+import StringLights_Lights2Img from './img/png/string_lights_lights2.png'
 import TVBackground from './img/png/tv_background.png'
 import TVGlare from './img/png/tv_glare.png'
 import TVBackgroundLandscape from './img/png/tv_background_landscape.png'
 import ScrollButton from './img/png/scroll_button.png'
 import ScrollButtonInactive from './img/png/scroll_button_inactive.png'
+import OnlineInfoBubble from './img/png/info_bubble.png'
+import AquariumCase from './img/png/aquarium_case.png'
+import RugImg from './img/png/rug.png'
 
 //icons
 import MyComputerIcon from './img/png/icons/my_computer_icon.png'
@@ -55,6 +64,10 @@ import SelectionArrowSpriteSheet from './img/sprite_sheets/selection_arrow_sprit
 import TVStandSpriteSheet from './img/sprite_sheets/tv_stand_sprite_sheet.png'
 import PixelRainSpriteSheet from './img/sprite_sheets/rain_sprite_sheet.png'
 import SpeakerSpriteSheet from './img/sprite_sheets/speaker_sprite_sheet.png'
+import AquariumSpriteSheet from './img/sprite_sheets/aquarium_sprite_sheet.png'
+import AquariumSceneBGSpriteSheet from './img/sprite_sheets/aquarium_scene_spritesheet.png'
+import JournalSpriteSheet from './img/sprite_sheets/journal_spritesheet.png'
+import NotesBoardSpriteSheet from './img/sprite_sheets/notes_board_spritesheet.png'
 
 //weather icons
 import DayClear from './img/png/weather_icons/day/clear.png'
@@ -111,6 +124,10 @@ export const roomSceneManifest =  {
                "src":CharacterImg
             }, 
             {
+               "alias": "Journal",
+               "src": JournalImg
+            },
+            {
                "alias":"LavaLampOff",
                "src":LavaLampOff
             }, 
@@ -121,6 +138,10 @@ export const roomSceneManifest =  {
             {
                "alias": "NightstandLavaLampImg",
                "src": NightstandLavaLampImg
+            },
+            {
+               "alias": "NotesBoard",
+               "src": NotesBoardImg
             },
             {
                "alias": "PCDeskImg",
@@ -137,6 +158,14 @@ export const roomSceneManifest =  {
             {
                "alias": "PosterImg",
                "src": PosterImg
+            },
+            {
+               "alias": "RugImg",
+               "src": RugImg
+            },
+            {
+               "alias": "TapestryImg",
+               "src": TapestryImg
             },
             {
                "alias": "TVStandImg",
@@ -217,6 +246,26 @@ export const roomSceneManifest =  {
             {
                "alias": "ScrollButtonInactive",
                "src": ScrollButtonInactive
+            },
+            {
+               "alias": "OnlineInfoBubble",
+               "src": OnlineInfoBubble
+            },
+            {
+               "alias": "AquariumCase",
+               "src": AquariumCase
+            },
+            {
+               "alias": "StringLights_String",
+               "src": StringLights_StringImg
+            },
+            {
+               "alias": "StringLights_Lights",
+               "src": StringLights_LightsImg
+            },
+            {
+               "alias": "StringLights_Lights2",
+               "src": StringLights_Lights2Img
             }
          ]
       },
@@ -267,6 +316,22 @@ export const roomSceneManifest =  {
                "alias": "SpeakerSpriteSheet",
                "src": SpeakerSpriteSheet
             },
+            {
+               "alias": "AquariumSpriteSheet",
+               "src": AquariumSpriteSheet
+            },
+            {
+               "alias": "AquariumSceneBGSpriteSheet",
+               "src": AquariumSceneBGSpriteSheet
+            },
+            {
+               "alias": "JournalSpriteSheet",
+               "src": JournalSpriteSheet
+            },
+            {
+               "alias": "NotesBoardSpriteSheet",
+               "src": NotesBoardSpriteSheet
+            }
          ]
       },
       {

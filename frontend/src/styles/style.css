@@ -144,7 +144,33 @@ body{
     margin: 15px;
     display: block;
   }
+
+  .chat-container-div{
+    display: flex;
+    flex-direction: column;
+    font-family: Flexi;
+    height: 200px;
+    background-color: rgb(39, 39, 39);
+  }
+
+  .chat-message-div{
+
+  }
+
+  .message-user-name{
+    color: rgba(160, 160, 160, 0.611);
+  }
+
+  .message-paragraph{
+    color: rgb(255, 255, 255)
+  }
   
+  .send-message-button{
+    background-color:  rgb(242, 178, 214);
+    border: none;
+    font-family: Flexi;
+  }
+
   .hidden{
     transform: scaleY(0);
     transition: transform 400ms ease 0ms;
@@ -171,5 +197,14 @@ body{
     }
     to {
       text-shadow: 0 0 30px #34b3c1, 0 0 10px #4dbbc7;
+    }
+  }
+
+    @keyframes green-glow {
+    from {
+      text-shadow: 0 0 20px #9bf4ab;
+    }
+    to {
+      text-shadow: 0 0 30px #34c16c, 0 0 10px #1b4d1b;
     }
   }

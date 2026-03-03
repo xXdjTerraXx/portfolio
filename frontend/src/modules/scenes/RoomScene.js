@@ -16,7 +16,11 @@ import BookShelf from "../objects/Bookshelf"
 import { desk_spritesheet_json2, lava_lamp_spritesheet_json, character_spritesheet_json,
     coffee_spritesheet_json, online_spritesheet_json, character_offline_spritesheet_json, 
     selection_arrow_sprite_sheet_json, tv_stand_sprite_sheet_json,
-    rain_sprite_sheet, speaker_sprite_sheet_json} from '../../json/desk_spritesheet'
+    rain_sprite_sheet, speaker_sprite_sheet_json,
+    aquarium_sprite_sheet_json,
+    aquarium_scene_background_sprite_sheet_json,
+    journal_spritesheet_json,
+    notes_board_spritesheet_json} from '../../json/desk_spritesheet'
 import Plant from '../objects/Plant'
 import DesktopBackground from '../objects/DesktopBackground'
 import { CRTFilter, PixelateFilter } from 'pixi-filters'
@@ -38,6 +42,12 @@ import SpeakerTrack from '../base_classes/SpeakerTrack'
 import { Howler } from 'howler'
 import NowPlaying from '../speaker_buttons/NowPlaying'
 import TrackList from '../speaker_buttons/TrackList'
+import Aquarium from '../objects/Aquarium'
+import Tapestry from '../objects/Tapestry'
+import StringLights from '../objects/StringLights'
+import Journal from '../objects/Journal'
+import NotesBoard from '../objects/NotesBoard'
+import Rug from '../objects/Rug'
 
 export default class RoomScene{
     constructor(app, set_state, assets, sprite_sheets, isOnline, icons, weatherJson, weatherIcons, lastPlayedJson, soundsObject){
@@ -63,6 +73,8 @@ export default class RoomScene{
 
         this.displayDesktop = false
         this.isDesktopDisplaying = false
+
+        this.aquariumIsDisplaying = false
 
         this.displaySpeakerMenu = false
         this.isSpeakerMenuDisplaying = false
@@ -155,23 +167,27 @@ export default class RoomScene{
         this.roomEntitiesContainer = new PIXI.Container()
         await this.initializeDesktopAssets()
         await this.initializeSpeakerMenuAssets()
-        
+        await this.initializeAquariumAssets()
         this.roomEntitiesContainer.label = "room_entities"
         this.backgroundObject = new Background(this.assets.BackgroundImg, 0, 0, this.app, this.roomEntitiesContainer)
         this.postersObject = new Posters(this.assets.PosterImg, 0, 0, this.app, this.roomEntitiesContainer)
-
+        this.tapestryObject = new Tapestry(this.assets.TapestryImg, 186, 0, this.app, this.roomEntitiesContainer)
+        this.stringLightsObject = new StringLights(this.assets.StringLights_String, 0, 0, this.app, this.roomEntitiesContainer, this.assets.StringLights_Lights, this.assets.StringLights_Lights2)
+        this.rugObject = new Rug(this.assets.RugImg, 276, 378, this.app, this.roomEntitiesContainer)
         await this.create_outside_window_object()
         this.windowObject = new WindowFrame(this.assets.WindowImg, 0, 0, this.app, this.roomEntitiesContainer)
-        
+        await this.create_notes_board_object()
         this.cablesObject = new Cables(this.assets.CablesImg, 0, 0, this.app, this.roomEntitiesContainer)
         // this.tvStandObject = new TV_Stand(this.assets.TVStandImg, 0, 0, this.app, this.roomEntitiesContainer)
         await this.create_tv_stand_object()
         await this.create_desk_animated_object()
         await this.create_lava_lamp_animated_object()
-
+        await this.create_aquarium_object()
+        await this.create_journal_object()
         this.bedObject = new Bed(this.assets.BedImg, 0, 0, this.app, this.roomEntitiesContainer)
         this.bookshelfObject = new BookShelf(this.assets.BookShelfImg, 0, 0, this.app, this.roomEntitiesContainer)
-        this.plantObject1 = new Plant(this.assets.Plant1Img, 44, 0, this.app, this.roomEntitiesContainer)
+        this.plantObject1 = new Plant(this.assets.Plant1Img, 3, 68, this.app, this.roomEntitiesContainer)
+        this.plantObject1.sprite.label = "plant_1"
         this.plantObject2 = new Plant(this.assets.Plant2Img, 0, 0, this.app, this.roomEntitiesContainer)
 
         if(this.isOnline){
@@ -189,6 +205,28 @@ export default class RoomScene{
         this.app.stage.addChild(this.roomEntitiesContainer)
         
         // this.coffeeCupObject = new Coffee_Cup(this.assets.CoffeeSpriteSheet, 250, 350)
+    }
+
+    initializeAquariumAssets = async () => {
+        this.aquariumContainer = new PIXI.Container({isRenderGroup: true})
+        this.aquariumContainer.label = "aquarium_container"
+
+        //animated background
+        const backgroundSpritesheet = new PIXI.Spritesheet(
+            PIXI.Texture.from(aquarium_scene_background_sprite_sheet_json.meta.image),
+            aquarium_scene_background_sprite_sheet_json
+            );
+            await backgroundSpritesheet.parse();
+
+        this.aquariumBackground = new PIXI.AnimatedSprite(backgroundSpritesheet.animations.main)
+        this.aquariumBackground.play()
+
+        //glass case on top
+        this.aquariumGlass = new PIXI.Sprite(this.assets.AquariumCase)
+        this.aquariumGlass.label = "aquarium_case"
+
+        this.aquariumContainer.addChild(this.aquariumBackground, this.aquariumGlass)
+        this.aquariumContainer.scale.set(3)
     }
 
     initializeDesktopAssets = async () => {
@@ -299,6 +337,12 @@ export default class RoomScene{
         this.isDesktopDisplaying = true
     }
 
+    setAquariumDisplay = () => {
+        this.app.stage.addChild(this.aquariumContainer)
+        this.aquariumIsDisplaying = true
+        console.log("setting aquarium....")
+    }
+
     setHideDesktop = () => {
         this.app.stage.removeChild(this.desktopContainer)
         this.isDesktopDisplaying = false
@@ -394,7 +438,7 @@ export default class RoomScene{
         online_spritesheet_json
         );
         await spritesheet.parse();
-        this.onlineSignObject = new OnlineOfflineSign(spritesheet, 57.5, 202, this.app, arrowSpriteSheet, this.roomEntitiesContainer, this.desktopContainer)
+        this.onlineSignObject = new OnlineOfflineSign(spritesheet, 57.5, 172, this.app, arrowSpriteSheet, this.roomEntitiesContainer, this.desktopContainer, this.assets.OnlineInfoBubble)
         this.onlineSignObject.sprite.scale.set(0.8, 0.8)
     }
 
@@ -429,6 +473,54 @@ export default class RoomScene{
         
 
         this.tvStandObject = new TV_Stand(spritesheet, 246, 296.5, this.app, arrowSpriteSheet, this.roomEntitiesContainer, this.desktopContainer, this.assets.TVStandImg, this.assets, this.weatherJson, this.weatherIcons, this.lastPlayedJson)
+    }
+
+    create_aquarium_object = async () => {
+        const arrowSpritesheet = new PIXI.Spritesheet(
+        PIXI.Texture.from(selection_arrow_sprite_sheet_json.meta.image),
+        selection_arrow_sprite_sheet_json
+        );
+        await arrowSpritesheet.parse();
+
+        const spritesheet = new PIXI.Spritesheet(
+        PIXI.Texture.from(aquarium_sprite_sheet_json.meta.image),
+        aquarium_sprite_sheet_json
+        );
+        await spritesheet.parse();
+        
+        this.aquariumObject = new Aquarium(spritesheet, 76, 236.5, this.app, arrowSpritesheet, this.roomEntitiesContainer, this.desktopContainer, this.setAquariumDisplay)
+    }
+
+    create_journal_object = async () => {
+        const arrowSpritesheet = new PIXI.Spritesheet(
+        PIXI.Texture.from(selection_arrow_sprite_sheet_json.meta.image),
+        selection_arrow_sprite_sheet_json
+        );
+        await arrowSpritesheet.parse();
+
+        const spritesheet = new PIXI.Spritesheet(
+        PIXI.Texture.from(journal_spritesheet_json.meta.image),
+        journal_spritesheet_json
+        );
+        await spritesheet.parse();
+        
+        this.journalObject = new Journal(spritesheet, 250, 500, this.app, arrowSpritesheet, this.roomEntitiesContainer, this.desktopContainer)
+    }
+
+    create_notes_board_object = async () => {
+        const arrowSpritesheet = new PIXI.Spritesheet(
+        PIXI.Texture.from(selection_arrow_sprite_sheet_json.meta.image),
+        selection_arrow_sprite_sheet_json
+        );
+        await arrowSpritesheet.parse();
+
+        const spritesheet = new PIXI.Spritesheet(
+        PIXI.Texture.from(notes_board_spritesheet_json.meta.image),
+        notes_board_spritesheet_json
+        );
+        await spritesheet.parse();
+        
+        this.notesBoardObject = new NotesBoard(spritesheet, 631, 190, this.app, arrowSpritesheet, this.roomEntitiesContainer, this.desktopContainer)
     }
 
     create_speaker_object = async () => {

@@ -46,7 +46,6 @@ export default class AnimatedObject {
         this.sprite.filters = [new GlowFilter({alpha: 0.2, color: '#bbb4f3'})];
         //display hovering arrow
         this.app.stage.addChild(this.selectionArrow.sprite)
-
     }
     }
 

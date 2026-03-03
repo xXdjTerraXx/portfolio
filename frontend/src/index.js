@@ -7,6 +7,7 @@ import * as PIXI from 'pixi.js'
 import { roomSceneManifest, loadAssets, pngImages } from './image_imports.js'
 import * as TWEEN from "@tweenjs/tween.js"
 import { Howl, Howler } from 'howler';
+import ChatWindow from './modules/windows/Chat.js'
 import PixelLoveIcon from './img/icons/love.png'
 import PixelWindowIcon from './img/icons/heart_window.png'
 import PixelMusicIcon from './img/icons/music.png'
@@ -148,20 +149,26 @@ window.onload = async () => {
     // sounds.RoomSound.play()
     sounds.RainSound.audio.loop()
     sounds.RoomSound.audio.loop()
+    const mainOutsideContainerLeft = document.createElement('div')
+    document.body.append(mainOutsideContainerLeft)
     const aboutWindow= new AboutWindow()
     const twitterWindow = new TwitterStatusWindow()
     const musicWindow = new LastPlayedWindow()
-    const mainOutsideContainer = document.createElement('div')
-    mainOutsideContainer.classList.add("main-outside-container")
-    document.body.append(mainOutsideContainer)
+    const chatWindow = new ChatWindow()
+    mainOutsideContainerLeft.classList.add("main-outside-container")
+    
     aboutWindow.init()
     twitterWindow.init()
     musicWindow.init(lastPlayedJson)
+    
     createAudio()
     const application = new Application()
     await application.init(true, weatherJson, lastPlayedJson, sounds)
     console.log('THE REAL SOUDNS OBJECT: ', sounds)
-    
+    const mainOutsideContainerRight = document.createElement('div')
+    mainOutsideContainerRight.classList.add('main-outside-container')
+    document.body.append(mainOutsideContainerRight)
+    chatWindow.init(mainOutsideContainerRight)
 }
     
     
@@ -199,6 +206,8 @@ window.onload = async () => {
     // requestAnimationFrame(application.mainLoop)
     // app.ticker.add(application.mainLoop)
 // };
+
+
 
 class AboutWindow{
     constructor(){
@@ -299,7 +308,7 @@ class LastPlayedWindow{
 
         // document.querySelector(".track-icon").src = lastPlayed.imageUrl
         
-        this.titleContainerDiv.append(this.icon, this.trackIcon, this.title)
+        this.titleContainerDiv.append(this.icon, this.title)
         this.bodyContainerDiv.append(this.bodyParagraph, this.bodyParagraphAgo)
         this.containerDiv.append(this.titleContainerDiv, this.bodyContainerDiv)
         document.querySelector(".main-outside-container").append(this.containerDiv)

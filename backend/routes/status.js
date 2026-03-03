@@ -2,8 +2,6 @@ const express = require('express')
 const router = express.Router()
 const { Client, GatewayIntentBits, Events, EmbedBuilder, WebhookClient } = require('discord.js');
 
-
-
 console.log('initializing bot...')
 // const intents = new Intents();
 // intents.add(Intents.ALL);
@@ -26,12 +24,15 @@ client.on('ready', async (readyClient) => {
     const guild = client.guilds.cache.get(`${process.env.GUILD_ID}`);
     const members = await guild.members.fetch()
     
+    // console.log('debug!!!: webhook JSON: ', webhookJSON)
     
-    const webhookClient = new WebhookClient({ id: webhookJSON.id, token: webhookJSON.token });
-    webhookClient.send({
-        content: `!status <@${process.env.MY_USER_ID}>`,
-        username: 'get_status'
-    });
+    // const webhookClient = new WebhookClient({ id: webhookJSON.id, token: webhookJSON.token });
+    // webhookClient.send({
+    //     content: `!status <@${process.env.MY_USER_ID}>`,
+    //     username: 'get_status'
+    // });
+    const channel = client.channels.cache.get(`${process.env.DISCORD_GENERAL_CHANNEL_ID}`);
+    channel.send(`!status <@${process.env.MY_USER_ID}>`);
 });
 
 client.on('messageCreate', async (message) => {

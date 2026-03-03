@@ -1,0 +1,132 @@
+{ "frames": {
+   "portfolio aquarium pdn_0.aseprite": {
+    "frame": { "x": 0, "y": 0, "w": 81, "h": 34 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 81, "h": 34 },
+    "sourceSize": { "w": 81, "h": 34 },
+    "duration": 100
+   },
+   "portfolio aquarium pdn_1.aseprite": {
+    "frame": { "x": 81, "y": 0, "w": 81, "h": 34 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 81, "h": 34 },
+    "sourceSize": { "w": 81, "h": 34 },
+    "duration": 100
+   },
+   "portfolio aquarium pdn_2.aseprite": {
+    "frame": { "x": 162, "y": 0, "w": 81, "h": 34 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 81, "h": 34 },
+    "sourceSize": { "w": 81, "h": 34 },
+    "duration": 100
+   },
+   "portfolio aquarium pdn_3.aseprite": {
+    "frame": { "x": 243, "y": 0, "w": 81, "h": 34 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 81, "h": 34 },
+    "sourceSize": { "w": 81, "h": 34 },
+    "duration": 100
+   },
+   "portfolio aquarium pdn_4.aseprite": {
+    "frame": { "x": 324, "y": 0, "w": 81, "h": 34 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 81, "h": 34 },
+    "sourceSize": { "w": 81, "h": 34 },
+    "duration": 100
+   },
+   "portfolio aquarium pdn_5.aseprite": {
+    "frame": { "x": 405, "y": 0, "w": 81, "h": 34 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 81, "h": 34 },
+    "sourceSize": { "w": 81, "h": 34 },
+    "duration": 100
+   },
+   "portfolio aquarium pdn_6.aseprite": {
+    "frame": { "x": 486, "y": 0, "w": 81, "h": 34 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 81, "h": 34 },
+    "sourceSize": { "w": 81, "h": 34 },
+    "duration": 100
+   },
+   "portfolio aquarium pdn_7.aseprite": {
+    "frame": { "x": 567, "y": 0, "w": 81, "h": 34 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 81, "h": 34 },
+    "sourceSize": { "w": 81, "h": 34 },
+    "duration": 100
+   },
+   "portfolio aquarium pdn_8.aseprite": {
+    "frame": { "x": 648, "y": 0, "w": 81, "h": 34 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 81, "h": 34 },
+    "sourceSize": { "w": 81, "h": 34 },
+    "duration": 100
+   },
+   "portfolio aquarium pdn_9.aseprite": {
+    "frame": { "x": 729, "y": 0, "w": 81, "h": 34 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 81, "h": 34 },
+    "sourceSize": { "w": 81, "h": 34 },
+    "duration": 100
+   },
+   "portfolio aquarium pdn_10.aseprite": {
+    "frame": { "x": 810, "y": 0, "w": 81, "h": 34 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 81, "h": 34 },
+    "sourceSize": { "w": 81, "h": 34 },
+    "duration": 100
+   },
+   "portfolio aquarium pdn_11.aseprite": {
+    "frame": { "x": 891, "y": 0, "w": 81, "h": 34 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 81, "h": 34 },
+    "sourceSize": { "w": 81, "h": 34 },
+    "duration": 100
+   },
+   "portfolio aquarium pdn_12.aseprite": {
+    "frame": { "x": 972, "y": 0, "w": 81, "h": 34 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 81, "h": 34 },
+    "sourceSize": { "w": 81, "h": 34 },
+    "duration": 100
+   },
+   "portfolio aquarium pdn_13.aseprite": {
+    "frame": { "x": 1053, "y": 0, "w": 81, "h": 34 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 81, "h": 34 },
+    "sourceSize": { "w": 81, "h": 34 },
+    "duration": 100
+   }
+ },
+ "meta": {
+  "app": "https://www.aseprite.org/",
+  "version": "1.3.13-x64",
+  "image": "aquarium_sprite_sheet.png",
+  "format": "RGBA8888",
+  "size": { "w": 1134, "h": 34 },
+  "scale": "1",
+  "frameTags": [
+  ],
+  "layers": [
+   { "name": "fish", "opacity": 255, "blendMode": "normal" },
+   { "name": "bubbles1", "opacity": 255, "blendMode": "normal" },
+   { "name": "aquarium", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}

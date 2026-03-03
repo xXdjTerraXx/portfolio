@@ -1,0 +1,141 @@
+{ "frames": {
+   "aquarium_scene_bg_0.aseprite": {
+    "frame": { "x": 0, "y": 0, "w": 175, "h": 150 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 175, "h": 150 },
+    "sourceSize": { "w": 175, "h": 150 },
+    "duration": 100
+   },
+   "aquarium_scene_bg_1.aseprite": {
+    "frame": { "x": 175, "y": 0, "w": 175, "h": 150 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 175, "h": 150 },
+    "sourceSize": { "w": 175, "h": 150 },
+    "duration": 100
+   },
+   "aquarium_scene_bg_2.aseprite": {
+    "frame": { "x": 350, "y": 0, "w": 175, "h": 150 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 175, "h": 150 },
+    "sourceSize": { "w": 175, "h": 150 },
+    "duration": 100
+   },
+   "aquarium_scene_bg_3.aseprite": {
+    "frame": { "x": 525, "y": 0, "w": 175, "h": 150 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 175, "h": 150 },
+    "sourceSize": { "w": 175, "h": 150 },
+    "duration": 100
+   },
+   "aquarium_scene_bg_4.aseprite": {
+    "frame": { "x": 700, "y": 0, "w": 175, "h": 150 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 175, "h": 150 },
+    "sourceSize": { "w": 175, "h": 150 },
+    "duration": 100
+   },
+   "aquarium_scene_bg_5.aseprite": {
+    "frame": { "x": 875, "y": 0, "w": 175, "h": 150 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 175, "h": 150 },
+    "sourceSize": { "w": 175, "h": 150 },
+    "duration": 100
+   },
+   "aquarium_scene_bg_6.aseprite": {
+    "frame": { "x": 1050, "y": 0, "w": 175, "h": 150 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 175, "h": 150 },
+    "sourceSize": { "w": 175, "h": 150 },
+    "duration": 100
+   },
+   "aquarium_scene_bg_7.aseprite": {
+    "frame": { "x": 1225, "y": 0, "w": 175, "h": 150 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 175, "h": 150 },
+    "sourceSize": { "w": 175, "h": 150 },
+    "duration": 100
+   },
+   "aquarium_scene_bg_8.aseprite": {
+    "frame": { "x": 1400, "y": 0, "w": 175, "h": 150 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 175, "h": 150 },
+    "sourceSize": { "w": 175, "h": 150 },
+    "duration": 100
+   },
+   "aquarium_scene_bg_9.aseprite": {
+    "frame": { "x": 1575, "y": 0, "w": 175, "h": 150 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 175, "h": 150 },
+    "sourceSize": { "w": 175, "h": 150 },
+    "duration": 100
+   },
+   "aquarium_scene_bg_10.aseprite": {
+    "frame": { "x": 1750, "y": 0, "w": 175, "h": 150 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 175, "h": 150 },
+    "sourceSize": { "w": 175, "h": 150 },
+    "duration": 100
+   },
+   "aquarium_scene_bg_11.aseprite": {
+    "frame": { "x": 1925, "y": 0, "w": 175, "h": 150 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 175, "h": 150 },
+    "sourceSize": { "w": 175, "h": 150 },
+    "duration": 100
+   },
+   "aquarium_scene_bg_12.aseprite": {
+    "frame": { "x": 2100, "y": 0, "w": 175, "h": 150 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 175, "h": 150 },
+    "sourceSize": { "w": 175, "h": 150 },
+    "duration": 100
+   },
+   "aquarium_scene_bg_13.aseprite": {
+    "frame": { "x": 2275, "y": 0, "w": 175, "h": 150 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 175, "h": 150 },
+    "sourceSize": { "w": 175, "h": 150 },
+    "duration": 100
+   },
+   "aquarium_scene_bg_14.aseprite": {
+    "frame": { "x": 2450, "y": 0, "w": 175, "h": 150 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 175, "h": 150 },
+    "sourceSize": { "w": 175, "h": 150 },
+    "duration": 100
+   }
+ },
+ "meta": {
+  "app": "https://www.aseprite.org/",
+  "version": "1.3.13-x64",
+  "image": "aquarium_scene_spritesheet.png",
+  "format": "RGBA8888",
+  "size": { "w": 2625, "h": 150 },
+  "scale": "1",
+  "frameTags": [
+  ],
+  "layers": [
+   { "name": "Layer 1", "opacity": 255, "blendMode": "normal" },
+   { "name": "Layer 3", "opacity": 255, "blendMode": "normal" },
+   { "name": "Layer 4", "opacity": 255, "blendMode": "normal" },
+   { "name": "Layer 2", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}

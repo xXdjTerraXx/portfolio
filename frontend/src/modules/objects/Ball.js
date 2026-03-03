@@ -68,14 +68,13 @@ export default class Ball {
         this.yv *= this.friction
 
         //rotate the ball
-        
         if (this.xv !== 0 || this.yv !== 0){
             this.sprite.rotation += (this.xv * .5 / 2)
         }
 
         // if the velocity is too low, stop the ball
-        if (Math.abs(this.xv) < 0.01) this.xv = 0;
-        if (Math.abs(this.yv) < 0.01) this.yv = 0;
+        if (Math.abs(this.xv) < 0.01) this.xv = 0
+        if (Math.abs(this.yv) < 0.01) this.yv = 0
         
     }
 

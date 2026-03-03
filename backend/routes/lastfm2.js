@@ -31,7 +31,8 @@ async function getLastPlayedTrack() {
         }
     } catch (error) {
         console.error('Error fetching track data:', error);
-        return null;
+        return { artistName: '', songTitle: '', playedAt: '', playedAgo: 'No recent tracks found' };
+        // return null;
     }
 }
 
