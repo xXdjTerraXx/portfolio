@@ -52,12 +52,12 @@ client.on('messageCreate', async (message) => {
                 if (member && member.presence) {
                     let status = member.presence.status;
                     await message.channel.send(`${member.displayName} is ${status}`);
-                    console.log('STATUS: ', status)
+                    console.log('DISCORD STATUS: ', status, " - ", "discord username: ", member.displayName)
                     
                 } else {
                     let status = 'offline'
                     await message.channel.send('Member not found.');
-                    console.log('STATUS: ', status)
+                    console.log('DISCORD STATUS: ', status)
                 }
             } catch (error) {
                 console.error('Error fetching member status:', error);
@@ -73,7 +73,7 @@ router.get('/', async (req, res, next) => {
                 
         if (member && member.presence) {
             const isOnline = member.presence.status == 'online' ? true : false;
-            res.json({isOnline});
+            res.json({isOnline, username: member.displayName});
             console.log(isOnline, 'askljdhfas')}
             
 })

@@ -35,29 +35,6 @@ let fpsRate = 'calculating...'
 let clickX = false
 let clickY = false
 
-let isOnline
-
-// window.onload = async function() {
-//     //fetching discord online status
-//     const options = {
-//         method: 'GET',
-//         headers: {
-//             "Content-Type": "application/json"
-//           },
-//         mode: "cors", 
-//     }
-//     try{
-//         const response = await fetch('http://localhost:3000/status', options) 
-//         const json = await response.json()
-//         console.log(json)
-//         let isOnline = json.isOnline
-//         const application = new Application()
-//         await application.init(isOnline)
-//     }
-//     catch(e){
-//         console.log(e)
-//     }
-// }
 
 //preload all audio
 const sounds = {
@@ -68,6 +45,55 @@ const sounds = {
     ThreePmRain: {audio: new Howl({src: [ThreePmRain]}), title: '3 pm [searching 4 u]'},
     SixPmDistress: {audio: new Howl({src: [SixPmDistress]}), title: '6 pm [distress]'},
     TenPmWishful: {audio: new Howl({src: [TenPmWishful]}), title: '10 pm [wishful]'}
+}
+
+async function getOnlineStatus() {
+    //this function calls fetchPresence and fetchDiscordStatus and puts both return values
+    //in an onlineStatusObject that is passed to the main application on init
+
+    //first declare some variables, defaulting to offline :3
+    let onlineStatusObject = { 
+        isOnline: false, 
+        presenceStateObject: null, 
+        discordStateObject: null
+    }
+    try{
+        //no need to get any discord info if presence is "offline", so check that first
+        onlineStatusObject.presenceStateObject = await fetchPresence()
+        onlineStatusObject.isOnline = onlineStatusObject.presenceStateObject.status !== "offline"
+        //if presence is "offline" just return the onlineStatusObject w default values
+        if(!onlineStatusObject.isOnline){
+            return onlineStatusObject
+        }
+        //otherwise, get discord state yaaay!
+        else {
+            onlineStatusObject.discordStateObject = await fetchDiscordStatus()
+            return onlineStatusObject
+        }
+    }
+    catch(err){
+        console.error(`${err.name} - oh no gorl something went wrong fetching the presence T-T: ${err.message}`)
+        return onlineStatusObject
+    }
+}
+
+async function fetchPresence() {
+    console.log('fetching presence data...')
+    try{
+        let url = process.env.NODE_ENV == "development" ? 'http://localhost:3000/presence' : 'portfolio_backend.railway.internal/presence'
+        const presenceState = await fetch(url)
+        const json = await presenceState.json()
+        console.log('presence json from fetchPresence: ', json)
+        return json
+    }
+    catch(err){
+        return err
+    }
+    
+}
+
+async function fetchDiscordStatus() {
+    return { isOnline: true, username: 'xxdjTerraxx'}
 }
 
 function preloadSound(sound){
@@ -86,8 +112,6 @@ async function preloadAllSounds(sounds) {
         console.error('error loading sounds dog T-T:', error);
     }
 }
-
-
 
 async function getWeather () {
     console.log('fetching weather data...')
@@ -126,16 +150,14 @@ async function getTweet(){
 }
 
 function createAudio(){
-
-    // Create an audio element
-    const audio = new Audio(RoomSound);
+    const audio = new Audio(RoomSound)
     
-    // Autoplay the audio
-    audio.autoplay = true;
-    audio.loop = true; // Optional: Loop the audio
+    // autoplay the audio
+    audio.autoplay = true
+    audio.loop = true // loop the audio
     
-    // Append audio element to the body
-    document.body.appendChild(audio);
+    // append audio element to the body
+    document.body.appendChild(audio)
     console.log('audio set up!', audio.src)
 }
 
@@ -143,6 +165,8 @@ window.onload = async () => {
     
     const lastPlayedJson = await awaitGetLastFm()
     const weatherJson = await getWeather()
+    const onlineStatus = await getOnlineStatus()
+    console.log("DEBUG: onlineStatus: ", onlineStatus)
     // const tweet = await getTweet()
     await preloadAllSounds()
     // sounds.RainSound.play()
@@ -163,51 +187,12 @@ window.onload = async () => {
     
     createAudio()
     const application = new Application()
-    await application.init(true, weatherJson, lastPlayedJson, sounds)
-    console.log('THE REAL SOUDNS OBJECT: ', sounds)
+    await application.init(onlineStatus, weatherJson, lastPlayedJson, sounds)
     const mainOutsideContainerRight = document.createElement('div')
     mainOutsideContainerRight.classList.add('main-outside-container')
     document.body.append(mainOutsideContainerRight)
     chatWindow.init(mainOutsideContainerRight)
 }
-    
-    
-    
-
-    //hover event
-    // canvas.addEventListener('mousemove', (e) => {
-    //     const rect = canvas.getBoundingClientRect()
-    //     mouseX = e.clientX - rect.left;
-    //     mouseY = e.clientY - rect.top;
-        
-    // })
-
-    // click event //
-    // canvas.addEventListener('click', (e) => {
-    //     const rect = canvas.getBoundingClientRect()
-    //     clickX = e.clientX - rect.left;
-    //     clickY = e.clientY - rect.top;
-    //     const pcDeskObject = application.roomScene.pcDeskObject
-    //     let pcDeskObjectClickedX = clickX > pcDeskObject.x_pos && clickX <= pcDeskObject.x_pos + pcDeskObject.frameWidth
-    //     let pcDeskObjectClickedY = clickY > pcDeskObject.y_pos && clickY <= pcDeskObject.y_pos + pcDeskObject.frameHeight
-    //     if(pcDeskObjectClickedX && pcDeskObjectClickedY){
-    //         pcDeskObject.handleClick()
-    //     clickX = false
-    //     clickY = false
-    // }}, false)
-
-    // //overlay click event
-    // overlayDiv.addEventListener('click', (e) => {
-    //     overlayDiv.classList.add("hidden")
-    //     console.log('hiding glass overlay...')
-    // })
-    
-
-    // requestAnimationFrame(application.mainLoop)
-    // app.ticker.add(application.mainLoop)
-// };
-
-
 
 class AboutWindow{
     constructor(){
@@ -321,10 +306,10 @@ export default class Application{
         this.app = new PIXI.Application()
         this.ticker = PIXI.Ticker.shared
         //enable pixijs chrome dev tool
-        globalThis.__PIXI_APP__ = this.app;
+        globalThis.__PIXI_APP__ = this.app
     }
 
-    init = async (isOnline, weatherJson, lastPlayedJson, soundsObject) => {
+    init = async (onlineStatusObject, weatherJson, lastPlayedJson, soundsObject) => {
         try {
             await this.app.init({ width: 800, height: 600, preference:'webgl' });
             document.body.append(this.app.canvas)
@@ -336,10 +321,11 @@ export default class Application{
             this.sprite_sheets = await PIXI.Assets.loadBundle('sprite_sheets')
             this.icons = await PIXI.Assets.loadBundle('icons')
             this.weatherIcons = await PIXI.Assets.loadBundle('weather_icons')
+            this.fonts = await PIXI.Assets.loadBundle('fonts')
             this.stateManager = new StateManager('room_scene')
             this.currentState = this.stateManager.currentState
 
-            this.roomScene = new RoomScene(this.app, this.set_state, this.assets, this.sprite_sheets, isOnline, this.icons, weatherJson, this.weatherIcons, lastPlayedJson, this.soundsObject)
+            this.roomScene = new RoomScene(this.app, this.set_state, this.assets, this.sprite_sheets, onlineStatusObject, this.icons, weatherJson, this.weatherIcons, lastPlayedJson, this.soundsObject)
             this.desktopScene = new DesktopScene(this.app, this.set_state, this.assets, this.sprite_sheets)
 
             this.statesObject = {

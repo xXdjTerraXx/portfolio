@@ -50,7 +50,7 @@ import NotesBoard from '../objects/NotesBoard'
 import Rug from '../objects/Rug'
 
 export default class RoomScene{
-    constructor(app, set_state, assets, sprite_sheets, isOnline, icons, weatherJson, weatherIcons, lastPlayedJson, soundsObject){
+    constructor(app, set_state, assets, sprite_sheets, onlineStatusObject, icons, weatherJson, weatherIcons, lastPlayedJson, soundsObject){
         this.app = app
         this.set_state = set_state
 
@@ -68,9 +68,8 @@ export default class RoomScene{
         this.mouseY = 0
 
         this.weatherJson = weatherJson
-        // this.isOnline = onlineStatus
-        this.isOnline = isOnline
-
+        
+        this.onlineStatusObject = onlineStatusObject
         this.displayDesktop = false
         this.isDesktopDisplaying = false
 
@@ -190,9 +189,10 @@ export default class RoomScene{
         this.plantObject1.sprite.label = "plant_1"
         this.plantObject2 = new Plant(this.assets.Plant2Img, 0, 0, this.app, this.roomEntitiesContainer)
 
-        if(this.isOnline){
+        await this.create_online_sign_animated_object()
+        if(this.onlineStatusObject.isOnline){
             await this.create_character_animated_object()
-            await this.create_online_sign_animated_object()
+            // await this.create_online_sign_animated_object()
         }
         else{
             await this.create_character_offline_animated_object()
@@ -433,13 +433,16 @@ export default class RoomScene{
         );
         await arrowSpriteSheet.parse();
 
-        const spritesheet = new PIXI.Spritesheet(
+        const spritesheetOnline = new PIXI.Spritesheet(
         PIXI.Texture.from(online_spritesheet_json.meta.image),
         online_spritesheet_json
-        );
-        await spritesheet.parse();
-        this.onlineSignObject = new OnlineOfflineSign(spritesheet, 57.5, 172, this.app, arrowSpriteSheet, this.roomEntitiesContainer, this.desktopContainer, this.assets.OnlineInfoBubble)
-        this.onlineSignObject.sprite.scale.set(0.8, 0.8)
+        )
+
+        //offline sign is just a static image, not an animated sprite :3
+        const offlineSignTexture = this.assets.OfflineSign
+        await spritesheetOnline.parse()
+        this.onlineSignObject = new OnlineOfflineSign(spritesheetOnline, offlineSignTexture, 57.5, 172, this.app, arrowSpriteSheet, this.roomEntitiesContainer, this.desktopContainer, this.assets.OnlineStatusBubble, this.onlineStatusObject)
+        
     }
 
     create_character_offline_animated_object = async () => {

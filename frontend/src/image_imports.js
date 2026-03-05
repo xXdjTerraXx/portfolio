@@ -12,6 +12,8 @@ import LavaLampOff from './img/png/lava_lamp_off.png'
 import MonitorBackgroundImg from './img/png/monitor_background.png'
 import NightstandLavaLampImg from './img/png/nightstand_lava_lamp.png'
 import NotesBoardImg from './img/png/notes_board.png'
+import OfflineSignImg from './img/png/offline_sign.png'
+import OnlineStatusBubbleImg from './img/png/online_status_bubble.png'
 import PCDeskImg from './img/png/pc_desk.png'
 import Plant1Img from './img/png/plant_1.png'
 import Plant2Img from './img/png/plant_2.png'
@@ -40,7 +42,6 @@ import TVGlare from './img/png/tv_glare.png'
 import TVBackgroundLandscape from './img/png/tv_background_landscape.png'
 import ScrollButton from './img/png/scroll_button.png'
 import ScrollButtonInactive from './img/png/scroll_button_inactive.png'
-import OnlineInfoBubble from './img/png/info_bubble.png'
 import AquariumCase from './img/png/aquarium_case.png'
 import RugImg from './img/png/rug.png'
 
@@ -88,10 +89,12 @@ import RoomNoise from './sounds/room_noise.mp3'
 import Rain from './sounds/rain.mp3'
 
 //fonts
-
+import PixelEmulator from './fonts/PixelEmulator.ttf'
+import Pixellari from './fonts/Pixellari.ttf'
 
 export const roomSceneManifest =  {
    "bundles":[
+      //pngs
       {
          "name":"png",
          "assets":[
@@ -142,6 +145,14 @@ export const roomSceneManifest =  {
             {
                "alias": "NotesBoard",
                "src": NotesBoardImg
+            },
+            {
+               "alias": "OfflineSign",
+               "src": OfflineSignImg
+            },
+            {
+               "alias": "OnlineStatusBubble",
+               "src": OnlineStatusBubbleImg
             },
             {
                "alias": "PCDeskImg",
@@ -248,10 +259,6 @@ export const roomSceneManifest =  {
                "src": ScrollButtonInactive
             },
             {
-               "alias": "OnlineInfoBubble",
-               "src": OnlineInfoBubble
-            },
-            {
                "alias": "AquariumCase",
                "src": AquariumCase
             },
@@ -269,6 +276,7 @@ export const roomSceneManifest =  {
             }
          ]
       },
+      //sprite sheets
       {
          "name":"sprite_sheets",
          "assets":[
@@ -334,6 +342,7 @@ export const roomSceneManifest =  {
             }
          ]
       },
+      //icons
       {
          "name":"icons",
          "assets":[
@@ -363,6 +372,7 @@ export const roomSceneManifest =  {
             }
          ]
       },
+      //weahter icons
       {
          "name":"weather_icons",
          "assets":[
@@ -401,6 +411,20 @@ export const roomSceneManifest =  {
             {
                "alias":"NightMist",
                "src":NightMist
+            },
+         ]
+      },
+      //fonts
+      {
+         "name": "fonts",
+         "assets": [
+            {
+               "alias": "PixelEmulator",
+               "src": PixelEmulator
+            },
+            {
+               "alias": "Pixellari",
+               "src": Pixellari
             },
          ]
       }
