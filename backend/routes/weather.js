@@ -15,6 +15,7 @@ router.get('/', async (req, res, next) => {
         let desc = json.weather[0].description
         let iconURL = `https://openweathermap.org/img/wn/${json.weather.icon}@2x.png`
         let code = json.weather[0].icon
+        console.log('DEBUG WEATHER: ', temp, desc, iconURL, code)
         res.json({ temp, desc, iconURL, code })
     }
     catch(err){

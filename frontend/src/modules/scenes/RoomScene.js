@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js'
+import * as TWEEN from "@tweenjs/tween.js"
 // importing object classes
 import LavaLamp from "../objects/LavaLamp"
 import Character from "../objects/Character"
@@ -48,9 +49,10 @@ import StringLights from '../objects/StringLights'
 import Journal from '../objects/Journal'
 import NotesBoard from '../objects/NotesBoard'
 import Rug from '../objects/Rug'
+import Note from '../base_classes/Note'
 
 export default class RoomScene{
-    constructor(app, set_state, assets, sprite_sheets, onlineStatusObject, icons, weatherJson, weatherIcons, lastPlayedJson, soundsObject){
+    constructor(app, set_state, assets, sprite_sheets, fonts, onlineStatusObject, icons, weatherJson, weatherIcons, lastPlayedJson, soundsObject, personalStatus, notesArray, mood){
         this.app = app
         this.set_state = set_state
 
@@ -58,6 +60,7 @@ export default class RoomScene{
         this.soundsObject = soundsObject
         this.sprite_sheets = sprite_sheets
         this.icons = icons
+        this.fonts = fonts
         this.weatherIcons = weatherIcons
 
         this.clicking = false
@@ -70,10 +73,16 @@ export default class RoomScene{
         this.weatherJson = weatherJson
         
         this.onlineStatusObject = onlineStatusObject
+        this.personalStatus = personalStatus
+        this.mood = mood
+        this.notesArray = notesArray
+
         this.displayDesktop = false
         this.isDesktopDisplaying = false
 
         this.aquariumIsDisplaying = false
+
+        this.notesOverlayIsDisplaying = false
 
         this.displaySpeakerMenu = false
         this.isSpeakerMenuDisplaying = false
@@ -167,6 +176,7 @@ export default class RoomScene{
         await this.initializeDesktopAssets()
         await this.initializeSpeakerMenuAssets()
         await this.initializeAquariumAssets()
+        await this.initializeNotesOverlay()
         this.roomEntitiesContainer.label = "room_entities"
         this.backgroundObject = new Background(this.assets.BackgroundImg, 0, 0, this.app, this.roomEntitiesContainer)
         this.postersObject = new Posters(this.assets.PosterImg, 0, 0, this.app, this.roomEntitiesContainer)
@@ -227,6 +237,34 @@ export default class RoomScene{
 
         this.aquariumContainer.addChild(this.aquariumBackground, this.aquariumGlass)
         this.aquariumContainer.scale.set(3)
+    }
+
+    initializeNotesOverlay = async () => {
+        this.notesOverlayContainer = new PIXI.Container({isRenderGroup: true})
+        this.notesOverlayContainer.label = 'notes_overlay'
+        this.notesOverlayContainer.x = 0
+        this.notesOverlayContainer.y = 0
+
+        //transparent panel behind the notes that will close the notes overlay when clicked
+        const closeHitArea = new PIXI.Graphics()
+
+        closeHitArea.rect(0, 0, this.app.screen.width, this.app.screen.height)
+        closeHitArea.fill({ alpha: 0 })
+
+        closeHitArea.eventMode = 'static'
+        closeHitArea.cursor = 'default'
+
+        closeHitArea.on("pointerdown", () => {
+            this.closeNotesOverlay()
+        })
+
+        this.notesOverlayContainer.addChild(closeHitArea)
+        
+        this.notesArray.forEach(noteObj => {
+            const newNote = new Note(this.assets.Note, this.assets.NoteShading, noteObj.text, noteObj.pos_x, noteObj.pos_y, noteObj.z_index, noteObj.note_type, noteObj.color, noteObj.rotation, noteObj.timestamp, this.fonts.NotesFont)
+            
+            this.notesOverlayContainer.addChild(newNote)
+        })
     }
 
     initializeDesktopAssets = async () => {
@@ -340,7 +378,25 @@ export default class RoomScene{
     setAquariumDisplay = () => {
         this.app.stage.addChild(this.aquariumContainer)
         this.aquariumIsDisplaying = true
-        console.log("setting aquarium....")
+    }
+
+    setNotesBoardOverlayDisplay = () => {
+        console.log("setting note board overlay....")
+        this.app.stage.addChild(this.notesOverlayContainer)
+        this.notesOverlayIsDisplaying = true
+    }
+
+    closeNotesOverlay = () => {
+        
+        const unBlurTween = new TWEEN.Tween(this.roomEntitiesContainer.filters[0])
+                    unBlurTween.to({blur: 0}, 400)
+                    unBlurTween.easing(TWEEN.Easing.Quadratic.InOut)
+                    unBlurTween.start()
+                    unBlurTween.onComplete(() => {
+                        this.app.stage.removeChild(this.notesOverlayContainer)
+                        this.notesOverlayIsDisplaying = false
+                    })
+        
     }
 
     setHideDesktop = () => {
@@ -407,7 +463,18 @@ export default class RoomScene{
         character_spritesheet_json
         );
         await spritesheet.parse();
-        this.characterObject = new Character(spritesheet, 152, 380, this.app, arrowSpriteSheet, this.roomEntitiesContainer, this.desktopContainer)
+        this.characterObject = new Character(
+            spritesheet, 
+            152, 380, 
+            this.app, 
+            arrowSpriteSheet, 
+            this.roomEntitiesContainer, 
+            this.desktopContainer, 
+            this.mood,
+            this.personalStatus,
+            this.assets.ThoughtBubbleSmall, 
+            this.assets.ThoughtBubbleMedium, 
+            this.assets.ThoughtBubbleMain)
     }
 
     create_coffee_cup_animated_object = async () => {
@@ -523,7 +590,7 @@ export default class RoomScene{
         );
         await spritesheet.parse();
         
-        this.notesBoardObject = new NotesBoard(spritesheet, 631, 190, this.app, arrowSpritesheet, this.roomEntitiesContainer, this.desktopContainer)
+        this.notesBoardObject = new NotesBoard(spritesheet, 631, 190, this.app, arrowSpritesheet, this.roomEntitiesContainer, this.desktopContainer, this.setNotesBoardOverlayDisplay)
     }
 
     create_speaker_object = async () => {
@@ -545,23 +612,6 @@ export default class RoomScene{
 
     run = (delta) =>{
 
-        // this.backgroundObject.display()
-        // this.postersObject.display()
-        // this.cablesObject.display()
-        // this.windowObject.display()
-        // this.tvStandObject.display()
-        // this.bookshelfObject.display()
-    
-        // this.lavaLampObject.run(cycleCount, this.mouseX, this.mouseY)
-    
-        // this.bedObject.display()
-        // this.coffeeCupObject.animate(cycleCount)
-    
-        // this.characterObject.run(cycleCount, this.mouseX, this.mouseY)
-        // this.pcDeskObject.run(cycleCount, this.mouseX, this.mouseY)
-        
-        // ctx.fillStyle = 'White'
-        // ctx.fillRect(canvas.width / 2 - HALF_WIDTH, canvas.height / 2 - HALF_HEIGHT, WIDTH, HEIGHT)
         
     }
 

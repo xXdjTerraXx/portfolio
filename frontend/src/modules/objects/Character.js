@@ -1,62 +1,122 @@
+import { Container, Sprite, Text, TextStyle } from "pixi.js"
 import AnimatedObject from "../base_classes/AnimatedObject"
 import SelectionArrow from "./SelectionArrow"
+import { timeAgo } from "../../utils"
 
 export default class Character extends AnimatedObject{
-    constructor(sprite_sheet, x_pos, y_pos, app, arrowSpriteSheet, roomEntitiesContainer, desktopContainer){
+    constructor(sprite_sheet, x_pos, y_pos, app, arrowSpriteSheet, roomEntitiesContainer, desktopContainer, moodsArray, personalStatus, smallThoughtBubbleTexture,
+        mediumThoughtBubbleTexture, mainThoughtBubbleTexture
+    ){
         super(sprite_sheet, x_pos, y_pos, app, arrowSpriteSheet, roomEntitiesContainer, desktopContainer)
         this.frameWidth = 187
         this.frameHeight = 157
         this.numberOfFrames = 0
         this.currentFrame = 0
+
+        this.moodsArray = moodsArray
+        this.personalStatus = personalStatus
+        console.log("DEBUG MOOD AND STATUS: ", this.moodsArray, this.personalStatus)
+
+        this.auxiallyThoughtBubble1 = new ThoughtBubbleAuxillary(smallThoughtBubbleTexture,20,-60)
+        this.auxiallyThoughtBubble2 = new ThoughtBubbleAuxillary(mediumThoughtBubbleTexture,40,-100)
+        this.mainThoughtBubble = new ThoughtBubbleMain(mainThoughtBubbleTexture,80,-220, this.moodsArray, this.personalStatus)
         
+        this.thoughtBubblesAreDisplaying = false
         //for mouseover
         this.mouseOver = false
         this.shadowBlur = 10
         // this.selectionArrow = new SelectionArrow((this.x_pos + this.frameWidth / 2) - 25, this.y_pos)
 
-
-        // this.init()
+        this.sprite.on("click", this.handleCharacterClick)
     }
 
-//     handleMouseOver = (mouseX, mouseY) => {
-//         let mouseIsCollidingX = mouseX > this.x_pos && mouseX <= this.x_pos + this.frameWidth
-//         let mouseIsCollidingY = mouseY > this.y_pos && mouseY <= this.y_pos + this.frameHeight
+    handleCharacterClick = () => {
+        console.log("charcter click!!")
+        if(!this.thoughtBubblesAreDisplaying){
+            this.thoughtBubblesAreDisplaying = true
+            this.sprite.addChild(this.auxiallyThoughtBubble1, this.auxiallyThoughtBubble2, this.mainThoughtBubble)
+        }
+        else{
+            this.thoughtBubblesAreDisplaying = false
+            this.sprite.removeChildren()
+        }
         
-//         if(mouseIsCollidingX && mouseIsCollidingY){
-//             this.mouseOver = true
-//             document.documentElement.style.cursor = 'pointer'
-//         }   
-//         else {
-//             this.mouseOver = false
-//             document.documentElement.style.cursor = 'default'
-//         } 
-//     }
+    }
+}
 
-//     animate(cycleCount){
-//         //highlight on mouse over
-//         if (this.mouseOver == true){
-//             this.selectionArrow.animate(cycleCount)
-//             this.shadowBlur > 70 ? this.shadowBlur = 10 : this.shadowBlur++
-//             this.ctx.shadowBlur = this.shadowBlur / 2; 
-//             this.ctx.shadowColor = "white"; 
-//             this.ctx.shadowOffsetX = 0; 
-//             this.ctx.shadowOffsetY = 0; 
-//             this.ctx.fillRect(this.x_pos, this.y_pos, this.frameWidth, this.frameHeight);
-//             this.ctx.shadowBlur = 0;  
-//         }
-//         //draw image at current frame
-//         this.ctx.drawImage(this.image, this.currentFrame * this.frameWidth, 0, this.frameWidth, this.frameHeight, this.x_pos, this.y_pos, this.frameWidth, this.frameHeight)
-//         if (this.currentFrame >= this.numberOfFrames - 1){
-//             this.currentFrame = 0
-//         } else{
-//             if(cycleCount % 6 == 0){
-//                 this.currentFrame++
-//             }
-//         }
-//     }
+class ThoughtBubbleMain extends Sprite{
+    constructor(texture, xPos, yPos, moodsArray, personalStatus){
+        super(texture)
+        this.x = xPos
+        this.y = yPos
+        this.moodsArray = moodsArray
+        this.personalStatus = personalStatus
+        this.initContent()
+    }
 
-//     run = (cycleCount, mouseX, mouseY) => {
-//         this.animate(cycleCount)
-//         this.handleMouseOver(mouseX, mouseY)
-//     }
+    initContent = () => {
+        this.moodContainer = new Container()
+
+        this.categoryTextStyle = new TextStyle({
+            fontFamily: "monospace",
+            fontSize: 18,
+            fill: 0x000000,
+            align: "left",
+            wordWrap: true,
+            wordWrapWidth: 160,
+            dropShadow: true,
+            dropShadowColor: "#e9e2e2",
+            dropShadowBlur: 2,
+            dropShadowDistance: 1,
+            dropShadowAlpha: 0.25
+        })
+        this.contentTextStyle = new TextStyle({
+            fontFamily: "monospace",
+            fontSize: 18,
+            fill: 0x8a6bff,
+            align: "left",
+            wordWrap: true,
+            wordWrapWidth: 160,
+            dropShadow: true,
+            dropShadowColor: "#000000",
+            dropShadowBlur: 2,
+            dropShadowDistance: 1,
+            dropShadowAlpha: 0.25
+        })
+
+        this.smallTimeTextStyle = new TextStyle({
+            fontFamily: "monospace",
+            fontSize: 12,
+            fill: 0x484358,
+            align: "center",
+            wordWrap: true,
+            wordWrapWidth: 160,
+            dropShadow: true,
+            dropShadowColor: "#000000",
+            dropShadowBlur: 2,
+            dropShadowDistance: 1,
+            dropShadowAlpha: 0.25
+        })
+        const mood = this.moodsArray[0]
+        this.categoryTextMood = new Text('mood: ', this.categoryTextStyle)
+        this.contentTextMood = new Text(`${mood.mood_label}${mood.mood_emoji}`, this.contentTextStyle)
+        this.timeText = new Text(`${timeAgo(mood.createdAt)}`, this.smallTimeTextStyle)
+        
+        this.categoryTextMood.position.set(0, 10)
+        this.contentTextMood.position.set(`${this.categoryTextMood.width + 10}`, 10)
+        this.timeText.position.set(`${this.contentTextMood.width / 2}`, `${this.contentTextMood.height + 10}`)
+
+        this.moodContainer.addChild(this.categoryTextMood, this.contentTextMood, this.timeText)
+        this.moodContainer.position.set(10, 25)
+
+        this.addChild(this.moodContainer)
+    }
+}
+
+class ThoughtBubbleAuxillary extends Sprite{
+    constructor(texture, xPos, yPos){
+        super(texture)
+        this.x = xPos
+        this.y = yPos
+    }
 }

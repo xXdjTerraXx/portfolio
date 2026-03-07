@@ -134,6 +134,7 @@ class OnlineStatusBubble extends Sprite {
     }
 
     initText = () => {
+        const statusEmoji = `${this.statusObject.presenceStateObject.status !== "offline" ? this.statusObject.presenceStateObject.emoji : '❌'}`
         const categoryStyle = new TextStyle({
             fontFamily: "monospace",
             fontSize: 12,
@@ -158,7 +159,7 @@ class OnlineStatusBubble extends Sprite {
         })
 
         this.presenceText = new Text({
-            text: `currently: ${this.statusObject.presenceStateObject.status} ${this.statusObject.presenceStateObject.emoji}`,
+            text: `currently: ${this.statusObject.presenceStateObject.status} ${statusEmoji}`,
             style: categoryStyle
         })
 

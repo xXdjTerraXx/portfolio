@@ -88,38 +88,44 @@ export default class Screensaver{
                     this.currentWeatherIcon.position.set(182, 246)
                     break;
 
+                case 'overcast clouds':
+                    this.currentWeatherIcon = new Sprite(this.weatherIcons.DayCloudy);
+                    this.currentWeatherIcon.label = 'current_weather_icon'
+                    this.currentWeatherIcon.position.set(182, 246)
+                    break;
+
                 case 'broken clouds':
-                    this.currentWeatherIcon = new Sprite(this.weatherIcons.DayClear);
+                    this.currentWeatherIcon = new Sprite(this.weatherIcons.DayFullCloudy);
                     this.currentWeatherIcon.label = 'current_weather_icon'
                     this.currentWeatherIcon.position.set(182, 246)
                     break;
 
                 case 'few clouds':
-                    this.currentWeatherIcon = new Sprite(this.weatherIcons.DayClear);
+                    this.currentWeatherIcon = new Sprite(this.weatherIcons.DayFullCloudy);
                     this.currentWeatherIcon.label = 'current_weather_icon'
                     this.currentWeatherIcon.position.set(182, 246)
                     break;
 
                 case 'scattered clouds':
-                    this.currentWeatherIcon = new Sprite(this.weatherIcons.DayClear);
+                    this.currentWeatherIcon = new Sprite(this.weatherIcons.DayFullCloudy);
                     this.currentWeatherIcon.label = 'current_weather_icon'
                     this.currentWeatherIcon.position.set(182, 246)
                     break;
 
                 case 'shower rain':
-                    this.currentWeatherIcon = new Sprite(this.weatherIcons.DayClear);
+                    this.currentWeatherIcon = new Sprite(this.weatherIcons.DayRain);
                     this.currentWeatherIcon.label = 'current_weather_icon'
                     this.currentWeatherIcon.position.set(182, 246)
                     break;
                 
                 case 'rain':
-                    this.currentWeatherIcon = new Sprite(this.weatherIcons.DayClear);
+                    this.currentWeatherIcon = new Sprite(this.weatherIcons.DayRain);
                     this.currentWeatherIcon.label = 'current_weather_icon'
                     this.currentWeatherIcon.position.set(182, 246)
                     break;
 
                 case 'thunderstorm':
-                    this.currentWeatherIcon = new Sprite(this.weatherIcons.DayClear);
+                    this.currentWeatherIcon = new Sprite(this.weatherIcons.DayRain);
                     this.currentWeatherIcon.label = 'current_weather_icon'
                     this.currentWeatherIcon.position.set(182, 246)
                     break;
@@ -136,7 +142,7 @@ export default class Screensaver{
                     this.currentWeatherIcon.position.set(182, 246)
                     break;
                 default:
-                    console.log(`Sorry, we are out of.`);
+                    console.log(``);
             }
         }
         else{

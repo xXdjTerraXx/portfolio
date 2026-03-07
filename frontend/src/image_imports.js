@@ -11,6 +11,8 @@ import JournalImg from './img/png/journal.png'
 import LavaLampOff from './img/png/lava_lamp_off.png'
 import MonitorBackgroundImg from './img/png/monitor_background.png'
 import NightstandLavaLampImg from './img/png/nightstand_lava_lamp.png'
+import NoteImg from './img/png/note.png'
+import NoteShadingImg from './img/png/note_shading.png'
 import NotesBoardImg from './img/png/notes_board.png'
 import OfflineSignImg from './img/png/offline_sign.png'
 import OnlineStatusBubbleImg from './img/png/online_status_bubble.png'
@@ -37,6 +39,9 @@ import SpeakerMenuPrevious from './img/png/speaker_menu_previous.png'
 import StringLights_StringImg from './img/png/string_lights_string.png'
 import StringLights_LightsImg from './img/png/string_lights_lights.png'
 import StringLights_Lights2Img from './img/png/string_lights_lights2.png'
+import ThoughtBubbleSmall from './img/png/thought_bubble_small.png'
+import ThoughtBubbleMedium from './img/png/thought_bubble_medium.png'
+import ThoughtBubbleMain from './img/png/thought_bubble_main.png'
 import TVBackground from './img/png/tv_background.png'
 import TVGlare from './img/png/tv_glare.png'
 import TVBackgroundLandscape from './img/png/tv_background_landscape.png'
@@ -69,6 +74,7 @@ import AquariumSpriteSheet from './img/sprite_sheets/aquarium_sprite_sheet.png'
 import AquariumSceneBGSpriteSheet from './img/sprite_sheets/aquarium_scene_spritesheet.png'
 import JournalSpriteSheet from './img/sprite_sheets/journal_spritesheet.png'
 import NotesBoardSpriteSheet from './img/sprite_sheets/notes_board_spritesheet.png'
+import LiveBlinkerSpriteSheet from './img/sprite_sheets/live_blinker.png'
 
 //weather icons
 import DayClear from './img/png/weather_icons/day/clear.png'
@@ -91,6 +97,7 @@ import Rain from './sounds/rain.mp3'
 //fonts
 import PixelEmulator from './fonts/PixelEmulator.ttf'
 import Pixellari from './fonts/Pixellari.ttf'
+import NotesFont from './fonts/gloriahallelujah.ttf'
 
 export const roomSceneManifest =  {
    "bundles":[
@@ -147,6 +154,14 @@ export const roomSceneManifest =  {
                "src": NotesBoardImg
             },
             {
+               "alias": "Note",
+               "src": NoteImg
+            },
+            {
+               "alias": "NoteShading",
+               "src": NoteShadingImg
+            },
+            {
                "alias": "OfflineSign",
                "src": OfflineSignImg
             },
@@ -197,6 +212,18 @@ export const roomSceneManifest =  {
             {
                "alias": "SpotifyPixel",
                "src": SpotifyPixel
+            },
+            {
+               "alias": "ThoughtBubbleSmall",
+               "src": ThoughtBubbleSmall
+            },
+            {
+               "alias": "ThoughtBubbleMedium",
+               "src": ThoughtBubbleMedium
+            },
+            {
+               "alias": "ThoughtBubbleMain",
+               "src": ThoughtBubbleMain
             },
             {
                "alias": "TVBackground",
@@ -339,6 +366,10 @@ export const roomSceneManifest =  {
             {
                "alias": "NotesBoardSpriteSheet",
                "src": NotesBoardSpriteSheet
+            },
+            {
+               "alias": "LiveBlinkerSpriteSheet",
+               "src": LiveBlinkerSpriteSheet
             }
          ]
       },
@@ -426,6 +457,10 @@ export const roomSceneManifest =  {
                "alias": "Pixellari",
                "src": Pixellari
             },
+            {
+               "alias": "NotesFont",
+               "src": NotesFont
+            }
          ]
       }
    ]

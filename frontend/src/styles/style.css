@@ -133,6 +133,8 @@ body{
 
   .music-body-container-div{
     display: flex;
+    justify-content: center;
+    align-items: center;
     padding: 5px;
   }
 
@@ -143,6 +145,11 @@ body{
     color: rgba(227, 227, 227, 0.696);
     margin: 15px;
     display: block;
+  }
+
+  #listened-time-ago{
+    font-size: .7rem;
+    color: rgba(134, 134, 134, 0.752);
   }
 
   .chat-container-div{

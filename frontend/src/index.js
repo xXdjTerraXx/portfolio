@@ -2,7 +2,7 @@ import './styles/style.css'
 import DesktopScene from "./modules/scenes/DesktopScene"
 import RoomScene from "./modules/scenes/RoomScene"
 import StateManager from "./modules/base_classes/StateManager"
-import { importAll } from "./utils.js"
+import { formatTimestamp, importAll, timeAgo } from "./utils.js"
 import * as PIXI from 'pixi.js'
 import { roomSceneManifest, loadAssets, pngImages } from './image_imports.js'
 import * as TWEEN from "@tweenjs/tween.js"
@@ -20,6 +20,8 @@ import ElevenAmLight from './sounds/11am.mp3'
 import ThreePmRain from './sounds/4pm rain.mp3'
 import SixPmDistress from './sounds/6pm distress.mp3'
 import TenPmWishful from './sounds/wishful.mp3'
+import LiveBlinkerGif from './img/gif/live_blinker.gif'
+import GreyCircle from './img/png/grey_circle.png'
 
 
 const WIDTH = 800
@@ -47,6 +49,24 @@ const sounds = {
     TenPmWishful: {audio: new Howl({src: [TenPmWishful]}), title: '10 pm [wishful]'}
 }
 
+function preloadSound(sound){
+    return new Promise((resolve, reject) => {
+        sound.once('load', resolve)
+        sound.once('loaderror', (id, error) => reject(error))
+    })
+}
+
+async function preloadAllSounds(sounds) {
+    try {
+        const loadPromises = Object.values(sounds).map(preloadSound);
+        await Promise.all(loadPromises);
+        console.log('all sounds are loaded');
+    } catch (error) {
+        console.error('error loading sounds dog T-T:', error);
+    }
+}
+
+//fetch presence and discord status
 async function getOnlineStatus() {
     //this function calls fetchPresence and fetchDiscordStatus and puts both return values
     //in an onlineStatusObject that is passed to the main application on init
@@ -63,6 +83,10 @@ async function getOnlineStatus() {
         onlineStatusObject.isOnline = onlineStatusObject.presenceStateObject.status !== "offline"
         //if presence is "offline" just return the onlineStatusObject w default values
         if(!onlineStatusObject.isOnline){
+            let { username } = await fetchDiscordStatus()
+            onlineStatusObject.isOnline = false
+            onlineStatusObject.discordStateObject = {isOnline: false, username }
+           
             return onlineStatusObject
         }
         //otherwise, get discord state yaaay!
@@ -96,23 +120,7 @@ async function fetchDiscordStatus() {
     return { isOnline: true, username: 'xxdjTerraxx'}
 }
 
-function preloadSound(sound){
-    return new Promise((resolve, reject) => {
-        sound.once('load', resolve)
-        sound.once('loaderror', (id, error) => reject(error))
-    })
-}
-
-async function preloadAllSounds(sounds) {
-    try {
-        const loadPromises = Object.values(sounds).map(preloadSound);
-        await Promise.all(loadPromises);
-        console.log('all sounds are loaded');
-    } catch (error) {
-        console.error('error loading sounds dog T-T:', error);
-    }
-}
-
+//fetch weather
 async function getWeather () {
     console.log('fetching weather data...')
     console.log('DEBUG: NODE_ENV is:', process.env.NODE_ENV)
@@ -131,14 +139,60 @@ async function getWeather () {
     // const APIKEY = await APIKEYRESPONSE.json() 
 }
 
-async function awaitGetLastFm(){
+//fetch last song listened to
+async function getLastFM(){
     console.log('fetching lastfm data...')
     let url = process.env.NODE_ENV == "development" ? 'http://localhost:3000/lastfm' : 'portfolio_backend.railway.internal/lastfm'
     const response = await fetch(url)
     const json = await response.json()
-    console.log('last fm data fetched successfully! ', json.lastPlayed)
+    console.log('last fm data fetched successfully! ', json)
     const returnedJson = json.lastPlayed
     return returnedJson
+}
+
+async function getNotes(){
+    console.log('fetching notes...')
+    try{
+        let url = process.env.NODE_ENV == "development" ? 'http://localhost:3000/notes' : 'portfolio_backend.railway.internal/presence'
+        const response = await fetch(url)
+        const json = await response.json()
+        console.log('notes json: ', json)
+        return json
+    }
+    catch(err){
+        console.log("error fetching notes T-T:", err)
+        return err
+    }
+}
+
+async function getPersonalStatus(){
+    console.log('fetching personal status...')
+    try{
+        let url = process.env.NODE_ENV == "development" ? 'http://localhost:3000/personal_status' : 'portfolio_backend.railway.internal/personal_status'
+        const response = await fetch(url)
+        const json = await response.json()
+        console.log('personal status json: ', json)
+        return json
+    }
+    catch(err){
+        console.log("error fetching personal status T-T:", err)
+        return err
+    }
+}
+
+async function getMood(){
+    console.log('fetching mood...')
+    try{
+        let url = process.env.NODE_ENV == "development" ? 'http://localhost:3000/moods/get_all' : 'portfolio_backend.railway.internal/moods/get_all'
+        const response = await fetch(url)
+        const json = await response.json()
+        console.log('moods json: ', json)
+        return json
+    }
+    catch(err){
+        console.log("error fetching moods T-T:", err)
+        return err
+    }
 }
 
 async function getTweet(){
@@ -163,9 +217,12 @@ function createAudio(){
 
 window.onload = async () => {
     
-    const lastPlayedJson = await awaitGetLastFm()
+    const lastPlayedJson = await getLastFM()
     const weatherJson = await getWeather()
     const onlineStatus = await getOnlineStatus()
+    const personalStatus = await getPersonalStatus()
+    const notesArray = await getNotes()
+    const mood = await getMood()
     console.log("DEBUG: onlineStatus: ", onlineStatus)
     // const tweet = await getTweet()
     await preloadAllSounds()
@@ -176,7 +233,7 @@ window.onload = async () => {
     const mainOutsideContainerLeft = document.createElement('div')
     document.body.append(mainOutsideContainerLeft)
     const aboutWindow= new AboutWindow()
-    const twitterWindow = new TwitterStatusWindow()
+    const twitterWindow = new TwitterStatusWindow(personalStatus)
     const musicWindow = new LastPlayedWindow()
     const chatWindow = new ChatWindow()
     mainOutsideContainerLeft.classList.add("main-outside-container")
@@ -187,7 +244,7 @@ window.onload = async () => {
     
     createAudio()
     const application = new Application()
-    await application.init(onlineStatus, weatherJson, lastPlayedJson, sounds)
+    await application.init(onlineStatus, weatherJson, lastPlayedJson, sounds, personalStatus, notesArray, mood)
     const mainOutsideContainerRight = document.createElement('div')
     mainOutsideContainerRight.classList.add('main-outside-container')
     document.body.append(mainOutsideContainerRight)
@@ -227,7 +284,7 @@ class AboutWindow{
 }
 
 class TwitterStatusWindow{
-    constructor(){
+    constructor(personalStatus){
         this.icon = new Image()
         this.icon.src = PixelWindowIcon
         this.containerDiv = document.createElement('div')
@@ -238,6 +295,8 @@ class TwitterStatusWindow{
         this.timeStampDiv = document.createElement('div')
         this.timeStampText = document.createElement('div')
         this.dateStampText = document.createElement('p')
+
+        this.personalStatus = personalStatus
     }
 
     init(){
@@ -252,8 +311,8 @@ class TwitterStatusWindow{
         this.dateStampText.classList.add("status-datestamp-text")
 
         this.title.textContent = "current status"
-        this.bodyParagraph.textContent = "ummm i'm just coding n stuff"
-        this.dateStampText.textContent = "09/09/2024"
+        this.bodyParagraph.textContent = `${this.personalStatus.text}`
+        this.dateStampText.textContent = `${timeAgo(this.personalStatus.createdAt)}`
         this.timeStampText.textContent = '10:41pm'
 
         this.timeStampDiv.append(this.dateStampText, this.timeStampText)
@@ -274,7 +333,9 @@ class LastPlayedWindow{
         this.title = document.createElement('h3')
         this.bodyContainerDiv = document.createElement('div')
         this.bodyParagraph = document.createElement('h5')
-        this.bodyParagraphAgo = document.createElement('h5')
+        this.bodyParagraphAgo = document.createElement('p')
+        this.blinkerContainer = document.createElement('div')
+        this.timeAgoContainer = document.createElement('div')
     }
 
     init(lastPlayed){
@@ -286,16 +347,22 @@ class LastPlayedWindow{
         this.bodyContainerDiv.classList.add("music-body-container-div")
         this.bodyParagraph.classList.add("music-body-paragraph")
         this.bodyParagraphAgo.classList.add("music-body-paragraph")
+        this.bodyParagraphAgo.id="listened-time-ago"
+
+        this.blinker = new Image()
+        this.blinker.src = lastPlayed.playedAgo === 'Currently Playing'?LiveBlinkerGif:GreyCircle
+        this.blinker.classList.add("live-blinker")
 
         this.title.textContent = "last song"
         this.bodyParagraph.textContent = `${lastPlayed.artistName} - ${lastPlayed.songTitle}`
         this.bodyParagraphAgo.textContent = `${lastPlayed.playedAgo}`
 
         // document.querySelector(".track-icon").src = lastPlayed.imageUrl
-        
+        this.blinkerContainer.append(this.blinker)
         this.titleContainerDiv.append(this.icon, this.title)
-        this.bodyContainerDiv.append(this.bodyParagraph, this.bodyParagraphAgo)
-        this.containerDiv.append(this.titleContainerDiv, this.bodyContainerDiv)
+        this.timeAgoContainer.append(this.bodyParagraphAgo)
+        this.bodyContainerDiv.append(this.bodyParagraph,this.blinkerContainer) //this.bodyParagraphAgo)
+        this.containerDiv.append(this.titleContainerDiv, this.bodyContainerDiv, this.timeAgoContainer)
         document.querySelector(".main-outside-container").append(this.containerDiv)
     }
 }
@@ -309,7 +376,7 @@ export default class Application{
         globalThis.__PIXI_APP__ = this.app
     }
 
-    init = async (onlineStatusObject, weatherJson, lastPlayedJson, soundsObject) => {
+    init = async (onlineStatusObject, weatherJson, lastPlayedJson, soundsObject, personalStatus, notesArray, mood) => {
         try {
             await this.app.init({ width: 800, height: 600, preference:'webgl' });
             document.body.append(this.app.canvas)
@@ -325,7 +392,12 @@ export default class Application{
             this.stateManager = new StateManager('room_scene')
             this.currentState = this.stateManager.currentState
 
-            this.roomScene = new RoomScene(this.app, this.set_state, this.assets, this.sprite_sheets, onlineStatusObject, this.icons, weatherJson, this.weatherIcons, lastPlayedJson, this.soundsObject)
+            this.onlineStatusObject = onlineStatusObject
+            this.personalStatus = personalStatus
+            this.notesArray = notesArray
+            this.mood = mood
+
+            this.roomScene = new RoomScene(this.app, this.set_state, this.assets, this.sprite_sheets, this.fonts, this.onlineStatusObject, this.icons, weatherJson, this.weatherIcons, lastPlayedJson, this.soundsObject, this.personalStatus, this.notesArray, this.mood)
             this.desktopScene = new DesktopScene(this.app, this.set_state, this.assets, this.sprite_sheets)
 
             this.statesObject = {

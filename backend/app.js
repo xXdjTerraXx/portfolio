@@ -10,6 +10,10 @@ const statusRouter = require('./routes/status')
 const weatherRouter = require('./routes/weather')
 const lastFmRouter = require('./routes/lastfm2.js')
 const presenceRouter = require('./routes/presence.js')
+const blogRouter = require('./routes/blog.js')
+const personalStatusRouter = require('./routes/personal_status.js')
+const moodRouter = require('./routes/moods.js')
+const notesRouter = require('./routes/notes.js')
 
 const app = express();
 
@@ -34,6 +38,10 @@ app.use('/status', statusRouter)
 app.use('/weather', weatherRouter)
 app.use('/lastfm', lastFmRouter)
 app.use('/presence', presenceRouter)
+app.use('/blog', blogRouter)
+app.use('/personal_status', personalStatusRouter)
+app.use('/moods', moodRouter)
+app.use('/notes', notesRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
