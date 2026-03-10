@@ -22,5 +22,9 @@ export default class Icon {
         // this.sprite.on("click", this.handleOpenWindow)
     }  
 
-    
+    //init just needed to give each button access to the function on the speaker object
+    //used to set its animation from "idle" to "playing"
+    init = (speakerObject) => {
+        this.speakerObject = speakerObject
+    }
 }

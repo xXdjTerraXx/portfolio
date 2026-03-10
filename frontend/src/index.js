@@ -233,7 +233,7 @@ window.onload = async () => {
     const mainOutsideContainerLeft = document.createElement('div')
     document.body.append(mainOutsideContainerLeft)
     const aboutWindow= new AboutWindow()
-    const twitterWindow = new TwitterStatusWindow(personalStatus)
+    const twitterWindow = new PersonalStatusWindow(personalStatus)
     const musicWindow = new LastPlayedWindow()
     const chatWindow = new ChatWindow()
     mainOutsideContainerLeft.classList.add("main-outside-container")
@@ -283,7 +283,7 @@ class AboutWindow{
     }
 }
 
-class TwitterStatusWindow{
+class PersonalStatusWindow{
     constructor(personalStatus){
         this.icon = new Image()
         this.icon.src = PixelWindowIcon
@@ -312,10 +312,9 @@ class TwitterStatusWindow{
 
         this.title.textContent = "current status"
         this.bodyParagraph.textContent = `${this.personalStatus.text}`
-        this.dateStampText.textContent = `${timeAgo(this.personalStatus.createdAt)}`
-        this.timeStampText.textContent = '10:41pm'
+        this.dateStampText.textContent = `${formatTimestamp(this.personalStatus.created_at)}`
 
-        this.timeStampDiv.append(this.dateStampText, this.timeStampText)
+        this.timeStampDiv.append(this.dateStampText)
         this.titleContainerDiv.append(this.icon, this.title)
         this.bodyContainerDiv.append(this.bodyParagraph)
         this.containerDiv.append(this.titleContainerDiv, this.bodyContainerDiv, this.timeStampDiv)

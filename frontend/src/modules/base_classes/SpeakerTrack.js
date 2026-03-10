@@ -38,7 +38,8 @@ export default class SpeakerTrack {
         this.mouseOverRect.label = 'mouse_over_rect'
     }  
 
-    init = () => {
+    init = (speakerObject) => {
+
         this.trackText.position.set(this.x_pos, this.y_pos)
 
         this.trackContainer.interactive = true;
@@ -46,7 +47,7 @@ export default class SpeakerTrack {
         this.trackContainer.cursor = 'pointer'
         this.trackContainer.on('pointerenter', this.handlePointerEnter)
         this.trackContainer.on('pointerleave', this.handlePointLeave)
-        this.trackContainer.on('click', this.handleClick)
+        this.trackContainer.on('click', (speakerObject) => this.handleClick(speakerObject))
         this.trackContainer.label = `track_${this.index + 1}_container`
         this.trackContainer.addChild(this.trackBackground)
         this.trackContainer.addChild(this.trackText)

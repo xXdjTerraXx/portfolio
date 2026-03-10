@@ -43,6 +43,7 @@ export default class TrackList{
     }
 
     init = () => {
+
         this.allTracksContainer = new PIXI.Container() 
         this.allTracksContainerPosition = {x: 189.5, y: 348.5}
         this.allTracksContainer.position = this.allTracksContainerPosition

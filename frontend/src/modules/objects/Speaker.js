@@ -1,35 +1,55 @@
 import AnimatedObject from "../base_classes/AnimatedObject"
 import SelectionArrow from "./SelectionArrow"
-import { Sprite } from "pixi.js"
+import { Sprite, AnimatedSprite } from "pixi.js"
 import { BlurFilter, Ticker } from "pixi.js"
+import { GlowFilter } from "pixi-filters"
 import * as TWEEN from "@tweenjs/tween.js"
 
 
-export default class Speaker extends AnimatedObject {
+export default class Speaker {
     constructor(sprite_sheet, x_pos, y_pos, app, arrowSpriteSheet, roomEntitiesContainer, speakerContainer, pngAssets, displaySpeakerMenu, hideSpeakerMenu, soundsObject){
-        super(sprite_sheet, x_pos, y_pos, app, arrowSpriteSheet, roomEntitiesContainer, speakerContainer)
+        // super(sprite_sheet, x_pos, y_pos, app, arrowSpriteSheet, roomEntitiesContainer, speakerContainer)
+        this.app = app
+        this.roomEntitiesContainer = roomEntitiesContainer
         this.frameWidth = 69,
         this.frameHeight = 70,
         this.numberOfFrames = 0,
         this.currentFrame = 0
-        this.x_pos = x_pos
-        this.y_pos = y_pos
+
         this.pngAssets = pngAssets
 
         this.speakerContainer = speakerContainer
 
+        this.sprite_sheet = sprite_sheet
+        this.sprite = new AnimatedSprite(this.sprite_sheet.animations.idle)
+        this.sprite.x = x_pos
+        this.sprite.y = y_pos
         this.sprite.eventMode = 'static'
-
+        this.sprite.animationSpeed = 0.1666;
+        this.sprite.anchor.set(0.5)
         this.sprite.scale.set(1.4, 1.3)
         this.sprite.label = 'speaker'
         this.sprite.on('click', this.handleClick);
         this.sprite.eventMode = 'static';
+        this.sprite.play()
+        this.sprite.on('pointerover', this.handleMouseIn)
+        this.sprite.on('pointerout', this.handleMouseOut)
+        this.roomEntitiesContainer.addChild(this.sprite)
+
+        this.selection_arrow_sprite_sheet = arrowSpriteSheet
+        this.selectionArrow = new SelectionArrow(this.selection_arrow_sprite_sheet, x_pos, y_pos, app, this.sprite.height) 
+        this.app.ticker.add(this.getIsDesktopDisplaying)
+
         this.on = true
+
+        this.desktopIsDisplaying = false
 
         this.displaySpeakerMenu = displaySpeakerMenu
         this.hideSpeakerMenu = hideSpeakerMenu
 
         this.soundsObject = soundsObject
+
+        this.isPlaying = false
         
     }
 
@@ -39,8 +59,19 @@ export default class Speaker extends AnimatedObject {
         }
     }
 
-    handleClick = () => {
+    setIsPlaying = (isPlaying) => {
+        this.isPlaying = isPlaying
+        if(this.isPlaying){
+            this.sprite.textures = this.sprite_sheet.animations.playing
+        }
+        else{
+           this.sprite.textures = this.sprite_sheet.animations.idle 
+        }
+        this.sprite.play()
+    }
 
+    handleClick = () => {
+        
         console.log("speaker clicked!!!", this.app)
         
         const blurFilter = new BlurFilter()
@@ -147,4 +178,24 @@ export default class Speaker extends AnimatedObject {
     handleTrackClick = (track) => {
         console.log(`you clicked ${track.trackTitle}`)
     }
+
+    handleMouseIn = () => {
+            if(this.desktopIsDisplaying == false){
+    
+            //add outline effect
+            this.sprite.filters = [new GlowFilter({alpha: 0.2, color: '#bbb4f3'})];
+            //display hovering arrow
+            this.app.stage.addChild(this.selectionArrow.sprite)
+        }
+        }
+    
+        handleMouseOut = () => {
+            if(this.desktopIsDisplaying == false){
+    
+            // // Remove outline effect from this
+            this.sprite.filters = null;
+           //display hovering arrow
+            this.app.stage.removeChild(this.selectionArrow.sprite)
+            }
+        }
 }

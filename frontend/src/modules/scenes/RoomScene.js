@@ -177,12 +177,15 @@ export default class RoomScene{
         await this.initializeSpeakerMenuAssets()
         await this.initializeAquariumAssets()
         await this.initializeNotesOverlay()
+        
         this.roomEntitiesContainer.label = "room_entities"
+        
         this.backgroundObject = new Background(this.assets.BackgroundImg, 0, 0, this.app, this.roomEntitiesContainer)
         this.postersObject = new Posters(this.assets.PosterImg, 0, 0, this.app, this.roomEntitiesContainer)
         this.tapestryObject = new Tapestry(this.assets.TapestryImg, 186, 0, this.app, this.roomEntitiesContainer)
         this.stringLightsObject = new StringLights(this.assets.StringLights_String, 0, 0, this.app, this.roomEntitiesContainer, this.assets.StringLights_Lights, this.assets.StringLights_Lights2)
         this.rugObject = new Rug(this.assets.RugImg, 276, 378, this.app, this.roomEntitiesContainer)
+        await this.create_speaker_object()
         await this.create_outside_window_object()
         this.windowObject = new WindowFrame(this.assets.WindowImg, 0, 0, this.app, this.roomEntitiesContainer)
         await this.create_notes_board_object()
@@ -209,7 +212,6 @@ export default class RoomScene{
         }
         
         
-        await this.create_speaker_object()
         await this.create_coffee_cup_animated_object()
         this.soccerBall = new Ball(this.assets.SoccerBall, 100, 0, this.app, this.roomEntitiesContainer)
         this.app.stage.addChild(this.roomEntitiesContainer)
@@ -320,7 +322,13 @@ export default class RoomScene{
         this.speakerPlayButton = new PlayButton(this.assets.SpeakerMenuPlay, (buttonOffset + 2 * (buttonSpacingSize + buttonWidth)), 23, this.app, this.speakerContainer, this.speakerButtonsContainer)
         this.speakerPauseButton = new PauseButton(this.assets.SpeakerMenuPause, buttonOffset + 3 * (buttonSpacingSize + buttonWidth), 23, this.app, this.speakerContainer, this.speakerButtonsContainer)
         this.speakerNextButton = new NextButton(this.assets.SpeakerMenuNext, buttonOffset + 4 * (buttonSpacingSize + buttonWidth), 23, this.app, this.speakerContainer, this.speakerButtonsContainer)
-
+        this.speakerButtonsArray = [
+            this.speakerPreviousButton, 
+            this.speakerPlayButton,
+            this.speakerPauseButton,
+            this.speakerNextButton
+        ]
+        
         this.trackSlider = new TrackSlider(this.assets.SpeakerMenuTracking, 212, 0, this.app, this.speakerContainer, this.speakerSliderContainer, this.updateTracking)
         this.volumeSlider = new VolumeSlider(this.assets.SpeakerMenuVolume, 520.5, 0, this.app, this.speakerContainer, this.speakerSliderContainer, this.adjustVolume)
         //close button has 2 extra args, this is for removing blur filter 
@@ -334,20 +342,7 @@ export default class RoomScene{
         const trackLabelHeight = 30
         const containerPosition = {x: 189.5, y: 348.5}
         this.trackListSection = new TrackList(containerPosition.x, containerPosition.y, this.app, trackLabelHeight, trackLabelWidth, this.soundsObject, this.speaker, this.speakerContainer, this.speakerButtonsContainer, this.playTrack, this.currentTrack, this.assets.ScrollButton, this.assets.ScrollButtonInactive)
-        this.trackListSection.init()
-        // this.allTracksContainer = new PIXI.Container()
-        // this.allTracksContainer.label = 'all_tracks_container'
-        // this.allTracksContainer.position.set(containerPosition.x, containerPosition.y)
-        // //loop through soundsObject and make a new SpeakerTrack instance for each
-        // Object.values(this.soundsObject).forEach((sound, index) => {
-        //     //skip the first two because they are room noise and rain noise
-        //     if(index > 1){
-        //         const posX = 0
-        //         const posY = trackLabelHeight * (index + 1)
-        //         const track = new SpeakerTrack(trackLabelWidth , trackLabelHeight, posX, posY, this.app, this.speaker, this.allTracksContainer, this.speakerContainer, this.speakerButtonsContainer, sound.audio, sound.title, index, this.playTrack, this.currentTrack, this.soundsObject)
-        //         track.init()
-        //     }
-        // })
+        this.trackListSection.init(this.speakerObject)
         
         //setup for now playing screen
         const width = 216
@@ -608,6 +603,9 @@ export default class RoomScene{
             
             this.speakerObject = new Speaker(spritesheet, 352, 395, this.app, arrowSpriteSheet, this.roomEntitiesContainer, this.speakerContainer, this.assets, this.setDisplaySpeakerMenu, this.setHideSpeakerMenu, this.soundsObject)
             this.speakerObject.init()
+
+            //give speaker buttons the function to change speakerObjects animation on track play
+            this.speakerButtonsArray.forEach(btn => btn.init(this.speakerObject))
     }
 
     run = (delta) =>{

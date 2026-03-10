@@ -2,6 +2,7 @@ import { Sprite, AnimatedSprite, Container, Text, TextStyle } from "pixi.js"
 import { Tween, Easing } from "@tweenjs/tween.js"
 import SelectionArrow from "./SelectionArrow"
 import { GlowFilter } from "pixi-filters"
+import { timeAgo } from "../../utils"
 
 export default class OnlineOfflineSign {
     constructor(onlineSpritesheet, offlineSignTexture, x_pos, y_pos, app, arrowSpriteSheet, roomEntitiesContainer, desktopContainer, onlineStatusBubbleTexture, onlineStatusObject){
@@ -26,7 +27,7 @@ export default class OnlineOfflineSign {
 
         this.onlineStatusObject = onlineStatusObject
         this.onlineStatusBubbleTexture = onlineStatusBubbleTexture
-        this.onlineStatusBubble = new OnlineStatusBubble(this.onlineStatusBubbleTexture, this.onlineStatusObject)
+        this.onlineStatusBubble = new OnlineStatusBubble(this.app, this.onlineStatusBubbleTexture, this.onlineStatusObject)
 
         
         
@@ -112,9 +113,10 @@ export default class OnlineOfflineSign {
 
 class OnlineStatusBubble extends Sprite {
 
-    constructor(texture, statusObject) {
+    constructor(app,texture, statusObject) {
         super(texture)
-
+        this.app = app
+        
         this.label = "online_status_info_bubble"
 
         this.x = 48
@@ -130,7 +132,15 @@ class OnlineStatusBubble extends Sprite {
         this.baseY = this.y
         this.floatTween = null
 
+        //used for real time update of time since presence changed
+        this.timeAccumulator = 0
+
         this.initText()
+
+        //add the function to the ticker needed to update time since in real time
+        this.app.ticker.add((delta) => {
+            this.updateTime(delta)
+        })
     }
 
     initText = () => {
@@ -149,13 +159,13 @@ class OnlineStatusBubble extends Sprite {
             dropShadowAlpha: 0.25
         })
 
-        const contentStyle = new TextStyle({
+        const timeAgoStyle = new TextStyle({
             fontFamily: "monospace",
-            fontSize: 12,
-            fill: 0xffffff,
+            fontSize: 10,
+            fill: 0xa6a6a6,
             align: "center",
             wordWrap: true,
-            wordWrapWidth: 160
+            wordWrapWidth: 160,
         })
 
         this.presenceText = new Text({
@@ -173,7 +183,14 @@ class OnlineStatusBubble extends Sprite {
         this.discordStatusText.anchor.set(0.5)
         this.discordStatusText.y = -25
 
-        this.addChild(this.presenceText, this.discordStatusText)
+        this.timeAgoText = new Text({
+            text: `${this.formatElapsedTime()}`,
+            style: timeAgoStyle
+        })
+        this.timeAgoText.y = 5
+        this.timeAgoText.x = -75
+
+        this.addChild(this.presenceText, this.discordStatusText, this.timeAgoText)
     }
 
     handleDisplay = () => {
@@ -291,6 +308,40 @@ class OnlineStatusBubble extends Sprite {
             this.y = hideTween.yPos
         })
         .start()
-}
+    }
+
+    calculateTime = () => {
+        const sessionStart = this.statusObject.sessionStart
+        const currentTime = Date.now()
+
+        return currentTime - sessionStart
+    }
+
+   updateTime = (delta) => {
+
+        this.timeAccumulator += delta
+
+        if (this.timeAccumulator < 60) return // roughly 1 second
+
+        this.timeAccumulator = 0
+
+        this.timeAgoText.text = this.formatElapsedTime()
+    }
+
+    formatElapsedTime = () => {
+        // console.log("sessionStart:", this.statusObject.sessionStart)
+        // console.log("type:", typeof this.statusObject.sessionStart)
+
+        const sessionStart = this.statusObject.presenceStateObject.sessionStart
+        const elapsedSeconds = Math.floor((Date.now() - sessionStart) / 1000)
+
+        const hours = Math.floor(elapsedSeconds / 3600)
+        const minutes = Math.floor((elapsedSeconds % 3600) / 60)
+        const seconds = elapsedSeconds % 60
+
+        const pad = (n) => String(n).padStart(2, "0")
+
+        return `${hours} hrs, ${pad(minutes)} mins, ${pad(seconds)} secs`
+    }
 
 }

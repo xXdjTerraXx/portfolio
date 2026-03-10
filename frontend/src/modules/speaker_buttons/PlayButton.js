@@ -14,5 +14,6 @@ export default class PlayButton extends SpeakerButton{
             sprite.filters = []
         })
         this.sprite.filters = [new DropShadowFilter({blur: 0, alpha: 1})]
+        this.speakerObject.setIsPlaying(true)
     }
 }

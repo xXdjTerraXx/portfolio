@@ -14,6 +14,7 @@ const blogRouter = require('./routes/blog.js')
 const personalStatusRouter = require('./routes/personal_status.js')
 const moodRouter = require('./routes/moods.js')
 const notesRouter = require('./routes/notes.js')
+const chatRouter = require('./routes/chat.js')
 
 const app = express();
 
@@ -42,6 +43,7 @@ app.use('/blog', blogRouter)
 app.use('/personal_status', personalStatusRouter)
 app.use('/moods', moodRouter)
 app.use('/notes', notesRouter)
+app.use('/chat', chatRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
