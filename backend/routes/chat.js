@@ -6,8 +6,9 @@ router.get('/', async (req, res) => {
 
   const { data, error } = await supabase
     .from('chat_messages')
-    .select('50')
-    .order('createdAt', { ascending: false })
+    .select('*')
+    .limit(50)
+    .order('created_at', { ascending: false })
 
   if (error) {
     console.error(error)
@@ -18,7 +19,7 @@ router.get('/', async (req, res) => {
 })
 
 router.post('/',async (req, res) => {
-    const { username, message } = req.body
+    const { username, message, userIP } = req.body
 
     const { data, error } = await supabase
     .from('chat_messages')

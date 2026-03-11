@@ -9,6 +9,13 @@
   font-weight: lighter;
 }
 
+@font-face {
+  font-family: 'JetBrains';
+  src: url('../fonts/JetBrains.ttf') format('woff2');
+  font-weight: normal;
+
+}
+
 *{
   margin: 0;
   padding: 0
@@ -152,16 +159,70 @@ body{
     color: rgba(134, 134, 134, 0.752);
   }
 
+  .chat-title-container-div{
+
+  }
+
   .chat-container-div{
     display: flex;
     flex-direction: column;
     font-family: Flexi;
     height: 200px;
     background-color: rgb(39, 39, 39);
+    overflow-y: auto;
   }
 
   .chat-message-div{
+  }
 
+  .chat-message{
+    font-family: Verdana, Tahoma, sans-serif;
+  }
+
+  .chat-message-user-name{
+    color:rgb(96, 96, 96);
+    font-size: .6rem;
+    font-weight: 600;
+  }
+
+  .chat-message-text{
+    color: azure;
+    font-size: .6rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .chat-settings-icon{
+    height:20px;
+    width:20px;
+  }
+
+  .new-chat-message-input{
+    background-color: rgb(39, 39, 39);
+    color: azure;
+    font-size: .6rem;
+    width: 100%;
+  }
+
+  .new-message-container-div{
+    font-family: Verdana, Tahoma, sans-serif;
+    padding: 5px;
+  }
+
+  .send-message-button{
+    font-family: Verdana, Tahoma, sans-serif;
+  }
+
+  .username-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .username-display{
+    font-family: Verdana, Tahoma, sans-serif;
+    color: rgb(10, 119, 119);
+    font-size: .6rem;
   }
 
   .message-user-name{
@@ -176,6 +237,12 @@ body{
     background-color:  rgb(242, 178, 214);
     border: none;
     font-family: Flexi;
+  }
+
+  #system-message{
+    color: limegreen;
+    font-weight: 600;
+    font-family: 'JetBrains'
   }
 
   .hidden{
