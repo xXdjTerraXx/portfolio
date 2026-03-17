@@ -136,6 +136,12 @@ export default class Screensaver{
                     this.currentWeatherIcon.position.set(182, 246)
                     break;
 
+                case 'light snow':
+                    this.currentWeatherIcon = new Sprite(this.weatherIcons.DayClear);
+                    this.currentWeatherIcon.label = 'current_weather_icon'
+                    this.currentWeatherIcon.position.set(182, 246)
+                    break;
+
                 case 'mist':
                     this.currentWeatherIcon = new Sprite(this.weatherIcons.DayClear);
                     this.currentWeatherIcon.label = 'current_weather_icon'

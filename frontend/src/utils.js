@@ -35,3 +35,13 @@ export function timeAgo(ts) {
 
     return "just now"
 }
+
+/** sets the inline style of the object tht is passed
+ * @param {Element} element - the element to which style will be applied
+ * @param {object} styles - a styles object
+ */
+export function setStyles(element, stylesObect){
+    Object.keys(stylesObect).forEach(key => {
+        element.style[key] = stylesObect[key]
+    })
+}

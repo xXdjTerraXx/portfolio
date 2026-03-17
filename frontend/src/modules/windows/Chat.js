@@ -1,14 +1,15 @@
 import socket from "../../socket"
 import PixelChatIcon from '../../img/icons/chat.png'
 import ChatSettingsIconTexture from '../../img/icons/chat_settings_icon.png'
+import { setStyles } from "../../utils"
 
 //class for frontend messages that display in the chat window
 class Message {
-    constructor(username, message, messageType, userStyleObj = null){
+    constructor(username, message, messageType, styleObj = null){
         this.username = username
         this.message = message
         this.messageType = messageType
-        this.userStyleObj = userStyleObj
+        this.styleObj = styleObj
 
         this.container = document.createElement('div')
         this.container.classList.add('message-container')
@@ -17,7 +18,15 @@ class Message {
         this.messageParagraph = document.createElement('p')
         this.messageParagraph.classList.add('chat-message-text' ,'chat-message')
         if(this.messageType === 'system'){
+          //change the font of system messages
           this.messageParagraph.id = 'system-message'
+        }
+        if(this.messageType === 'whisper'){
+          //change the font of whisper messages
+          this.messageParagraph.id = 'whisper-message'
+        }
+        if(styleObj){
+          setStyles(this.messageParagraph, styleObj)
         }
         this.container.append(this.userNameText, this.messageParagraph)
         this.userNameText.textContent = this.username
@@ -46,6 +55,11 @@ export default class ChatWindow{
         this.chatSettingsIcon = document.createElement('img')
         this.chatSettingsIcon.src = ChatSettingsIconTexture
 
+        //a library of default styles for various system messages
+        this.styleLibrary = {
+          systemPurple: {color: '#8b2bfb'},
+          systemGreen: {color: 'limegreen'}
+        }
         
     }
 
@@ -74,9 +88,7 @@ export default class ChatWindow{
 
         this.initializeUserState()
 
-        if(this.userName){
-          this.createUserNameSection()
-        }
+        this.createUserNameSection()
 
         this.title.textContent = "Chat"
         
@@ -85,9 +97,14 @@ export default class ChatWindow{
         this.mainContainerDiv.append(this.titleContainerDiv, this.chatContainerDiv, this.newMessageContainerDiv)
         parentDiv.append(this.mainContainerDiv)
 
-        //add event to send msg button
+        //add event to send msg on button click
         this.submitButton.addEventListener("click", () => this.sendMessage())
-
+        //add event to send msg on 'enter' press
+        this.inputBox.addEventListener("keydown", (e) => {
+          if(e.key === 'Enter'){
+            this.sendMessage()
+          }
+        })
         //register socket events
         this.registerSocketEvents()
     }
@@ -97,22 +114,23 @@ export default class ChatWindow{
       const storedUserName = localStorage.getItem('username')
       //if no, generate random name and save to local storage
       if(!storedUserName){
-        this.userName = this.generateUserName()
-        localStorage.setItem('username', this.userName)
+        this.username = this.generateUsername()
+        localStorage.setItem('username', this.username)
       }
-      else this.userName = storedUserName
+      else this.username = storedUserName
     }
 
     createUserNameSection = () => {
         this.userNameP = document.createElement('p')
         this.userNameP.classList.add('username-display')
-        this.userNameP.textContent = `${this.userName}`
+        this.userNameP.textContent = `${this.username}`
         this.userNameContainer.append(this.userNameP)
     }
 
     setUsername = (newUsername) => {
-      this.userName = newUsername
-      console.log('newww usernaaaame: ', this.userName)
+      this.username = newUsername
+      localStorage.setItem('username', this.username)
+      console.log('newww usernaaaame: ', this.username)
       //now the name has to be reset soooo:
       //clear the userNameContainer div
       while (this.userNameContainer.firstChild){
@@ -122,15 +140,15 @@ export default class ChatWindow{
       this.createUserNameSection()
     }
 
-    generateUserName = () => {
+    generateUsername = () => {
       const rand = Math.floor(Math.random() * 1000)
       const time = Date.now().toString().slice(-4)
       return `User${rand}${time}`
 }
 
     registerSocketEvents() {
-      this.socket.on("system message", (msg) => {
-        this.displaySystemMessage(msg)
+      this.socket.on("welcome message", (msg) => {
+        this.displayMessage(msg, 'user', this.styleLibrary.systemGreen)
       })
 
       this.socket.on("chat message", (msg) => {
@@ -141,17 +159,31 @@ export default class ChatWindow{
         messages.forEach((msg) => this.displayMessage(msg))
       })
 
+      this.socket.on("change username", (newUsername) => {
+        this.setUsername(newUsername)
+      })
+
+      this.socket.on("whisper user", (whisperMsg) => {
+        console.log("user /me message")
+        this.displayWhisper(whisperMsg)
+        
+      })
+
+      this.socket.on("system message", (msg) => {
+        this.displayMessage(msg)
+      })
+
       //this for debuggin
       this.socket.onAny((event, ...args) => {
         console.log("DEBUG: Socket event:", event, args)
       })
 
       // tell server ready to receiveeeee
-      this.socket.emit("client ready")
+      this.socket.emit("client ready", this.username)
   }
 
   sendMessage() {
-    const username = this.userName
+    const username = this.username
     const text = this.inputBox.value.trim()
     const messageObject = { username:username ?? null, text, user_ip: null }
     if (messageObject.text.length > 1) {
@@ -163,19 +195,18 @@ export default class ChatWindow{
   }
 
   displayMessage(msg) {
-    console.log("DEBUG FRONTEND MESSAGE: ", msg)
-    const messageElem = new Message(msg.username, msg.text, 'user', null)
+    let messageType
+    msg.user === 'system' ? 'system' : 'user'
+    const messageElem = new Message(msg.username, msg.text, messageType, {color: msg.color})
     this.chatContainerDiv.appendChild(messageElem.container)
     this.chatContainerDiv.scrollTop = this.chatContainerDiv.scrollHeight
   }
 
-  displaySystemMessage(msg) {
-    console.log('THE SYSTEMS msg: ', msg)
-    const messageElem = new Message("SYSTEM", msg.text, 'system', null)
-    this.chatContainerDiv.appendChild(messageElem.container)
+  displayWhisper(whisperMsg){
+    console.log("DEBUG WHISPER: ", whisperMsg)
+    const message = new Message(whisperMsg.username, whisperMsg.text, 'whisper', {color: whisperMsg.color})
+    this.chatContainerDiv.appendChild(message.container)
     this.chatContainerDiv.scrollTop = this.chatContainerDiv.scrollHeight
   }
-
-  
 
 }
