@@ -1,6 +1,6 @@
 # 🌐 Interactive Personal Website
 
-An interactive personal website that acts as the central hub for everything I create — web development, game design, music, and my day-to-day presence on the internet.
+An interactive personal website that acts as the central hub for everything I create — web development, game design, music, and my day-to-day presence on the internet. Also, the chillest spot on the internet
 
 ---
 
@@ -29,9 +29,8 @@ This powers:
 - Short-form posts (similar to tweets)
 - Used to share thoughts, updates, and what I’m currently doing
 
-### 😊 Mood & Mood Tracker
+### 😊 Mood 
 - Current mood displayed on the site
-- Historical mood tracking over time
 - Adds a more human, personal layer to the experience
 
 ### 📝 Blog Posts
@@ -79,9 +78,6 @@ These integrations help bridge the gap between the digital space and real life.
 - Multiple track selection
 - Play, pause, and switching support
 
-### 🧩 Game Development Integration
-- Systems and concepts from my game *Barista Hell*
-- Reusable animation, movement, and collision logic
 
 ### 🔧 Backend API
 - Node.js + Express
@@ -129,6 +125,7 @@ These integrations help bridge the gap between the digital space and real life.
 ## 📌 Future Plans
 
 - 👤 User accounts for better social experience
+- 😊 Mood tracker to track personal mood overtime
 - 🎥 Live streaming integration (site-based interaction)
 - 🎮 Multiplayer mini-games (typing race, rhythm game, plant-care meta game)
 - 🧑‍💻 Admin dashboard for content management
