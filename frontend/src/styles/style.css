@@ -63,7 +63,7 @@ body{
   }
 
   .section-container{
-   
+
     width: 200px;
     display: flex;
     flex-direction: column;
@@ -77,7 +77,6 @@ body{
   .about-container{
     border: 2px solid rgba(179, 179, 179, 0.529);
     border-radius: 5px;
-    
   }
 
   .about-body-container-div{
@@ -89,6 +88,40 @@ body{
     font-family: Flexi;
     color: rgba(227, 227, 227, 0.696);
     margin: 15px;
+  }
+
+  .links-title-container-div{
+      display: flex;
+      margin: 5px;    
+  }
+
+  .links-container{
+    border: 2px solid rgba(179, 179, 179, 0.529);
+    border-radius: 5px;
+  }
+
+  .socials-list{
+
+  }
+
+  .social-link-section-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .social-icon{
+    height: 30px;
+    width: auto;
+  }
+
+  .social-link{
+    text-decoration: none;
+    font-family: Flexi;
+    font-size: .7rem;
+    color: white;
   }
 
   .status-title-container-div{

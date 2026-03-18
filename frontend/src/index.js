@@ -8,10 +8,10 @@ import { roomSceneManifest, loadAssets, pngImages } from './image_imports.js'
 import * as TWEEN from "@tweenjs/tween.js"
 import { Howl, Howler } from 'howler';
 import ChatWindow from './modules/windows/Chat.js'
+import PixelLinksIcon from './img/icons/links.png'
 import PixelLoveIcon from './img/icons/love.png'
 import PixelWindowIcon from './img/icons/heart_window.png'
 import PixelMusicIcon from './img/icons/music.png'
-import getLastPlayedTrack from '../../backend/routes/lastFm.js'
 import './westieCursor.js'
 import RoomSound from './sounds/room_noise.mp3'
 import RainSound from './sounds/rain.mp3'
@@ -22,20 +22,12 @@ import SixPmDistress from './sounds/6pm distress.mp3'
 import TenPmWishful from './sounds/wishful.mp3'
 import LiveBlinkerGif from './img/gif/live_blinker.gif'
 import GreyCircle from './img/png/grey_circle.png'
+import SocialIconGithub from './img/icons/socials/github.png'
+import SocialIconInstagram from './img/icons/socials/instagram.png'
+import SocialIconSoundcloud from './img/icons/socials/soundcloud.png'
+import SocialIconYoutube from './img/icons/socials/youtube.png'
+import SocialIconDiscord from './img/icons/socials/discord.png'
 
-
-const WIDTH = 800
-const HEIGHT = 600
-
-//FPS
-const FPS = 60
-const cycleDelay = Math.floor(1000 / FPS)
-let oldCycleTime = 0
-let cycleCount = 0
-let fpsRate = 'calculating...'
-
-let clickX = false
-let clickY = false
 
 
 //preload all audio
@@ -66,7 +58,7 @@ async function preloadAllSounds(sounds) {
     }
 }
 
-//fetch presence and discord status
+//fetch presence and discord status as one "presenceObject"
 async function getOnlineStatus() {
     //this function calls fetchPresence and fetchDiscordStatus and puts both return values
     //in an onlineStatusObject that is passed to the main application on init
@@ -150,6 +142,7 @@ async function getLastFM(){
     return returnedJson
 }
 
+//fetch post it notes for notes board
 async function getNotes(){
     console.log('fetching notes...')
     try{
@@ -165,6 +158,7 @@ async function getNotes(){
     }
 }
 
+//personal status is like a custom tweet thing bc twitter api is gay
 async function getPersonalStatus(){
     console.log('fetching personal status...')
     try{
@@ -180,6 +174,7 @@ async function getPersonalStatus(){
     }
 }
 
+//get personal mood
 async function getMood(){
     console.log('fetching mood...')
     try{
@@ -195,14 +190,7 @@ async function getMood(){
     }
 }
 
-async function getTweet(){
-    let url = process.env.NODE_ENV == "development" ? 'http://localhost:3000/twitter' : 'portfolio_backend.railway.internal/twitter'
-    const mostRecentTweet = await fetch(url)
-    const json = await mostRecentTweet.json()
-    console.log('tweet json: ', json)
-    return json
-}
-
+//create the ambient room sound audio
 function createAudio(){
     const audio = new Audio(RoomSound)
     
@@ -233,13 +221,14 @@ window.onload = async () => {
     const mainOutsideContainerLeft = document.createElement('div')
     document.body.append(mainOutsideContainerLeft)
     const aboutWindow= new AboutWindow()
-    const twitterWindow = new PersonalStatusWindow(personalStatus)
+    const statusWindow = new PersonalStatusWindow(personalStatus)
     const musicWindow = new LastPlayedWindow()
     const chatWindow = new ChatWindow()
+    const linksWindow = new LinksWindow()
     mainOutsideContainerLeft.classList.add("main-outside-container")
     
     aboutWindow.init()
-    twitterWindow.init()
+    statusWindow.init()
     musicWindow.init(lastPlayedJson)
     
     createAudio()
@@ -249,6 +238,7 @@ window.onload = async () => {
     mainOutsideContainerRight.classList.add('main-outside-container')
     document.body.append(mainOutsideContainerRight)
     chatWindow.init(mainOutsideContainerRight)
+    linksWindow.init(mainOutsideContainerRight)
 }
 
 class AboutWindow{
@@ -366,6 +356,83 @@ class LastPlayedWindow{
     }
 }
 
+class LinksWindow{
+    constructor(){
+        this.mainIcon = new Image()
+        this.mainIcon.src = PixelLinksIcon
+        this.containerDiv = document.createElement('div')
+        this.titleContainerDiv = document.createElement('div')
+        this.title = document.createElement('h3')
+        this.bodyContainerDiv = document.createElement('div')
+        this.socialsList = document.createElement('ul')
+
+        this.socialsArray = [
+            //discord
+            {labelText: '@xxdjTerraxx', url: '@xxdjTerraxx', iconImageSource: SocialIconDiscord},
+            //instagram
+            {labelText: '@xxdjTerraxx', url: '#', iconImageSource: SocialIconInstagram},
+            //github
+            {labelText: '@xxdjTerraxx', url: '#', iconImageSource: SocialIconGithub},
+            //soundcloud
+            {labelText: 'xxdjTerraxx', url: '#', iconImageSource: SocialIconSoundcloud},
+            //youtube
+            {labelText: 'xxdjTerraxx', url: '#', iconImageSource: SocialIconYoutube},
+        ]
+    }
+
+    init(parentDiv){
+
+        this.socialsArray.forEach(social => {
+            const { labelText, url, iconImageSource } = social
+            const newSociallinks = new SocialLinkSection({ ulElement: this.socialsList, labelText, url, iconImageSource})
+            newSociallinks.init()
+        })
+        this.mainIcon.classList.add("small-icon")
+        this.titleContainerDiv.classList.add("links-title-container-div")
+        this.containerDiv.classList.add("links-container", "section-container")
+        this.title.classList.add("links-title", "section-title")
+        this.bodyContainerDiv.classList.add("links-body-container-div")
+        this.socialsList.classList.add("socials-list")
+
+        this.title.textContent = "Links"
+        
+        this.titleContainerDiv.append(this.mainIcon, this.title)
+        this.bodyContainerDiv.append(this.socialsList)
+        this.containerDiv.append(this.titleContainerDiv, this.bodyContainerDiv)
+        parentDiv.append(this.containerDiv)
+    }
+}
+
+class SocialLinkSection{
+    constructor({ ulElement, iconImageSource, labelText, url }){
+        this.parentElement = ulElement
+        this.li = document.createElement('li')
+        this.containerDiv = document.createElement('div')
+        this.icon = new Image()
+        this.iconImageSource = iconImageSource
+        this.linkElement = document.createElement('a')
+        this.labelText = labelText
+        this.linkUrl = url
+    }
+
+    init = () => {
+        this.icon.src = this.iconImageSource
+        this.icon.alt = `${this.labelText} icon`
+        this.containerDiv.classList.add("social-link-section-container")
+        this.icon.classList.add('social-icon')
+        this.linkElement.classList.add('social-link')
+        this.linkElement.textContent = this.labelText
+        this.linkElement.setAttribute('href', `${this.linkUrl}`)
+        
+        this.linkElement.target = "_blank"
+        this.linkElement.rel = "noopener noreferrer"
+
+        this.containerDiv.append(this.icon, this.linkElement)
+        this.li.append(this.containerDiv)
+        this.parentElement.append(this.li)
+    }
+}
+
 
 export default class Application{
     constructor(){
@@ -415,28 +482,10 @@ export default class Application{
     }
 
     mainLoop = (delta) => {
+        //all the tweens have to be updated here
         TWEEN.update()
-        //maintain canvas fullscreen
-        // canvas.width = window.innerWidth
-        // canvas.height = window.innerHeight
 
-        // cycleCount++
-        // if(cycleCount >= 60) cycleCount = 0
-        // let cycleTime = startTime - oldCycleTime
-        // oldCycleTime = startTime
-        // if(cycleCount % 60 == 0) fpsRate = Math.floor(1000 / cycleTime)
-        
-        // ctx.clearRect(0, 0, canvas.width, canvas.height)
-    
-        // ctx.fillStyle = 'Black'
-        // ctx.fillRect(0, 0, canvas.width, canvas.height)
         this.statesObject[this.currentState].run(delta)
 
-        //render FPS to screen
-        // ctx.fillStyle = 'White'
-        // ctx.font = '16px Monospace'
-        // ctx.fillText(`FPS rate: ${fpsRate}`, 0, 20)
-
-        // requestAnimationFrame(this.mainLoop)
     }
 }
