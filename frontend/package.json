@@ -21,6 +21,7 @@
   "dependencies": {
     "@pixi/sound": "^6.0.1",
     "@tweenjs/tween.js": "^23.1.1",
+    "dotenv-webpack": "^9.0.0",
     "file-loader": "^6.2.0",
     "howler": "^2.2.4",
     "moment": "^2.30.1",

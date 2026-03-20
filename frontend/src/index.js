@@ -96,9 +96,12 @@ async function getOnlineStatus() {
 async function fetchPresence() {
     console.log('fetching presence data...')
     try{
-        let url = process.env.NODE_ENV == "development" ? 'http://localhost:3000/presence' : 'portfolio_backend.railway.internal/presence'
-        const presenceState = await fetch(url)
-        const json = await presenceState.json()
+        let url = `${process.env.API_BASE_URL}/presence`
+        const response = await fetch(url)
+        if(!response.ok){
+            throw new Error(`yooo http error! something went wrong fetching presence: ${response.status}`)
+        }
+        const json = await response.json()
         console.log('presence json from fetchPresence: ', json)
         return json
     }
@@ -123,9 +126,12 @@ async function getWeather () {
             },
         mode: "cors", 
     }
-    let url = process.env.NODE_ENV == "development" ? 'http://localhost:3000/weather' : 'portfolio_backend.railway.internal/weather'
-    const weather = await fetch(url)
-    const json = await weather.json()
+    let url = `${process.env.API_BASE_URL}/weather`
+    const response = await fetch(url)
+    if(!response.ok){
+            throw new Error(`http error! yoo something went wrong fetching weather: ${response.status}`)
+        }
+    const json = await response.json()
     console.log('weather json: ', json)
     return json
     // const APIKEY = await APIKEYRESPONSE.json() 
@@ -134,8 +140,11 @@ async function getWeather () {
 //fetch last song listened to
 async function getLastFM(){
     console.log('fetching lastfm data...')
-    let url = process.env.NODE_ENV == "development" ? 'http://localhost:3000/lastfm' : 'portfolio_backend.railway.internal/lastfm'
+    let url = `${process.env.API_BASE_URL}/lastfm`
     const response = await fetch(url)
+    if(!response.ok){
+        throw new Error(`yooo http error!something went wrong fetching lastfm: ${response.status}`)
+    }
     const json = await response.json()
     console.log('last fm data fetched successfully! ', json)
     const returnedJson = json.lastPlayed
@@ -146,8 +155,12 @@ async function getLastFM(){
 async function getNotes(){
     console.log('fetching notes...')
     try{
-        let url = process.env.NODE_ENV == "development" ? 'http://localhost:3000/notes' : 'portfolio_backend.railway.internal/presence'
+        let url = `${process.env.API_BASE_URL}/notes`
+        console.log('EHY KIKD IMA COMPUTER: ', url)
         const response = await fetch(url)
+        if(!response.ok){
+            throw new Error(`yooo http error! somethig went wrong getting the notes: ${response.status}`,)
+        }
         const json = await response.json()
         console.log('notes json: ', json)
         return json
@@ -162,8 +175,11 @@ async function getNotes(){
 async function getPersonalStatus(){
     console.log('fetching personal status...')
     try{
-        let url = process.env.NODE_ENV == "development" ? 'http://localhost:3000/personal_status' : 'portfolio_backend.railway.internal/personal_status'
+        let url = `${process.env.API_BASE_URL}/personal_status`
         const response = await fetch(url)
+        if(!response.ok){
+            throw new Error(`yooo http error! somethig went wrong getting personal status: ${response.status}`,)
+        }
         const json = await response.json()
         console.log('personal status json: ', json)
         return json
@@ -178,8 +194,11 @@ async function getPersonalStatus(){
 async function getMood(){
     console.log('fetching mood...')
     try{
-        let url = process.env.NODE_ENV == "development" ? 'http://localhost:3000/moods/get_all' : 'portfolio_backend.railway.internal/moods/get_all'
+        let url = `${process.env.API_BASE_URL}/moods/get_all`
         const response = await fetch(url)
+        if(!response.ok){
+            throw new Error(`yooo http error! somethig went wrong getting mood: ${response.status}`,)
+        }
         const json = await response.json()
         console.log('moods json: ', json)
         return json
@@ -241,165 +260,186 @@ window.onload = async () => {
     linksWindow.init(mainOutsideContainerRight)
 }
 
-class AboutWindow{
-    constructor(){
+
+class BaseWindow {
+    constructor({ iconSrc, titleText, containerClass, titleClass }) {
         this.icon = new Image()
-        this.icon.src = PixelLoveIcon
+        this.icon.src = iconSrc
+
         this.containerDiv = document.createElement('div')
         this.titleContainerDiv = document.createElement('div')
         this.title = document.createElement('h3')
         this.bodyContainerDiv = document.createElement('div')
+
+        this.titleText = titleText
+        this.containerClass = containerClass
+        this.titleClass = titleClass
+    }
+
+    setupBase() {
+        this.icon.classList.add("small-icon")
+
+        this.containerDiv.classList.add(this.containerClass, "section-container")
+        this.title.classList.add(this.titleClass, "section-title")
+
+        this.title.textContent = this.titleText
+
+        this.titleContainerDiv.append(this.icon, this.title)
+        this.containerDiv.append(this.titleContainerDiv, this.bodyContainerDiv)
+    }
+
+    mount(parent = document.querySelector(".main-outside-container")) {
+        parent.append(this.containerDiv)
+    }
+}
+
+class AboutWindow extends BaseWindow {
+    constructor() {
+        super({
+            iconSrc: PixelLoveIcon,
+            titleText: "Welcome to terra.dev!",
+            containerClass: "about-container",
+            titleClass: "about-title"
+        })
+
         this.bodyParagraph = document.createElement('p')
     }
 
-    init(){
-        this.icon.classList.add("small-icon")
+    init() {
+        this.setupBase()
+
         this.titleContainerDiv.classList.add("about-title-container-div")
-        this.containerDiv.classList.add("about-container", "section-container")
-        this.title.classList.add("about-title", "section-title")
         this.bodyContainerDiv.classList.add("about-body-container-div")
         this.bodyParagraph.classList.add("about-body-paragraph")
 
-        this.title.textContent = "Welcome to kvp0.dev!"
-        this.bodyParagraph.textContent = "hi im kvp0 and welcome to my cozy web den ^-^ it's still very \
-        much a work in progress so keep coming back and checking on things!\
-        i'll have more stuff in my room as time goes on :3\
-        in the meantime explore around"
-        
-        this.titleContainerDiv.append(this.icon, this.title)
+        this.bodyParagraph.textContent = `hi im terra and welcome to my cozy web den ^-^
+it's still very much a work in progress so keep coming back!
+i'll have more stuff as time goes on :3`
+
         this.bodyContainerDiv.append(this.bodyParagraph)
-        this.containerDiv.append(this.titleContainerDiv, this.bodyContainerDiv)
-        document.querySelector(".main-outside-container").append(this.containerDiv)
+
+        this.mount()
     }
 }
 
-class PersonalStatusWindow{
-    constructor(personalStatus){
-        this.icon = new Image()
-        this.icon.src = PixelWindowIcon
-        this.containerDiv = document.createElement('div')
-        this.titleContainerDiv = document.createElement('div')
-        this.title = document.createElement('h3')
-        this.bodyContainerDiv = document.createElement('div')
-        this.bodyParagraph = document.createElement('p')
-        this.timeStampDiv = document.createElement('div')
-        this.timeStampText = document.createElement('div')
-        this.dateStampText = document.createElement('p')
+class PersonalStatusWindow extends BaseWindow {
+    constructor(personalStatus) {
+        super({
+            iconSrc: PixelWindowIcon,
+            titleText: "current status",
+            containerClass: "status-container",
+            titleClass: "status-title"
+        })
 
         this.personalStatus = personalStatus
+
+        this.bodyParagraph = document.createElement('p')
+        this.timeStampDiv = document.createElement('div')
+        this.dateStampText = document.createElement('p')
     }
 
-    init(){
-        this.icon.classList.add("small-icon")
+    init() {
+        this.setupBase()
+
         this.titleContainerDiv.classList.add("status-title-container-div")
-        this.containerDiv.classList.add("status-container", "section-container")
-        this.title.classList.add("status-title", "section-title")
         this.bodyContainerDiv.classList.add("status-body-container-div")
+
         this.bodyParagraph.classList.add("status-body-paragraph")
         this.timeStampDiv.classList.add("status-timestamp-container")
-        this.timeStampText.classList.add("status-timestamp-text")
         this.dateStampText.classList.add("status-datestamp-text")
 
-        this.title.textContent = "current status"
-        this.bodyParagraph.textContent = `${this.personalStatus.text}`
-        this.dateStampText.textContent = `${formatTimestamp(this.personalStatus.created_at)}`
+        this.bodyParagraph.textContent = this.personalStatus.text
+        this.dateStampText.textContent = formatTimestamp(this.personalStatus.created_at)
 
         this.timeStampDiv.append(this.dateStampText)
-        this.titleContainerDiv.append(this.icon, this.title)
         this.bodyContainerDiv.append(this.bodyParagraph)
-        this.containerDiv.append(this.titleContainerDiv, this.bodyContainerDiv, this.timeStampDiv)
-        document.querySelector(".main-outside-container").append(this.containerDiv)
+
+        this.containerDiv.append(this.timeStampDiv)
+
+        this.mount()
     }
 }
 
-class LastPlayedWindow{
-    constructor(){
-        this.icon = new Image()
-        this.icon.src = PixelMusicIcon
-        this.trackIcon = new Image()
-        this.containerDiv = document.createElement('div')
-        this.titleContainerDiv = document.createElement('div')
-        this.title = document.createElement('h3')
-        this.bodyContainerDiv = document.createElement('div')
+class LastPlayedWindow extends BaseWindow {
+    constructor() {
+        super({
+            iconSrc: PixelMusicIcon,
+            titleText: "last song",
+            containerClass: "music-container",
+            titleClass: "music-title"
+        })
+
         this.bodyParagraph = document.createElement('h5')
         this.bodyParagraphAgo = document.createElement('p')
         this.blinkerContainer = document.createElement('div')
         this.timeAgoContainer = document.createElement('div')
     }
 
-    init(lastPlayed){
-        this.icon.classList.add("small-icon")
-        this.trackIcon.classList.add("small-icon", "track-icon")
+    init(lastPlayed) {
+        this.setupBase()
+
         this.titleContainerDiv.classList.add("music-title-container-div")
-        this.containerDiv.classList.add("music-container", "section-container")
-        this.title.classList.add("music-title", "section-title")
         this.bodyContainerDiv.classList.add("music-body-container-div")
+
         this.bodyParagraph.classList.add("music-body-paragraph")
         this.bodyParagraphAgo.classList.add("music-body-paragraph")
-        this.bodyParagraphAgo.id="listened-time-ago"
 
-        this.blinker = new Image()
-        this.blinker.src = lastPlayed.playedAgo === 'Currently Playing'?LiveBlinkerGif:GreyCircle
-        this.blinker.classList.add("live-blinker")
+        const blinker = new Image()
+        blinker.src = lastPlayed.playedAgo === 'Currently Playing'
+            ? LiveBlinkerGif
+            : GreyCircle
+        blinker.classList.add("live-blinker")
 
-        this.title.textContent = "last song"
         this.bodyParagraph.textContent = `${lastPlayed.artistName} - ${lastPlayed.songTitle}`
-        this.bodyParagraphAgo.textContent = `${lastPlayed.playedAgo}`
+        this.bodyParagraphAgo.textContent = lastPlayed.playedAgo
 
-        // document.querySelector(".track-icon").src = lastPlayed.imageUrl
-        this.blinkerContainer.append(this.blinker)
-        this.titleContainerDiv.append(this.icon, this.title)
+        this.blinkerContainer.append(blinker)
         this.timeAgoContainer.append(this.bodyParagraphAgo)
-        this.bodyContainerDiv.append(this.bodyParagraph,this.blinkerContainer) //this.bodyParagraphAgo)
-        this.containerDiv.append(this.titleContainerDiv, this.bodyContainerDiv, this.timeAgoContainer)
-        document.querySelector(".main-outside-container").append(this.containerDiv)
+
+        this.bodyContainerDiv.append(this.bodyParagraph, this.blinkerContainer)
+        this.containerDiv.append(this.timeAgoContainer)
+
+        this.mount()
     }
 }
 
-class LinksWindow{
-    constructor(){
-        this.mainIcon = new Image()
-        this.mainIcon.src = PixelLinksIcon
-        this.containerDiv = document.createElement('div')
-        this.titleContainerDiv = document.createElement('div')
-        this.title = document.createElement('h3')
-        this.bodyContainerDiv = document.createElement('div')
+class LinksWindow extends BaseWindow {
+    constructor() {
+        super({
+            iconSrc: PixelLinksIcon,
+            titleText: "Links",
+            containerClass: "links-container",
+            titleClass: "links-title"
+        })
+
         this.socialsList = document.createElement('ul')
 
         this.socialsArray = [
-            //discord
-            {labelText: '@xxdjTerraxx', url: '@xxdjTerraxx', iconImageSource: SocialIconDiscord},
-            //instagram
-            {labelText: '@xxdjTerraxx', url: '#', iconImageSource: SocialIconInstagram},
-            //github
-            {labelText: '@xxdjTerraxx', url: '#', iconImageSource: SocialIconGithub},
-            //soundcloud
-            {labelText: 'xxdjTerraxx', url: '#', iconImageSource: SocialIconSoundcloud},
-            //youtube
-            {labelText: 'xxdjTerraxx', url: '#', iconImageSource: SocialIconYoutube},
+            {labelText: 'discord', url: '#', iconImageSource: SocialIconDiscord},
+            {labelText: 'instagram', url: '#', iconImageSource: SocialIconInstagram},
+            {labelText: 'github', url: '#', iconImageSource: SocialIconGithub},
+            {labelText: 'soundcloud', url: '#', iconImageSource: SocialIconSoundcloud},
+            {labelText: 'youtube', url: '#', iconImageSource: SocialIconYoutube},
         ]
     }
 
-    init(parentDiv){
+    init(parentDiv) {
+        this.setupBase()
 
-        this.socialsArray.forEach(social => {
-            const { labelText, url, iconImageSource } = social
-            const newSociallinks = new SocialLinkSection({ ulElement: this.socialsList, labelText, url, iconImageSource})
-            newSociallinks.init()
-        })
-        this.mainIcon.classList.add("small-icon")
         this.titleContainerDiv.classList.add("links-title-container-div")
-        this.containerDiv.classList.add("links-container", "section-container")
-        this.title.classList.add("links-title", "section-title")
         this.bodyContainerDiv.classList.add("links-body-container-div")
         this.socialsList.classList.add("socials-list")
 
-        this.title.textContent = "Links"
-        
-        this.titleContainerDiv.append(this.mainIcon, this.title)
+        this.socialsArray.forEach(social => {
+            new SocialLinkSection({
+                ulElement: this.socialsList,
+                ...social
+            }).init()
+        })
+
         this.bodyContainerDiv.append(this.socialsList)
-        this.containerDiv.append(this.titleContainerDiv, this.bodyContainerDiv)
-        parentDiv.append(this.containerDiv)
+
+        this.mount(parentDiv)
     }
 }
 
@@ -423,7 +463,7 @@ class SocialLinkSection{
         this.linkElement.classList.add('social-link')
         this.linkElement.textContent = this.labelText
         this.linkElement.setAttribute('href', `${this.linkUrl}`)
-        
+
         this.linkElement.target = "_blank"
         this.linkElement.rel = "noopener noreferrer"
 
@@ -432,7 +472,6 @@ class SocialLinkSection{
         this.parentElement.append(this.li)
     }
 }
-
 
 export default class Application{
     constructor(){
