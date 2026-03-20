@@ -1,5 +1,5 @@
 import { io } from 'socket.io-client'
 
-const socket = io(process.env.NODE_ENV == "development" ? 'http://localhost:3000' : 'portfolio_backend.railway.internal')
+const socket = io(`${process.env.API_BASE_URL}/lastfm`)
 
 export default socket
