@@ -5,12 +5,15 @@ const timeAgo = require('../utils/timeAgo')
 
 exports.saveMessage = async function(message){
     const { username, text, user_ip } = message
+    const color = message.color || systemMessageColors.defaultUser
+    const type = message.type || 'user'
+
     console.log('NEW MESSAGE WOO WOOP', message)
 
     const { data, error } = await supabase
     .from('chat_messages')
     .insert([
-      { username, text, user_ip }
+      { username, text, user_ip, color, type }
     ])
     .select()
 
@@ -38,7 +41,7 @@ exports.getRecentMessages = async function(){
   return data
 }
 
-exports.handleChatCommand = function(messageObj, socket, io){
+exports.handleChatCommand = async function(messageObj, socket, io){
   //this is an array of all the cht commands from chat config. needed for when /commands is
   //entered so a list of all the chat commands can be displayed.config/chatConfug.chatCommands
   //is sourcce of truth for all chat commands
@@ -47,11 +50,10 @@ exports.handleChatCommand = function(messageObj, socket, io){
   const args = messageObj.text.split(" ")
   const command = args[0]
  
-  
   switch(command){
     case "/nick":
       const olderUsername = getUsername(socket.id)
-      const newUsername = args.slice(1).join("_")
+      const newUsername = args.slice(1).join("_").trim()
       //handle if user omits a username
       if(!newUsername){
         socket.emit('system message', {
@@ -76,9 +78,12 @@ exports.handleChatCommand = function(messageObj, socket, io){
       //this event updates front end
       socket.emit('change username', newUsername)
       //emit the system message
-      io.emit('system message', {
-        user: 'system', text: `${olderUsername} changed name to ${newUsername}`, color: systemMessageColors.system
-      })
+      await exports.processMessage({
+        username: 'system',
+        text: `${olderUsername} changed name to ${newUsername}`,
+        color: systemMessageColors.system,
+        type: 'system'
+      }, io)
       console.log("/nick command detected: ", newUsername)
       break
 
@@ -138,20 +143,30 @@ exports.handleChatCommand = function(messageObj, socket, io){
 
     case '/users':
       const usersList = getAllUsers()
+
       socket.emit('system message', {
-        user: 'system',
-        text: `there are currently ${usersList.length} users in chat: ${usersList.join(', ')}`,
+        username: 'system',
+        text: `there are currently ${usersList.length} users: ${usersList.join(", ")}`,
         color: systemMessageColors.systemPersonal
       })
       break
 
     case '/me':
       const emote = args.slice(1).join(" ")
-      io.emit('system message', {
-        user: 'system',
+      if (!emote.trim()) {
+        socket.emit('system message', {
+          user: 'system',
+          text: `to perform an emote: ${chatCommands.me.usage}`,
+          color: systemMessageColors.error
+        })
+        break
+      }
+      await exports.processMessage({
+        username: `${getUsername(socket.id)}`,
         text: `-- ${getUsername(socket.id)} ${emote} --`,
-        color: systemMessageColors.emote
-      })
+        color: systemMessageColors.emote,
+        type: 'emote'
+      }, io)
       break
 
     case '/who':
@@ -195,7 +210,81 @@ exports.handleChatCommand = function(messageObj, socket, io){
 
       break
 
+    case '/discord':
+      const messageText = args.slice(1).join(" ").trim()
+
+      if (!messageText) {
+        socket.emit('system message', {
+          username: 'system',
+          text: `aaah something went wrong. to send terra a msg: ${chatCommands.discord.usage}`,
+          color: systemMessageColors.error
+        })
+        break
+      }
+
+      const discordMessageSenderUsername = getUsername(socket.id)
+
+      try {
+        // 1) send to Discord
+        await sendDiscordMessage(discordMessageSenderUsername, messageText)
+
+        // 2) save to db + broadcast 
+        await exports.processMessage({
+          username: discordMessageSenderUsername,
+          text: messageText,
+          color: systemMessageColors.discordMessage,
+          type: 'discord'
+        }, io)
+
+        // 3) success feedback (NOT saved to db)
+        socket.emit('system message', {
+          username: 'system',
+          text: '📡 discord message sent...',
+          color: systemMessageColors.systemPersonal
+        })
+
+      } catch (err) {
+        console.error("Discord webhook error:", err)
+
+        // error feedback (not saved to db)
+        socket.emit('system message', {
+          username: 'system',
+          text: 'something went wrong sending your message T-T',
+          color: systemMessageColors.error
+        })
+      }
+      break
+
     default:
       break
   }
 }
+
+//this func is used during the /discord <message> command case of module.handleChatCommand
+async function sendDiscordMessage(username, message) {
+  return fetch(process.env.DISCORD_MESSAGE_WEBHOOK_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      content: `💬 ${username}: ${message}`
+    })
+  })
+}
+
+//ALL messages to be saved must go through this function so that they can 
+//be appropriately handled
+exports.processMessage = async function(message, io, options = {}) {
+  const { privateToSocket } = options;
+
+  const saved = await exports.saveMessage(message);
+
+  if (privateToSocket) {
+    privateToSocket.emit('system message', saved);
+  } else if (message.type === 'system') {
+    io.emit('system message', saved);
+  } else {
+    io.emit('chat message', saved);
+  }
+
+  return saved;
+};

@@ -14,27 +14,29 @@ const registerChatHandlers = (socket, io) => {
     socket.emit('load history', messages)
 
     socket.emit('system message', {
-      user: 'system', 
+      username: 'system', 
       text: '***hai and welcome to my chat :3 type /commands for a list of chat commands<3***',
       color: systemMessageColors.system
     })
   })
 
-  socket.on('chat message', async (msg) => {
-    console.log('New message from frontend:', msg)
-    
-    //handle chat COMMANDS
-    if (msg.text.startsWith('/')){
-      chatController.handleChatCommand(msg, socket, io)
-    }
-    //handle chat MESSAGES
-    else {
-      const newMessage = await chatController.saveMessage(msg)
-      newMessage.color = systemMessageColors.defaultUser
-      io.emit('chat message', newMessage)
-    }
-    
-  })
+socket.on('chat message', async (msg) => {
+  console.log('New message from frontend:', msg)
+
+  // handle COMMANDS
+  if (msg.text.startsWith('/')) {
+    await chatController.handleChatCommand(msg, socket, io)
+  } 
+  // handle normal messages
+  else {
+    await chatController.processMessage({
+      username: msg.username,
+      text: msg.text,
+      color: systemMessageColors.defaultUser,
+      type: 'user'
+    }, io)
+  }
+})
 
   socket.on('user connect', async () => {
     //add user to onlineUsers

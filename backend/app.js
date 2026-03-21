@@ -5,8 +5,10 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors')
 
+
+
 require('dotenv').config();
-const statusRouter = require('./routes/status')
+const discordRouter = require('./routes/discord')
 const weatherRouter = require('./routes/weather')
 const lastFmRouter = require('./routes/lastfm2.js')
 const presenceRouter = require('./routes/presence.js')
@@ -15,6 +17,8 @@ const personalStatusRouter = require('./routes/personal_status.js')
 const moodRouter = require('./routes/moods.js')
 const notesRouter = require('./routes/notes.js')
 const chatRouter = require('./routes/chat.js')
+
+const discordBot = require('./services/discordBot.js')
 
 const app = express();
 
@@ -35,7 +39,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/status', statusRouter)
+app.use('/discord', discordRouter)
 app.use('/weather', weatherRouter)
 app.use('/lastfm', lastFmRouter)
 app.use('/presence', presenceRouter)

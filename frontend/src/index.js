@@ -108,7 +108,6 @@ async function fetchPresence() {
     catch(err){
         return err
     }
-    
 }
 
 async function fetchDiscordStatus() {

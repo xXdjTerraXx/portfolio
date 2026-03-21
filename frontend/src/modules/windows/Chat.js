@@ -118,6 +118,7 @@ export default class ChatWindow{
         localStorage.setItem('username', this.username)
       }
       else this.username = storedUserName
+      console.log('initial user status set, currently chatting as: ', this.username)
     }
 
     createUserNameSection = () => {
@@ -169,6 +170,11 @@ export default class ChatWindow{
         
       })
 
+      this.socket.on("discord message", (discordMsg) => {
+        console.log("user sent discord message")
+        this.displayWhisper(discordMsg)
+      })
+
       this.socket.on("system message", (msg) => {
         this.displayMessage(msg)
       })
@@ -196,7 +202,7 @@ export default class ChatWindow{
 
   displayMessage(msg) {
     let messageType
-    msg.user === 'system' ? 'system' : 'user'
+    msg.username === 'system' ? 'system' : 'user'
     const messageElem = new Message(msg.username, msg.text, messageType, {color: msg.color})
     this.chatContainerDiv.appendChild(messageElem.container)
     this.chatContainerDiv.scrollTop = this.chatContainerDiv.scrollHeight

@@ -31,9 +31,14 @@ const io = new Server(server, {
   }
 });
 
+// global service
+require('../services/discordBot')(io);
+
 io.on('connection', (socket) => {
+  //per user
   console.log('SOCKETIO: User connected:', socket.id)
   registerChatHandlers(socket, io); // pass both socket and io
+
 })
 
 /**

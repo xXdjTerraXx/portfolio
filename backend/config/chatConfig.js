@@ -6,7 +6,9 @@ const systemMessageColors = {
     error: '#ff4141',
     joinAndLeave: '#00aaff',
     emote: '#b1b1b1',
-    defaultUser: '#ededed'
+    defaultUser: '#ededed',
+    discordMessage: '#ffac1d',
+    discordMessageTerra: '#fac58d'
 }
 
 const chatCommands = {
@@ -18,6 +20,11 @@ const chatCommands = {
   w: {
     usage: "/w <username> <message>",
     description: "whisper to a user"
+  },
+
+  discord: {
+    usage: "/discord <message>",
+    description: "send terra a discord message"
   },
 
   who: {
