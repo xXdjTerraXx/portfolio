@@ -27,7 +27,7 @@ import SocialIconInstagram from './img/icons/socials/instagram.png'
 import SocialIconSoundcloud from './img/icons/socials/soundcloud.png'
 import SocialIconYoutube from './img/icons/socials/youtube.png'
 import SocialIconDiscord from './img/icons/socials/discord.png'
-
+import DefaultAlbumArt from './img/png/default_track_art.png'
 
 
 //preload all audio
@@ -359,6 +359,49 @@ class PersonalStatusWindow extends BaseWindow {
     }
 }
 
+// class LastPlayedWindow extends BaseWindow {
+//     constructor() {
+//         super({
+//             iconSrc: PixelMusicIcon,
+//             titleText: "last song",
+//             containerClass: "music-container",
+//             titleClass: "music-title"
+//         })
+
+//         this.bodyParagraph = document.createElement('h5')
+//         this.bodyParagraphAgo = document.createElement('p')
+//         this.blinkerContainer = document.createElement('div')
+//         this.timeAgoContainer = document.createElement('div')
+//     }
+
+//     init(lastPlayed) {
+//         this.setupBase()
+
+//         this.titleContainerDiv.classList.add("music-title-container-div")
+//         this.bodyContainerDiv.classList.add("music-body-container-div")
+
+//         this.bodyParagraph.classList.add("music-body-paragraph")
+//         this.bodyParagraphAgo.classList.add("music-body-paragraph")
+
+//         const blinker = new Image()
+//         blinker.src = lastPlayed.playedAgo === 'Currently Playing'
+//             ? LiveBlinkerGif
+//             : GreyCircle
+//         blinker.classList.add("live-blinker")
+
+//         this.bodyParagraph.textContent = `${lastPlayed.artistName} - ${lastPlayed.songTitle}`
+//         this.bodyParagraphAgo.textContent = lastPlayed.playedAgo
+
+//         this.blinkerContainer.append(blinker)
+//         this.timeAgoContainer.append(this.bodyParagraphAgo)
+
+//         this.bodyContainerDiv.append(this.bodyParagraph, this.blinkerContainer)
+//         this.containerDiv.append(this.timeAgoContainer)
+
+//         this.mount()
+//     }
+// }
+
 class LastPlayedWindow extends BaseWindow {
     constructor() {
         super({
@@ -368,10 +411,14 @@ class LastPlayedWindow extends BaseWindow {
             titleClass: "music-title"
         })
 
+        this.trackLink = document.createElement('a') // 👈 NEW
         this.bodyParagraph = document.createElement('h5')
         this.bodyParagraphAgo = document.createElement('p')
+        this.albumArt = new Image() // 👈 NEW
+
         this.blinkerContainer = document.createElement('div')
         this.timeAgoContainer = document.createElement('div')
+        this.contentRow = document.createElement('div') // 👈 layout wrapper
     }
 
     init(lastPlayed) {
@@ -382,20 +429,43 @@ class LastPlayedWindow extends BaseWindow {
 
         this.bodyParagraph.classList.add("music-body-paragraph")
         this.bodyParagraphAgo.classList.add("music-body-paragraph")
+        this.bodyParagraphAgo.setAttribute('id', 'listened-time-ago')
 
+        this.contentRow.classList.add("music-content-row")
+
+        // 🎵 clickable link
+        this.trackLink.href = lastPlayed.trackUrl
+        this.trackLink.target = "_blank"
+        this.trackLink.rel = "noopener noreferrer"
+
+        this.trackLink.append(this.bodyParagraph)
+
+        // 💿 album art
+        this.albumArt.src = lastPlayed.albumArtUrl || DefaultAlbumArt
+        this.albumArt.classList.add("album-art")
+
+        // 🔴 live indicator
         const blinker = new Image()
         blinker.src = lastPlayed.playedAgo === 'Currently Playing'
             ? LiveBlinkerGif
             : GreyCircle
         blinker.classList.add("live-blinker")
 
+        // 📝 text
         this.bodyParagraph.textContent = `${lastPlayed.artistName} - ${lastPlayed.songTitle}`
         this.bodyParagraphAgo.textContent = lastPlayed.playedAgo
 
+        // 🧩 layout assembly
         this.blinkerContainer.append(blinker)
         this.timeAgoContainer.append(this.bodyParagraphAgo)
 
-        this.bodyContainerDiv.append(this.bodyParagraph, this.blinkerContainer)
+        // row: [art] [text+blinker]
+        const textContainer = document.createElement('div')
+        textContainer.append(this.trackLink, this.blinkerContainer)
+
+        this.contentRow.append(this.albumArt, textContainer)
+
+        this.bodyContainerDiv.append(this.contentRow)
         this.containerDiv.append(this.timeAgoContainer)
 
         this.mount()

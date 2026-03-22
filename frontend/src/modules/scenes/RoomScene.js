@@ -50,6 +50,7 @@ import Journal from '../objects/Journal'
 import NotesBoard from '../objects/NotesBoard'
 import Rug from '../objects/Rug'
 import Note from '../base_classes/Note'
+import BonsaiStation from '../objects/BonsaiStation'
 
 export default class RoomScene{
     constructor(app, set_state, assets, sprite_sheets, fonts, onlineStatusObject, icons, weatherJson, weatherIcons, lastPlayedJson, soundsObject, personalStatus, notesArray, mood){
@@ -194,13 +195,29 @@ export default class RoomScene{
         await this.create_tv_stand_object()
         await this.create_desk_animated_object()
         await this.create_lava_lamp_animated_object()
-        await this.create_aquarium_object()
+        // await this.create_aquarium_object()
         await this.create_journal_object()
         this.bedObject = new Bed(this.assets.BedImg, 0, 0, this.app, this.roomEntitiesContainer)
         this.bookshelfObject = new BookShelf(this.assets.BookShelfImg, 0, 0, this.app, this.roomEntitiesContainer)
+        //this plant is the small cactus that is not part of the meta game
         this.plantObject1 = new Plant(this.assets.Plant1Img, 3, 68, this.app, this.roomEntitiesContainer)
         this.plantObject1.sprite.label = "plant_1"
-        this.plantObject2 = new Plant(this.assets.Plant2Img, 0, 0, this.app, this.roomEntitiesContainer)
+        // this.plantObject2 = new Plant(this.assets.Plant2Img, 0, 0, this.app, this.roomEntitiesContainer)
+        this.bonsaiStation = new BonsaiStation(
+            this.app, this.roomEntitiesContainer, 60, 200, 
+            this.assets.BonsaiStationHitbox,
+            this.assets.BonsaiStation_Pot, 
+            this.assets.BonsaiStation_Trunk, 
+            null, //<---foliage missing
+            this.assets.BonsaiStation_Blooms, 
+            this.assets.BonsaiStation_GrowLight,
+            this.assets.BonsaiStation_GrowLightSwitchOff,
+            this.assets.BonsaiStation_GrowLightSwitchOn,
+            this.assets.BonsaiStation_GrowLightBeam,
+            this.assets.BonsaiStation_GrowLight_NewShading,
+            this.assets.Plant2Img,
+            'on' //initial grow light state - should come from db eventually
+        )
 
         await this.create_online_sign_animated_object()
         if(this.onlineStatusObject.isOnline){

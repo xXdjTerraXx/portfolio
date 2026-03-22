@@ -171,6 +171,11 @@ body{
     height:fit-content;
   }
 
+  /* .music-content-row{
+    display: flex;
+    justify-content: center;
+  } */
+
   .music-body-container-div{
     display: flex;
     justify-content: center;
@@ -185,6 +190,15 @@ body{
     color: rgba(227, 227, 227, 0.696);
     margin: 15px;
     display: block;
+  }
+
+  p .music-body-paragraph{
+      font-size: .7rem;
+  }
+
+  .album-art{
+    height: 30px;
+    width: auto;
   }
 
   #listened-time-ago{

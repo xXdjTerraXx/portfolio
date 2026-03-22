@@ -14,7 +14,7 @@ async function getLastPlayedTrack() {
     try {
         const response = await fetch(url);
         const data = await response.json();
-        console.log('DEBUG HERES THE DATA: ', data)
+        console.log('DEBUG HERES THE LAST FM DATA: ', data)
         
         if (data.recenttracks.track && data.recenttracks.track.length > 0) {
             const track = data.recenttracks.track[0];
@@ -22,10 +22,11 @@ async function getLastPlayedTrack() {
             const songTitle = track.name;
             const playedAt = track.date ? track.date['#text'] : 'Now Playing';
             const playedAgo = track.date ? getTimeAgo(new Date(track.date.uts * 1000)) : 'Currently Playing';
-            const imageUrl = track.image.find(img => img.size === 'large')['#text'] || track.image.find(img => img.size === 'extralarge')['#text'];
+            console.log("TRACK IMAGE ARRAY:", track.image)
+            const imageUrl = getAlbumArt(track.image)
             console.log('IMAGE URL: ', imageUrl)
 
-            return { artistName, songTitle, playedAt, playedAgo, imageUrl };
+            return { artistName, songTitle, playedAt, playedAgo, imageUrl: imageUrl || null };
         } else {
             return { artistName: '', songTitle: '', playedAt: '', playedAgo: 'No recent tracks found' };
         }
@@ -52,14 +53,17 @@ function getTimeAgo(date) {
     return Math.floor(seconds) + " seconds ago";
 }
 
-// // Example usage
-// getLastPlayedTrack().then(track => {
-//     if (track) {
-//         console.log(`Artist: ${track.artistName}`);
-//         console.log(`Song: ${track.songTitle}`);
-//         console.log(`Played At: ${track.playedAt}`);
-//         console.log(`Played Ago: ${track.playedAgo}`);
-//     }
-// });
+function getAlbumArt(images) {
+    const preferredOrder = ['extralarge', 'large', 'medium', 'small']
+
+    for (const size of preferredOrder) {
+        const img = images.find(i => i.size === size)
+        if (img && img['#text'] && img['#text'].trim() !== '') {
+            return img['#text']
+        }
+    }
+
+    return null
+}
 
 module.exports = router

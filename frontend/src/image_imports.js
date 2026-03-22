@@ -49,7 +49,15 @@ import ScrollButton from './img/png/scroll_button.png'
 import ScrollButtonInactive from './img/png/scroll_button_inactive.png'
 import AquariumCase from './img/png/aquarium_case.png'
 import RugImg from './img/png/rug.png'
-
+import BonsaiStation_PotImg from './img/png/bonsai_station/pot.png'
+import BonsaiStation_TrunkImg from './img/png/bonsai_station/trunk.png'
+import BonsaiStation_BloomsImg from './img/png/bonsai_station/blooms.png'
+import BonsaiStation_GrowLightImg from './img/png/bonsai_station/grow_light.png'
+import BonsaiStation_GrowLightSwitchOffImg from './img/png/bonsai_station/grow_light_switch_off.png'
+import BonsaiStation_GrowLightSwitchOnImg from './img/png/bonsai_station/grow_light_switch_on.png'
+import BonsaiStation_GrowLightBeamImg from './img/png/bonsai_station/grow_light_beam.png'
+import BonsaiStation_GrowLight_NewShadingImg from './img/png/bonsai_station/grow_light_on_new_shading.png'
+import BonsaiStationHitboxImg from './img/png/bonsai_station/bonsai_station_hitbox.png'
 //icons
 import MyComputerIcon from './img/png/icons/my_computer_icon.png'
 import AboutMeIcon from './img/png/icons/about_me_icon.png'
@@ -300,6 +308,43 @@ export const roomSceneManifest =  {
             {
                "alias": "StringLights_Lights2",
                "src": StringLights_Lights2Img
+            },
+            {
+               "alias": "BonsaiStation_Pot",
+               "src": BonsaiStation_PotImg
+            },
+            {
+               "alias": "BonsaiStation_Trunk",
+               "src": BonsaiStation_TrunkImg
+            },
+            {
+               "alias": "BonsaiStation_Blooms",
+               "src": BonsaiStation_BloomsImg
+            },
+            {
+               "alias": "BonsaiStation_GrowLight",
+               "src": BonsaiStation_GrowLightImg
+            },
+            {
+               "alias": "BonsaiStation_GrowLightSwitchOff",
+               "src": BonsaiStation_GrowLightSwitchOffImg
+            },
+            {
+               "alias": "BonsaiStation_GrowLightSwitchOn",
+               "src": BonsaiStation_GrowLightSwitchOnImg
+            },
+            {
+               "alias": "BonsaiStation_GrowLightBeam",
+               "src": BonsaiStation_GrowLightBeamImg
+            },
+            {
+               "alias": "BonsaiStation_GrowLight_NewShading",
+               "src": BonsaiStation_GrowLight_NewShadingImg
+            },
+            
+            {
+               "alias": "BonsaiStationHitbox",
+               "src": BonsaiStationHitboxImg
             }
          ]
       },
