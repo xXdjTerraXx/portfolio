@@ -28,6 +28,8 @@ import Plant1Img from './img/png/plant_1.png'
 import Plant2Img from './img/png/plant_2.png'
 import PosterImg from './img/png/posters.png'
 import RokuCityImg from './img/png/roku_city.png'
+import RokuCityParallaxBackgroundImg from './img/png/roku_city_parallax_background_layers.png'
+import RokuCityParallaxForegroundImg from './img/png/roku_city_parallax_foreground_layers.png'
 import TVStandImg from './img/png/tv_stand.png'
 import WindowImg from './img/png/window.png'
 import TapestryImg from './img/png/tapestry.png'
@@ -245,7 +247,14 @@ export const roomSceneManifest =  {
                "alias": "RokuCity",
                "src": RokuCityImg
             },
-            
+            {
+               "alias": "RokuCityParallaxBackground",
+               "src": RokuCityParallaxBackgroundImg
+            },
+            {
+               "alias": "RokuCityParallaxForeground",
+               "src": RokuCityParallaxForegroundImg
+            },
             {
                "alias": "TVStandImg",
                "src": TVStandImg

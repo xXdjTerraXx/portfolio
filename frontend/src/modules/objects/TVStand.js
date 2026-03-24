@@ -55,7 +55,7 @@ export default class TVStand {
         this.sceneIndex = 0
         this.sceneList = [
             {
-                sprite: new RokuScene(this.sprite, -248.5, -299.5, 1.01, 1.01, 'red', this.pngAssets, this.mainContainer, this.lastPlayedJson)
+                sprite: new RokuScene(this.sprite, -245.5, -296.5, 1.01, 1.01, 'red', this.pngAssets, this.mainContainer, this.lastPlayedJson)
             },
             {
                 sprite: new Screensaver(-245.5, -296.5, this.pngAssets, this.weatherJson, this.weatherIcons)
