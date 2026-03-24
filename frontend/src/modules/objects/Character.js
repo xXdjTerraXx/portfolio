@@ -6,10 +6,10 @@ import { Tween, Easing } from "@tweenjs/tween.js"
 
 export default class Character extends AnimatedObject{
     constructor(sprite_sheet, x_pos, y_pos, app, arrowSpriteSheet, roomEntitiesContainer, desktopContainer, moodsArray, personalStatus, smallThoughtBubbleTexture,
-        mediumThoughtBubbleTexture, mainThoughtBubbleTexture
+        mediumThoughtBubbleTexture, mainThoughtBubbleTexture, hitboxTexture, label
     ){
-        super(sprite_sheet, x_pos, y_pos, app, arrowSpriteSheet, roomEntitiesContainer, desktopContainer)
-        this.sprite.label = "character"
+        super(sprite_sheet, x_pos, y_pos, app, arrowSpriteSheet, roomEntitiesContainer, desktopContainer, hitboxTexture, label)
+        this.sprite.label = "character_sprite"
         this.frameWidth = 187
         this.frameHeight = 157
         this.numberOfFrames = 0
@@ -31,7 +31,7 @@ export default class Character extends AnimatedObject{
         this.shadowBlur = 10
         // this.selectionArrow = new SelectionArrow((this.x_pos + this.frameWidth / 2) - 25, this.y_pos)
         
-        this.sprite.on("click", this.handleCharacterClick)
+        this.hitbox.on("click", this.handleCharacterClick)
     }
 
     handleCharacterClick = () => {

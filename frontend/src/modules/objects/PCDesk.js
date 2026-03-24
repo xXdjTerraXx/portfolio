@@ -4,9 +4,9 @@ import * as TWEEN from "@tweenjs/tween.js"
 
 const overlayDiv = document.querySelector(".glass-overlay")
 
-export default class PC_Desk extends AnimatedObject {
-    constructor(sprite_sheet, x_pos, y_pos, app, arrowSpriteSheet, roomEntitiesContainer, setDisplayDesktop, desktopContainer){
-        super(sprite_sheet, x_pos, y_pos, app, arrowSpriteSheet, roomEntitiesContainer, desktopContainer)
+export default class PCDesk extends AnimatedObject {
+    constructor(sprite_sheet, x_pos, y_pos, app, arrowSpriteSheet, roomEntitiesContainer, setDisplayDesktop, desktopContainer, hitboxTexture, label, hitboxConfig){
+        super(sprite_sheet, x_pos, y_pos, app, arrowSpriteSheet, roomEntitiesContainer, desktopContainer, hitboxTexture, label, hitboxConfig)
         this.frameWidth = 163
         this.frameHeight = 125
         this.numberOfFrames = 0
@@ -17,8 +17,7 @@ export default class PC_Desk extends AnimatedObject {
         this.mouseOver = false
         this.shadowBlur = 10
 
-        this.sprite.on('pointerdown', this.handleClick);
-        this.sprite.eventMode = 'static';
+        this.hitbox.on('pointerdown', this.handleClick);
         this.setDisplayDesktop = setDisplayDesktop
         this.desktopContainer = desktopContainer
         

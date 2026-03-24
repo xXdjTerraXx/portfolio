@@ -3,7 +3,7 @@ import moment from "moment";
 import { CRTFilter } from "pixi-filters";
 
 export default class Screensaver{
-    constructor(pngAssets, weatherJSON, weatherIcons){
+    constructor(x, y, pngAssets, weatherJSON, weatherIcons){
         this.pngAssets = pngAssets
         this.weatherJSON = weatherJSON
         this.weatherIcons = weatherIcons
@@ -12,6 +12,7 @@ export default class Screensaver{
         
 
         this.container = new Container()
+        this.container.position.set(x, y)
 
         this.background = new Sprite(this.pngAssets.TVBackgroundLandscape)
         this.background.x = 181

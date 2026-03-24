@@ -1,8 +1,8 @@
 import AnimatedObject from "../base_classes/AnimatedObject"
 
-export default class Coffee_Cup extends AnimatedObject {
-    constructor(sprite_sheet, x_pos, y_pos, app, arrowSpriteSheet, roomEntitiesContainer, desktopContainer){
-        super(sprite_sheet, x_pos, y_pos, app, arrowSpriteSheet, roomEntitiesContainer, desktopContainer)
+export default class CoffeeCup extends AnimatedObject {
+    constructor(sprite_sheet, x_pos, y_pos, app, arrowSpriteSheet, roomEntitiesContainer, desktopContainer, hitboxTexture, label, hitboxConfig){
+        super(sprite_sheet, x_pos, y_pos, app, arrowSpriteSheet, roomEntitiesContainer, desktopContainer, hitboxTexture, label, hitboxConfig)
         this.frameWidth = 44,
         this.frameHeight = 61,
         this.numberOfFrames = 0,

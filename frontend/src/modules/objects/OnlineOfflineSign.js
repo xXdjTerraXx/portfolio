@@ -5,20 +5,24 @@ import { GlowFilter } from "pixi-filters"
 import { timeAgo } from "../../utils"
 
 export default class OnlineOfflineSign {
-    constructor(onlineSpritesheet, offlineSignTexture, x_pos, y_pos, app, arrowSpriteSheet, roomEntitiesContainer, desktopContainer, onlineStatusBubbleTexture, onlineStatusObject){
+    constructor(onlineSpritesheet, offlineSignTexture, x_pos, y_pos, app, arrowSpriteSheet, roomEntitiesContainer, desktopContainer, onlineStatusBubbleTexture, onlineStatusObject, hitboxTexture, label, hitboxConfig){
     
         this.app = app
         //for the sign, either the online sprite or offline sprite is added to signContainer
         //then THAT is what is added to the scene ^-^
-        this.signContainer = new Container()
-        this.signContainer.x = x_pos
-        this.signContainer.y = y_pos
-        this.signContainer.label = "sign_container"
-        this.signContainer.interactive = true
-        this.signContainer.eventMode = 'static'
-        this.signContainer.on('pointerover', this.handleMouseIn)
-        this.signContainer.on('pointerout', this.handleMouseOut)
-        this.signContainer.on('click', this.handleClick)
+        this.mainContainer = new Container()
+        this.mainContainer.label = label
+        this.mainContainer.x = x_pos
+        this.mainContainer.y = y_pos
+
+        this.hitbox = new Sprite(hitboxTexture)
+        this.hitbox.position.set(hitboxConfig.offsetX,hitboxConfig.offsetY)
+        this.hitbox.eventMode = 'static'
+        this.hitbox.label = 'hitbox'
+        this.hitbox.alpha = 0
+        this.hitbox.on('pointerover', this.handleMouseIn)
+        this.hitbox.on('pointerout', this.handleMouseOut)
+        this.hitbox.on('click', this.handleClick)
 
         this.roomEntitiesContainer = roomEntitiesContainer
         this.desktopContainer = desktopContainer
@@ -42,7 +46,7 @@ export default class OnlineOfflineSign {
 
         //set up selection arrow
         this.selection_arrow_sprite_sheet = arrowSpriteSheet
-        this.selectionArrow = new SelectionArrow(this.selection_arrow_sprite_sheet, x_pos, y_pos, app, this.signContainer.children[0].height) 
+        this.selectionArrow = new SelectionArrow(this.selection_arrow_sprite_sheet, x_pos, y_pos, app, this.mainContainer.children[0].height) 
 
     }
 
@@ -68,16 +72,16 @@ export default class OnlineOfflineSign {
     buildSign = () => {
         //add the correct sprite as child of sign container
         if (this.onlineStatusObject.isOnline == false){
-            this.signContainer.addChild(this.offlineSprite)
+            this.mainContainer.addChild(this.offlineSprite, this.hitbox)
         }
         else{
-            this.signContainer.addChild(this.onlineSprite)
-            this.signContainer.children[0].play()
+            this.mainContainer.addChild(this.onlineSprite, this.hitbox)
+            this.mainContainer.children[0].play()
         }
         //add the status bubble as a child too
-        this.signContainer.addChild(this.onlineStatusBubble)
+        this.mainContainer.addChild(this.onlineStatusBubble)
          //add signContainer to scene
-        this.roomEntitiesContainer.addChild(this.signContainer)
+        this.roomEntitiesContainer.addChild(this.mainContainer)
     }
 
     getIsDesktopDisplaying = () => {
@@ -88,7 +92,7 @@ export default class OnlineOfflineSign {
         if(this.desktopIsDisplaying == false){
 
         //add outline effect
-        this.signContainer.filters = [new GlowFilter({alpha: 0.2, color: '#bbb4f3'})]
+        this.mainContainer.filters = [new GlowFilter({alpha: 0.2, color: '#bbb4f3'})]
         //display hovering arrow
         this.app.stage.addChild(this.selectionArrow.sprite)
     }
@@ -98,7 +102,7 @@ export default class OnlineOfflineSign {
         if(this.desktopIsDisplaying == false){
 
         // remove outline effect from this
-        this.signContainer.filters = null
+        this.mainContainer.filters = null
        //display hovering arrow
         this.app.stage.removeChild(this.selectionArrow.sprite)
         }

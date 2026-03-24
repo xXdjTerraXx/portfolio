@@ -4,11 +4,11 @@ import * as PIXI from 'pixi.js'
 import { GlowFilter } from 'pixi-filters'
 import { desk_spritesheet_json2 } from '../../json/desk_spritesheet'
 import SelectionArrow from './SelectionArrow'
-import SpotifyScene from './tv_scenes/SpotifyScene'
+import RokuScene from './tv_scenes/RokuScene'
 import Screensaver from './tv_scenes/Screensaver'
 
-export default class TV_Stand {
-    constructor(sprite_sheet, x_pos, y_pos, app, arrowSpriteSheet, roomEntitiesContainer, desktopContainer, TVStandImage, pngAssets, weatherJson, weatherIcons, lastPlayedJson){
+export default class TVStand {
+    constructor(sprite_sheet, x_pos, y_pos, app, arrowSpriteSheet, roomEntitiesContainer, desktopContainer, TVStandImage, pngAssets, weatherJson, weatherIcons, lastPlayedJson, hitboxTexture, label, hitboxConfig){
         
         this.app = app
         this.numberOfFrames = 0
@@ -16,9 +16,23 @@ export default class TV_Stand {
         this.sprite = new PIXI.AnimatedSprite(this.sprite_sheet.animations.main)
         this.sprite.animationSpeed = 0.1666;
         this.sprite.anchor.set(0.5)
-        this.sprite.x = x_pos
-        this.sprite.y = y_pos
+        this.sprite.position.set(0,0)
         this.sprite.animationSpeed = .2
+        this.sprite.loop = false
+        this.sprite.onComplete = () => this.sprite.gotoAndStop(0)
+
+        this.hitbox = new PIXI.Sprite(hitboxTexture)
+        this.hitbox.eventMode = 'static'
+        this.hitbox.label = 'hitbox'
+        this.hitbox.position.set(hitboxConfig.offsetX,hitboxConfig.offsetY)
+        this.hitbox.scale.set(hitboxConfig.scaleX, hitboxConfig.scaleY)
+        this.hitbox.anchor.set(0.5)
+        this.hitbox.alpha = 0
+
+        this.mainContainer = new PIXI.Container()
+        this.mainContainer.label = `${label}_main_container`
+        this.mainContainer.position.set(x_pos, y_pos)
+
         this.TVStandImage = TVStandImage
         this.pngAssets = pngAssets
         this.weatherIcons = weatherIcons
@@ -27,19 +41,11 @@ export default class TV_Stand {
         this.weatherJson = weatherJson
         this.lastPlayedJson = lastPlayedJson
 
-        // Set up mouse hover event for deskSprite
-        this.sprite.interactive = true;
-        this.sprite.eventMode = 'static';
-        this.sprite.on('pointerover', this.handleMouseIn)
-        this.sprite.on('pointerout', this.handleMouseOut)
-        this.sprite.on('click', this.handleClick)
-        this.sprite.loop = false
-        this.sprite.onComplete = () => this.sprite.gotoAndStop(0);
+        //mouse events
+        this.hitbox.on('pointerover', this.handleMouseIn)
+        this.hitbox.on('pointerout', this.handleMouseOut)
+        this.hitbox.on('click', this.handleClick)
 
-        this.tvContainer = new PIXI.Container()
-        
-
-        
         this.selection_arrow_sprite_sheet = arrowSpriteSheet
         this.selectionArrow = new SelectionArrow(this.selection_arrow_sprite_sheet, x_pos, y_pos, app, this.sprite.height) 
 
@@ -49,16 +55,15 @@ export default class TV_Stand {
         this.sceneIndex = 0
         this.sceneList = [
             {
-                sprite: new SpotifyScene(this.sprite, this.x_pos, this.y_pos, 'red', this.pngAssets, this.tvContainer, this.lastPlayedJson)
+                sprite: new RokuScene(this.sprite, -248.5, -299.5, 1.01, 1.01, 'red', this.pngAssets, this.mainContainer, this.lastPlayedJson)
             },
             {
-                sprite: new Screensaver(this.pngAssets, this.weatherJson, this.weatherIcons)
+                sprite: new Screensaver(-245.5, -296.5, this.pngAssets, this.weatherJson, this.weatherIcons)
             }
         ]
 
-        this.tvContainer.label = 'tv_container'
-        this.tvContainer.addChild(this.sprite, this.sceneList[this.sceneIndex].sprite.container)
-        this.roomEntitiesContainer.addChild(this.tvContainer)
+        this.mainContainer.addChild(this.sprite, this.sceneList[this.sceneIndex].sprite.container, this.hitbox)
+        this.roomEntitiesContainer.addChild(this.mainContainer)
         
         this.app.ticker.add(this.getIsDesktopDisplaying)
         this.app.ticker.add(this.sceneList[this.sceneIndex].sprite.animate)
@@ -95,17 +100,14 @@ export default class TV_Stand {
 
     handleClick = async () => {
         this.app.ticker.remove(this.sceneList[this.sceneIndex].sprite.animate)
-        this.tvContainer.removeChild(this.sceneList[this.sceneIndex].sprite.container)
+        this.mainContainer.removeChild(this.sceneList[this.sceneIndex].sprite.container)
         this.sceneIndex < this.sceneList.length - 1 ? this.sceneIndex += 1 : this.sceneIndex = 0
         this.sprite.play() // play the blue screen transition animation
         this.sprite.onComplete = () => {
             
             this.sceneList[this.sceneIndex].sprite.load()
-            this.tvContainer.addChild(this.sceneList[this.sceneIndex].sprite.container)
+            this.mainContainer.addChild(this.sceneList[this.sceneIndex].sprite.container)
             this.app.ticker.add(this.sceneList[this.sceneIndex].sprite.animate)
         }
-
-        
-
     }
 }

@@ -3,15 +3,15 @@ import * as TWEEN from "@tweenjs/tween.js"
 // importing object classes
 import LavaLamp from "../objects/LavaLamp"
 import Character from "../objects/Character"
-import PC_Desk from "../objects/PCDesk"
-import Coffee_Cup from "../objects/CoffeeCup"
+import PCDesk from "../objects/PCDesk"
+import CoffeeCup from "../objects/CoffeeCup"
 import OfflineSign from '../objects/OfflineSign'
 import OnlineOfflineSign from '../objects/OnlineOfflineSign'
 import Background from "../objects/Background"
 import Posters from "../objects/Poster"
 import WindowFrame from "../objects/WindowFrame"
 import Cables from "../objects/Cables"
-import TV_Stand from "../objects/TVStand"
+import TVStand from "../objects/TVStand"
 import Bed from "../objects/Bed"
 import BookShelf from "../objects/Bookshelf"
 import { desk_spritesheet_json2, lava_lamp_spritesheet_json, character_spritesheet_json,
@@ -216,13 +216,13 @@ export default class RoomScene{
             this.assets.BonsaiStation_GrowLightBeam,
             this.assets.BonsaiStation_GrowLight_NewShading,
             this.assets.Plant2Img,
-            'on' //initial grow light state - should come from db eventually
+            true //initial grow light lightIsOn state - should come from db eventually
         )
-
-        await this.create_online_sign_animated_object()
+        this.bonsaiStation.init()
+        await this.create_online_offline_sign_animated_object()
         if(this.onlineStatusObject.isOnline){
             await this.create_character_animated_object()
-            // await this.create_online_sign_animated_object()
+            // await this.create_online_offline_sign_animated_object()
         }
         else{
             await this.create_character_offline_animated_object()
@@ -429,7 +429,7 @@ export default class RoomScene{
         );
         await spritesheet.parse();
 
-        this.outsideWindow = new OutsideWindow(spritesheet, 190, 200, this.app, arrowSpriteSheet, this.roomEntitiesContainer, this.desktopContainer)
+        this.outsideWindow = new OutsideWindow(spritesheet, 190, 200, this.app, arrowSpriteSheet, this.roomEntitiesContainer, this.desktopContainer, this.assets.WindowHitbox, "weather_window")
     }
 
     create_desk_animated_object = async () => {
@@ -444,7 +444,7 @@ export default class RoomScene{
         desk_spritesheet_json2
         );
         await spritesheet.parse();
-        this.pcDeskObject = new PC_Desk(spritesheet, 470, 300, this.app, arrowSpriteSheet, this.roomEntitiesContainer, this.setDisplayDesktop, this.desktopContainer)
+        this.pcDeskObject = new PCDesk(spritesheet, 470, 300, this.app, arrowSpriteSheet, this.roomEntitiesContainer, this.setDisplayDesktop, this.desktopContainer, this.assets.ComputerHitbox, "pc_desk", {scaleX: 1, scaleY: 1, offsetX: 0, offsetY: -24})
     }
 
     create_lava_lamp_animated_object = async () => {
@@ -459,7 +459,7 @@ export default class RoomScene{
         lava_lamp_spritesheet_json
         );
         await spritesheet.parse();
-        this.lavaLampObject = new LavaLamp(spritesheet, 595, 325, this.app, arrowSpriteSheet, this.roomEntitiesContainer, this.desktopContainer, this.assets)
+        this.lavaLampObject = new LavaLamp(spritesheet, 595, 325, this.app, arrowSpriteSheet, this.roomEntitiesContainer, this.desktopContainer, this.assets.LavaLampHitbox, "lava_lamp", this.assets, {scaleX: 1, scaleY: 1.3, offsetX: 0, offsetY: -24})
         
     }
 
@@ -486,7 +486,8 @@ export default class RoomScene{
             this.personalStatus,
             this.assets.ThoughtBubbleSmall, 
             this.assets.ThoughtBubbleMedium, 
-            this.assets.ThoughtBubbleMain)
+            this.assets.ThoughtBubbleMain,
+            this.assets.CharacterHitbox, "character_main")
     }
 
     create_coffee_cup_animated_object = async () => {
@@ -501,11 +502,11 @@ export default class RoomScene{
         coffee_spritesheet_json
         );
         await spritesheet.parse();
-        this.coffeeObject = new Coffee_Cup(spritesheet, 134, 420, this.app, arrowSpriteSheet, this.roomEntitiesContainer, this.desktopContainer)
+        this.coffeeObject = new CoffeeCup(spritesheet, 134, 420, this.app, arrowSpriteSheet, this.roomEntitiesContainer, this.desktopContainer, this.assets.CoffeeCupHitbox, "coffee_cup", {scaleX: 1, scaleY: 1, offsetX: 0, offsetY: 21})
         this.coffeeObject.sprite.animationSpeed = 0.1
     }
 
-    create_online_sign_animated_object = async () => {
+    create_online_offline_sign_animated_object = async () => {
         const arrowSpriteSheet = new PIXI.Spritesheet(
         PIXI.Texture.from(selection_arrow_sprite_sheet_json.meta.image),
         selection_arrow_sprite_sheet_json
@@ -520,7 +521,7 @@ export default class RoomScene{
         //offline sign is just a static image, not an animated sprite :3
         const offlineSignTexture = this.assets.OfflineSign
         await spritesheetOnline.parse()
-        this.onlineSignObject = new OnlineOfflineSign(spritesheetOnline, offlineSignTexture, 57.5, 172, this.app, arrowSpriteSheet, this.roomEntitiesContainer, this.desktopContainer, this.assets.OnlineStatusBubble, this.onlineStatusObject)
+        this.onlineSignObject = new OnlineOfflineSign(spritesheetOnline, offlineSignTexture, 57.5, 172, this.app, arrowSpriteSheet, this.roomEntitiesContainer, this.desktopContainer, this.assets.OnlineStatusBubble, this.onlineStatusObject, this.assets.OnlineOfflineHitbox, "online_offline_sign_main_container", {scaleX: 1, scaleY: 1, offsetX: -45, offsetY: -14})
         
     }
 
@@ -536,7 +537,7 @@ export default class RoomScene{
         character_offline_spritesheet_json
         );
         await spritesheet.parse();
-        this.characterObject = new Character(spritesheet, 152, 380, this.app, arrowSpriteSheet, this.roomEntitiesContainer, this.desktopContainer)
+        this.characterObject = new Character(spritesheet, 152, 380, this.app, arrowSpriteSheet, this.roomEntitiesContainer, this.desktopContainer, this.assets.CharacterHitbox, "character_offline_container_main")
         this.characterObject.sprite.animationSpeed = 0.1;
     }
 
@@ -554,7 +555,7 @@ export default class RoomScene{
         await spritesheet.parse();
         
 
-        this.tvStandObject = new TV_Stand(spritesheet, 246, 296.5, this.app, arrowSpriteSheet, this.roomEntitiesContainer, this.desktopContainer, this.assets.TVStandImg, this.assets, this.weatherJson, this.weatherIcons, this.lastPlayedJson)
+        this.tvStandObject = new TVStand(spritesheet, 246, 296.5, this.app, arrowSpriteSheet, this.roomEntitiesContainer, this.desktopContainer, this.assets.TVStandImg, this.assets, this.weatherJson, this.weatherIcons, this.lastPlayedJson, this.assets.TVHitbox, "tv_container_main", {scaleX: .9, scaleY: 1, offsetX: 8, offsetY: -15})
     }
 
     create_aquarium_object = async () => {
@@ -602,7 +603,7 @@ export default class RoomScene{
         );
         await spritesheet.parse();
         
-        this.notesBoardObject = new NotesBoard(spritesheet, 631, 190, this.app, arrowSpritesheet, this.roomEntitiesContainer, this.desktopContainer, this.setNotesBoardOverlayDisplay)
+        this.notesBoardObject = new NotesBoard(spritesheet, 631, 190, this.app, arrowSpritesheet, this.roomEntitiesContainer, this.desktopContainer, this.setNotesBoardOverlayDisplay, this.assets.NotesBoardHitbox, "notes_board_main_container", {scaleX: 1, scaleY: 1, offsetX: 0, offsetY: 0})
     }
 
     create_speaker_object = async () => {

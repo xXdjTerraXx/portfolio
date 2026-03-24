@@ -3,8 +3,8 @@ import { BlurFilter } from "pixi.js"
 import * as TWEEN from "@tweenjs/tween.js"
 
 export default class NotesBoard extends AnimatedObject {
-    constructor(sprite_sheet, x_pos, y_pos, app, arrowSpriteSheet, roomEntitiesContainer, desktopContainer, setNotesOverlayFunction){
-        super(sprite_sheet, x_pos, y_pos, app, arrowSpriteSheet, roomEntitiesContainer, desktopContainer)
+    constructor(sprite_sheet, x_pos, y_pos, app, arrowSpriteSheet, roomEntitiesContainer, desktopContainer, setNotesOverlayFunction, hitboxTexture, label, hitboxConfig){
+        super(sprite_sheet, x_pos, y_pos, app, arrowSpriteSheet, roomEntitiesContainer, desktopContainer, hitboxTexture, label, hitboxConfig)
         this.sprite.label = "notes_board"
         this.sprite.interactive = true
         this.sprite.on("click", this.handleClick)

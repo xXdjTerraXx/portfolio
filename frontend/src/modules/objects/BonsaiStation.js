@@ -3,27 +3,31 @@ import Plant from "./Plant"
 
 //this is the zoomed out, default view of the bonsai area in the room
 export default class BonsaiStation extends Container{
-    constructor(app, roomEntitiesContainer, posX, posY, hitboxTexture, potTexture, trunkTexture, foliageTexture, bloomsTexture, growLightTexture, switchOnTexture, switchOffTexture, lightBeamTexture, newShading, Plant2Texture, growLightInitOnOrOff){
+    constructor(app, roomEntitiesContainer, posX, posY, hitboxTexture, potTexture, trunkTexture, foliageTexture, bloomsTexture, growLightTexture, switchOnTexture, switchOffTexture, lightBeamTexture, newShading, Plant2Texture, lightIsOn){
         super()
         this.label = 'bonsai_station_container'
         this.app = app
         this.roomEntitiesContainer = roomEntitiesContainer
+
         this.x = posX
         this.y = posY
 
         //the initial state of the growlight - 'on' || 'off'
-        this.growLightInitOnOrOff = growLightInitOnOrOff
+        this.lightIsOn = lightIsOn
 
         this.hitbox = new Sprite(hitboxTexture)
         this.hitbox.alpha = 0
         this.hitbox.label = 'bonsai_station_hitbox'
+        this.hitbox.interactive = true
+        this.hitbox.on("click", this.handleClick)
 
         this.bonsai = new Bonsai(potTexture, trunkTexture, foliageTexture, bloomsTexture, 15, 0, this.roomEntitiesContainer)
 
-        this.growLight = new GrowLight(growLightTexture,lightBeamTexture, -34, -3, this.roomEntitiesContainer)
+        this.growLight = new GrowLight(growLightTexture, -34, -3, this.roomEntitiesContainer)
         
-        const initialSwitchTexture = switchOnTexture
-        this.lightSwitch = new LightSwitch(initialSwitchTexture, -33, 77, switchOnTexture, switchOffTexture)
+        this.lightBeam = new LightBeam(lightBeamTexture, -36, -2)
+
+        this.lightSwitch = new LightSwitch(-33, 77, switchOffTexture, switchOnTexture, this, this.switchIsOn)
 
         //the small plant that sits by the tv
         this.plantObject2 = new Sprite(Plant2Texture)
@@ -34,11 +38,37 @@ export default class BonsaiStation extends Container{
         this.newShadingSprite.label = "new_shading"
         this.newShadingSprite.position.set(-33,-3)
 
-        this.addChild(this.hitbox, this.bonsai, this.plantObject2, this.growLight, this.newShadingSprite, this.lightSwitch)
-        this.roomEntitiesContainer.addChild(this)
+        
         
     }
+
+    init = () => {
+        if(this.lightIsOn){
+            this.addChild(this.hitbox, this.bonsai, this.plantObject2, this.lightSwitch.sprite, this.growLight, this.lightBeam, this.newShadingSprite)
+        }
+        else{
+            this.addChild(this.hitbox, this.bonsai, this.plantObject2, this.lightSwitch.sprite, this.growLight)
+        }
+        this.roomEntitiesContainer.addChild(this)
+    }
+
+    handleClick = () => {
+        console.log("CLICK")
+    }
+
+    handleTurnLightOff = () => {
+        console.log("CLICKED SWITCH - OFF")
+        this.lightIsOn = false
+        this.removeChild(this.lightBeam, this.newShadingSprite)
+    }
+
+    handleTurnLightOn = () => {
+        console.log("CLICKED SWITCH - ON")
+        this.lightIsOn = true
+        this.addChild(this.lightBeam, this.newShadingSprite)
+    }
 }
+
 
 class Bonsai extends Container{
     constructor(potTexture, trunkTexture, foliageTexture, bloomsTexture, posX, posY, roomEntitiesContainer){
@@ -63,39 +93,53 @@ class Bonsai extends Container{
 }
 
 class GrowLight extends Container{
-    constructor(growLightTexture, lightBeamTexture, posX, posY, roomEntitiesContainer){
+    constructor(growLightTexture, posX, posY, roomEntitiesContainer){
         super()
         this.label = 'grow_light_container'
         this.growLightSprite = new Sprite(growLightTexture)
         this.growLightSprite.position.set(0)
         
-        this.lightBeamSprite = new Sprite(lightBeamTexture)
-        this.lightBeamSprite.position.set(0)
         this.x = posX
         this.y = posY
         this.roomEntitiesContainer = roomEntitiesContainer
 
-        this.addChild(this.growLightSprite, this.lightBeamSprite)
+        this.addChild(this.growLightSprite)
         this.roomEntitiesContainer.addChild(this)
-
-
     }
 }
 
-class LightSwitch extends Sprite{
-    constructor(defaultTexture, xPos, yPos, switchOffTexture, switchOnTexture){
-        super(defaultTexture)
-        this.position.set(xPos, yPos)
-        this.eventMode = 'static'
-        this.on('pointerdown', this.handleClick)
-        this.switchIsOn = false
+class LightSwitch{
+    constructor(xPos, yPos, switchOffTexture, switchOnTexture, bonsaiStationContainer, switchIsOn){
+        //the initial state of the switch
+        this.switchIsOn = switchIsOn
+        
         this.switchOffTexture = switchOffTexture
         this.switchOnTexture = switchOnTexture
+
+        this.sprite = new Sprite(this.switchIsOn ? this.switchOnTexture : this.switchOffTexture)
+        this.sprite.position.set(xPos, yPos)
+        this.sprite.eventMode = 'static'
+        this.sprite.on('pointerdown', this.handleClick)
+        this.bonsaiStationContainer = bonsaiStationContainer//the main container/parent object
     }
 
     handleClick = () => {
         this.switchIsOn = !this.switchIsOn
-        if(this.switchIsOn)this.texture = this.switchOffTexture
-        else this.texture = this.switchOnTexture
+        if(this.switchIsOn === true){
+            this.sprite.texture = this.switchOnTexture
+            this.bonsaiStationContainer.handleTurnLightOn()
+        }
+        else if (this.switchIsOn === false){
+            this.sprite.texture = this.switchOffTexture
+            this.bonsaiStationContainer.handleTurnLightOff()
+        }
+    }
+}
+
+class LightBeam extends Sprite {
+    constructor(texture, x, y){
+        super(texture)
+        this.position.set(x,y)
+        this.label = "light_beam"
     }
 }

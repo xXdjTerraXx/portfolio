@@ -7,26 +7,36 @@ import BookShelfImg from './img/png/book_shelf.png'
 import BoxFanImg from './img/png/box_fan.png'
 import CablesImg from './img/png/cables.png'
 import CharacterImg from './img/png/character.png'
+import CharacterHitboxImg from './img/png/character_hitbox.png'
+import CoffeeCupHitboxImg from './img/png/coffee_cup_hitbox.png'
+import ComputerHitboxImg from './img/png/computer_hitbox.png'
 import JournalImg from './img/png/journal.png'
+import JournalHitboxImg from './img/png/journal_hitbox.png'
 import LavaLampOff from './img/png/lava_lamp_off.png'
+import LavaLampHitboxImg from './img/png/lava_lamp_hitbox.png'
 import MonitorBackgroundImg from './img/png/monitor_background.png'
 import NightstandLavaLampImg from './img/png/nightstand_lava_lamp.png'
 import NoteImg from './img/png/note.png'
 import NoteShadingImg from './img/png/note_shading.png'
 import NotesBoardImg from './img/png/notes_board.png'
+import NotesBoardHitboxImg from './img/png/notes_board_hitbox.png'
 import OfflineSignImg from './img/png/offline_sign.png'
+import OnlineOfflineHitboxImg from './img/png/online_sign_hitbox.png'
 import OnlineStatusBubbleImg from './img/png/online_status_bubble.png'
 import PCDeskImg from './img/png/pc_desk.png'
 import Plant1Img from './img/png/plant_1.png'
 import Plant2Img from './img/png/plant_2.png'
 import PosterImg from './img/png/posters.png'
+import RokuCityImg from './img/png/roku_city.png'
 import TVStandImg from './img/png/tv_stand.png'
 import WindowImg from './img/png/window.png'
 import TapestryImg from './img/png/tapestry.png'
 import TestBG from './img/png/test_bg.png'
 import TextMask from './img/png/text_mask.png'
+import TVHitboxImg from './img/png/tv_hitbox.png'
 import SpotifyPixel from './img/png/spotify_pixel.png'
 import Speaker from './img/png/speaker.png'
+import SpeakerHitboxImg from './img/png/speaker_hitbox.png'
 import SpeakerMenuBackground from './img/png/speaker_menu_background.png'
 import SpeakerMenuTracking from './img/png/speaker_menu_tracking.png'
 import SpeakerMenuVolume from './img/png/speaker_menu_volume.png'
@@ -58,6 +68,8 @@ import BonsaiStation_GrowLightSwitchOnImg from './img/png/bonsai_station/grow_li
 import BonsaiStation_GrowLightBeamImg from './img/png/bonsai_station/grow_light_beam.png'
 import BonsaiStation_GrowLight_NewShadingImg from './img/png/bonsai_station/grow_light_on_new_shading.png'
 import BonsaiStationHitboxImg from './img/png/bonsai_station/bonsai_station_hitbox.png'
+import WindowHitboxImg from './img/png/window_hitbox.png'
+
 //icons
 import MyComputerIcon from './img/png/icons/my_computer_icon.png'
 import AboutMeIcon from './img/png/icons/about_me_icon.png'
@@ -142,13 +154,33 @@ export const roomSceneManifest =  {
                "src":CharacterImg
             }, 
             {
+               "alias":"CharacterHitbox",
+               "src":CharacterHitboxImg
+            }, 
+            {
+               "alias":"CoffeeCupHitbox",
+               "src":CoffeeCupHitboxImg
+            }, 
+            {
+               "alias": "ComputerHitbox",
+               "src": ComputerHitboxImg
+            },
+            {
                "alias": "Journal",
                "src": JournalImg
+            },
+            {
+               "alias": "JournalHitbox",
+               "src": JournalHitboxImg
             },
             {
                "alias":"LavaLampOff",
                "src":LavaLampOff
             }, 
+            {
+               "alias": "LavaLampHitbox",
+               "src": LavaLampHitboxImg
+            },
             {
                "alias": "MonitorBackgroundImg",
                "src": MonitorBackgroundImg
@@ -162,6 +194,10 @@ export const roomSceneManifest =  {
                "src": NotesBoardImg
             },
             {
+               "alias": "NotesBoardHitbox",
+               "src": NotesBoardHitboxImg
+            },
+            {
                "alias": "Note",
                "src": NoteImg
             },
@@ -172,6 +208,10 @@ export const roomSceneManifest =  {
             {
                "alias": "OfflineSign",
                "src": OfflineSignImg
+            },
+            {
+               "alias": "OnlineOfflineHitbox",
+               "src": OnlineOfflineHitboxImg
             },
             {
                "alias": "OnlineStatusBubble",
@@ -202,6 +242,11 @@ export const roomSceneManifest =  {
                "src": TapestryImg
             },
             {
+               "alias": "RokuCity",
+               "src": RokuCityImg
+            },
+            
+            {
                "alias": "TVStandImg",
                "src": TVStandImg
             },
@@ -216,6 +261,10 @@ export const roomSceneManifest =  {
             {
                "alias": "TextMask",
                "src": TextMask
+            },
+            {
+               "alias": "TVHitbox",
+               "src": TVHitboxImg
             },
             {
                "alias": "SpotifyPixel",
@@ -248,6 +297,10 @@ export const roomSceneManifest =  {
             {
                "alias": "Speaker",
                "src": Speaker
+            },
+            {
+               "alias": "SpeakerHitbox",
+               "src": SpeakerHitboxImg
             },
             {
                "alias": "SpeakerMenuBackground",
@@ -345,6 +398,10 @@ export const roomSceneManifest =  {
             {
                "alias": "BonsaiStationHitbox",
                "src": BonsaiStationHitboxImg
+            },
+            {
+               "alias": "WindowHitbox",
+               "src": WindowHitboxImg
             }
          ]
       },
