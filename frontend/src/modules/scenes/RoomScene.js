@@ -18,8 +18,6 @@ import { desk_spritesheet_json2, lava_lamp_spritesheet_json, character_spriteshe
     coffee_spritesheet_json, online_spritesheet_json, character_offline_spritesheet_json, 
     selection_arrow_sprite_sheet_json, tv_stand_sprite_sheet_json,
     rain_sprite_sheet, speaker_sprite_sheet_json,
-    aquarium_sprite_sheet_json,
-    aquarium_scene_background_sprite_sheet_json,
     journal_spritesheet_json,
     notes_board_spritesheet_json} from '../../json/desk_spritesheet'
 import Plant from '../objects/Plant'
@@ -43,7 +41,6 @@ import SpeakerTrack from '../base_classes/SpeakerTrack'
 import { Howler } from 'howler'
 import NowPlaying from '../speaker_buttons/NowPlaying'
 import TrackList from '../speaker_buttons/TrackList'
-import Aquarium from '../objects/Aquarium'
 import Tapestry from '../objects/Tapestry'
 import StringLights from '../objects/StringLights'
 import Journal from '../objects/Journal'
@@ -51,9 +48,11 @@ import NotesBoard from '../objects/NotesBoard'
 import Rug from '../objects/Rug'
 import Note from '../base_classes/Note'
 import BonsaiStation from '../objects/BonsaiStation'
+import LightManager from '../objects/LightManager.js'
+import { LIGHTING_CONFIG } from '../../config.lightingSystem.js'
 
 export default class RoomScene{
-    constructor(app, set_state, assets, sprite_sheets, fonts, onlineStatusObject, icons, weatherJson, weatherIcons, lastPlayedJson, soundsObject, personalStatus, notesArray, mood){
+    constructor(app, set_state, assets, sprite_sheets, fonts, onlineStatusObject, icons, weatherJson, weatherIcons, lastPlayedJson, soundsObject, personalStatus, notesArray, mood, lights){
         this.app = app
         this.set_state = set_state
 
@@ -81,8 +80,6 @@ export default class RoomScene{
         this.displayDesktop = false
         this.isDesktopDisplaying = false
 
-        this.aquariumIsDisplaying = false
-
         this.notesOverlayIsDisplaying = false
 
         this.displaySpeakerMenu = false
@@ -95,6 +92,12 @@ export default class RoomScene{
         this.currentTrack = null
         this.currentTime = ''
         this.volumeLevel = 0.5
+
+        this.roomEntitiesContainer = new PIXI.Container()
+
+        //the lights collection of images from the asset loader
+        this.lights = lights
+        this.lightManager = new LightManager(this.app, LIGHTING_CONFIG, this.lights, this.roomEntitiesContainer)
     }
 
     //functions that relate to audio player
@@ -173,10 +176,11 @@ export default class RoomScene{
 
     //functions to initialize various assets
     initializeAssets = async () => {
-        this.roomEntitiesContainer = new PIXI.Container()
+ 
+        // this.roomEntitiesContainer = new PIXI.Container()
+        
         await this.initializeDesktopAssets()
         await this.initializeSpeakerMenuAssets()
-        await this.initializeAquariumAssets()
         await this.initializeNotesOverlay()
         
         this.roomEntitiesContainer.label = "room_entities"
@@ -184,6 +188,8 @@ export default class RoomScene{
         this.backgroundObject = new Background(this.assets.BackgroundImg, 0, 0, this.app, this.roomEntitiesContainer)
         this.postersObject = new Posters(this.assets.PosterImg, 0, 0, this.app, this.roomEntitiesContainer)
         this.tapestryObject = new Tapestry(this.assets.TapestryImg, 186, 0, this.app, this.roomEntitiesContainer)
+        //add lights to stage in front of bg stuff but behind everything else
+        this.lightManager.initLightContainer()
         this.stringLightsObject = new StringLights(this.assets.StringLights_String, 0, 0, this.app, this.roomEntitiesContainer, this.assets.StringLights_Lights, this.assets.StringLights_Lights2)
         this.rugObject = new Rug(this.assets.RugImg, 276, 378, this.app, this.roomEntitiesContainer)
         await this.create_speaker_object()
@@ -195,7 +201,6 @@ export default class RoomScene{
         await this.create_tv_stand_object()
         await this.create_desk_animated_object()
         await this.create_lava_lamp_animated_object()
-        // await this.create_aquarium_object()
         await this.create_journal_object()
         this.bedObject = new Bed(this.assets.BedImg, 0, 0, this.app, this.roomEntitiesContainer)
         this.bookshelfObject = new BookShelf(this.assets.BookShelfImg, 0, 0, this.app, this.roomEntitiesContainer)
@@ -233,30 +238,12 @@ export default class RoomScene{
         this.soccerBall = new Ball(this.assets.SoccerBall, 100, 0, this.app, this.roomEntitiesContainer)
         this.app.stage.addChild(this.roomEntitiesContainer)
         
+        //init the light manager which adds dark overlay to stage and adds
+        //its update func to ticker
+        this.lightManager.init()
         // this.coffeeCupObject = new Coffee_Cup(this.assets.CoffeeSpriteSheet, 250, 350)
     }
 
-    initializeAquariumAssets = async () => {
-        this.aquariumContainer = new PIXI.Container({isRenderGroup: true})
-        this.aquariumContainer.label = "aquarium_container"
-
-        //animated background
-        const backgroundSpritesheet = new PIXI.Spritesheet(
-            PIXI.Texture.from(aquarium_scene_background_sprite_sheet_json.meta.image),
-            aquarium_scene_background_sprite_sheet_json
-            );
-            await backgroundSpritesheet.parse();
-
-        this.aquariumBackground = new PIXI.AnimatedSprite(backgroundSpritesheet.animations.main)
-        this.aquariumBackground.play()
-
-        //glass case on top
-        this.aquariumGlass = new PIXI.Sprite(this.assets.AquariumCase)
-        this.aquariumGlass.label = "aquarium_case"
-
-        this.aquariumContainer.addChild(this.aquariumBackground, this.aquariumGlass)
-        this.aquariumContainer.scale.set(3)
-    }
 
     initializeNotesOverlay = async () => {
         this.notesOverlayContainer = new PIXI.Container({isRenderGroup: true})
@@ -387,11 +374,6 @@ export default class RoomScene{
         this.isDesktopDisplaying = true
     }
 
-    setAquariumDisplay = () => {
-        this.app.stage.addChild(this.aquariumContainer)
-        this.aquariumIsDisplaying = true
-    }
-
     setNotesBoardOverlayDisplay = () => {
         console.log("setting note board overlay....")
         this.app.stage.addChild(this.notesOverlayContainer)
@@ -444,7 +426,7 @@ export default class RoomScene{
         desk_spritesheet_json2
         );
         await spritesheet.parse();
-        this.pcDeskObject = new PCDesk(spritesheet, 470, 300, this.app, arrowSpriteSheet, this.roomEntitiesContainer, this.setDisplayDesktop, this.desktopContainer, this.assets.ComputerHitbox, "pc_desk", {scaleX: 1, scaleY: 1, offsetX: 0, offsetY: -24})
+        this.pcDeskObject = new PCDesk(spritesheet, 470, 300, this.app, arrowSpriteSheet, this.roomEntitiesContainer, this.setDisplayDesktop, this.desktopContainer, this.assets.ComputerHitbox, "pc_desk", {scaleX: 1, scaleY: 1, offsetX: 0, offsetY: -24}, this.lightManager, 'computerMonitor')
     }
 
     create_lava_lamp_animated_object = async () => {
@@ -459,7 +441,7 @@ export default class RoomScene{
         lava_lamp_spritesheet_json
         );
         await spritesheet.parse();
-        this.lavaLampObject = new LavaLamp(spritesheet, 595, 325, this.app, arrowSpriteSheet, this.roomEntitiesContainer, this.desktopContainer, this.assets.LavaLampHitbox, "lava_lamp", this.assets, {scaleX: 1, scaleY: 1.3, offsetX: 0, offsetY: -24})
+        this.lavaLampObject = new LavaLamp(spritesheet, 595, 325, this.app, arrowSpriteSheet, this.roomEntitiesContainer, this.desktopContainer, this.assets.LavaLampHitbox, "lava_lamp", this.assets, {scaleX: 1, scaleY: 1.3, offsetX: 0, offsetY: -24}, this.lightManager)
         
     }
 
@@ -521,7 +503,7 @@ export default class RoomScene{
         //offline sign is just a static image, not an animated sprite :3
         const offlineSignTexture = this.assets.OfflineSign
         await spritesheetOnline.parse()
-        this.onlineSignObject = new OnlineOfflineSign(spritesheetOnline, offlineSignTexture, 57.5, 172, this.app, arrowSpriteSheet, this.roomEntitiesContainer, this.desktopContainer, this.assets.OnlineStatusBubble, this.onlineStatusObject, this.assets.OnlineOfflineHitbox, "online_offline_sign_main_container", {scaleX: 1, scaleY: 1, offsetX: -45, offsetY: -14})
+        this.onlineSignObject = new OnlineOfflineSign(spritesheetOnline, offlineSignTexture, 57.5, 172, this.app, arrowSpriteSheet, this.roomEntitiesContainer, this.desktopContainer, this.assets.OnlineStatusBubble, this.onlineStatusObject, this.assets.OnlineOfflineHitbox, "online_offline_sign_main_container", {scaleX: 1, scaleY: 1, offsetX: -45, offsetY: -14}, this.lightManager)
         
     }
 
@@ -555,23 +537,7 @@ export default class RoomScene{
         await spritesheet.parse();
         
 
-        this.tvStandObject = new TVStand(spritesheet, 246, 296.5, this.app, arrowSpriteSheet, this.roomEntitiesContainer, this.desktopContainer, this.assets.TVStandImg, this.assets, this.weatherJson, this.weatherIcons, this.lastPlayedJson, this.assets.TVHitbox, "tv_container_main", {scaleX: .9, scaleY: 1, offsetX: 8, offsetY: -15})
-    }
-
-    create_aquarium_object = async () => {
-        const arrowSpritesheet = new PIXI.Spritesheet(
-        PIXI.Texture.from(selection_arrow_sprite_sheet_json.meta.image),
-        selection_arrow_sprite_sheet_json
-        );
-        await arrowSpritesheet.parse();
-
-        const spritesheet = new PIXI.Spritesheet(
-        PIXI.Texture.from(aquarium_sprite_sheet_json.meta.image),
-        aquarium_sprite_sheet_json
-        );
-        await spritesheet.parse();
-        
-        this.aquariumObject = new Aquarium(spritesheet, 76, 236.5, this.app, arrowSpritesheet, this.roomEntitiesContainer, this.desktopContainer, this.setAquariumDisplay)
+        this.tvStandObject = new TVStand(spritesheet, 246, 296.5, this.app, arrowSpriteSheet, this.roomEntitiesContainer, this.desktopContainer, this.assets.TVStandImg, this.assets, this.weatherJson, this.weatherIcons, this.lastPlayedJson, this.assets.TVHitbox, "tv_container_main", {scaleX: .9, scaleY: 1, offsetX: 8, offsetY: -15}, this.lightManager)
     }
 
     create_journal_object = async () => {

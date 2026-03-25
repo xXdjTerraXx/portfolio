@@ -1,30 +1,27 @@
-import AnimatedObject from "../base_classes/AnimatedObject"
+
+import EmissiveObject from "../base_classes/EmissiveObject"
 import { BlurFilter, Ticker } from "pixi.js"
 import * as TWEEN from "@tweenjs/tween.js"
 
-const overlayDiv = document.querySelector(".glass-overlay")
-
-export default class PCDesk extends AnimatedObject {
-    constructor(sprite_sheet, x_pos, y_pos, app, arrowSpriteSheet, roomEntitiesContainer, setDisplayDesktop, desktopContainer, hitboxTexture, label, hitboxConfig){
-        super(sprite_sheet, x_pos, y_pos, app, arrowSpriteSheet, roomEntitiesContainer, desktopContainer, hitboxTexture, label, hitboxConfig)
-        this.frameWidth = 163
-        this.frameHeight = 125
-        this.numberOfFrames = 0
-        this.currentFrame = 0
-        this.clicked = false
+export default class PCDesk extends EmissiveObject {
+    constructor(sprite_sheet, x_pos, y_pos, app, arrowSpriteSheet, roomEntitiesContainer, setDisplayDesktop, desktopContainer, hitboxTexture, label, hitboxConfig, lightManager, lightConfigKey){
+        super(sprite_sheet, x_pos, y_pos, app, arrowSpriteSheet, roomEntitiesContainer, desktopContainer, hitboxTexture, label, hitboxConfig, lightManager, lightConfigKey)
         
         //for mouseover
         this.mouseOver = false
         this.shadowBlur = 10
 
-        this.hitbox.on('pointerdown', this.handleClick);
+        //function passed from parent that displays the desktop overylay 
+        // in the handleClick func
         this.setDisplayDesktop = setDisplayDesktop
-        this.desktopContainer = desktopContainer
-        
+
+        //these values for flickering of the light emission
+        this.baseAlpha = 0.2
+        this.activityStrength = 0.1
+        this.time = 0
     }
 
     
-
     handleClick = () => {
         console.log("desk clicked!!!", this.app)
         
@@ -92,7 +89,18 @@ export default class PCDesk extends AnimatedObject {
         // this.setDisplayDesktop()
     }
 
-    run = (cycleCount, mouseX, mouseY) => {
-       
+    //over riding this method here
+    updateEmission = () => {
+        this.time += this.app.ticker.deltaTime
+
+        this.emissionSprite.position.set(
+            this.mainContainer.x,
+            this.mainContainer.y
+        )
+
+        // subtle screen flicker
+        const flicker = Math.sin(this.time * 0.05) * this.activityStrength
+
+        this.emissionSprite.alpha = this.baseAlpha + flicker
     }
 }

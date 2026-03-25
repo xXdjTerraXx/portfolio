@@ -1,117 +1,287 @@
+// import { Sprite, AnimatedSprite, Container, Text, TextStyle } from "pixi.js"
+// import { Tween, Easing } from "@tweenjs/tween.js"
+// import SelectionArrow from "./SelectionArrow"
+// import { GlowFilter } from "pixi-filters"
+// import { timeAgo } from "../../utils"
+
+// export default class OnlineOfflineSign {
+//     constructor(onlineSpritesheet, offlineSignTexture, x_pos, y_pos, app, arrowSpriteSheet, roomEntitiesContainer, desktopContainer, onlineStatusBubbleTexture, onlineStatusObject, hitboxTexture, label, hitboxConfig){
+    
+//         this.app = app
+//         //for the sign, either the online sprite or offline sprite is added to signContainer
+//         //then THAT is what is added to the scene ^-^
+//         this.mainContainer = new Container()
+//         this.mainContainer.label = label
+//         this.mainContainer.x = x_pos
+//         this.mainContainer.y = y_pos
+
+//         this.hitbox = new Sprite(hitboxTexture)
+//         this.hitbox.position.set(hitboxConfig.offsetX,hitboxConfig.offsetY)
+//         this.hitbox.eventMode = 'static'
+//         this.hitbox.label = 'hitbox'
+//         this.hitbox.alpha = 0
+//         this.hitbox.on('pointerover', this.handleMouseIn)
+//         this.hitbox.on('pointerout', this.handleMouseOut)
+//         this.hitbox.on('click', this.handleClick)
+
+//         this.roomEntitiesContainer = roomEntitiesContainer
+//         this.desktopContainer = desktopContainer
+//         this.desktopIsDisplaying = false
+//         this.app.ticker.add(this.getIsDesktopDisplaying)
+
+//         this.onlineStatusObject = onlineStatusObject
+//         this.onlineStatusBubbleTexture = onlineStatusBubbleTexture
+//         this.onlineStatusBubble = new OnlineStatusBubble(this.app, this.onlineStatusBubbleTexture, this.onlineStatusObject)
+
+        
+        
+//         this.onlineSpritesheet = onlineSpritesheet
+//         this.offlineSignTexture = offlineSignTexture
+
+
+//         this.initOnlineSignSprite()
+//         this.initOfflineSignSprite()
+//         //buildSign looks at online status and adds the correct sign to container
+//         this.buildSign()
+
+//         //set up selection arrow
+//         this.selection_arrow_sprite_sheet = arrowSpriteSheet
+//         this.selectionArrow = new SelectionArrow(this.selection_arrow_sprite_sheet, x_pos, y_pos, app, this.mainContainer.children[0].height) 
+
+//     }
+
+//     initOnlineSignSprite = () => {
+//         this.onlineSprite = new AnimatedSprite(this.onlineSpritesheet.animations.main)
+//         this.onlineSprite.label = "online_sign"
+//         this.onlineSprite.animationSpeed = 0.1666
+//         this.onlineSprite.anchor.set(0.5)
+//         this.onlineSprite.x = 0
+//         this.onlineSprite.y = 0
+//         this.onlineSprite.scale.set(0.8, 0.8)
+//     }
+
+//     initOfflineSignSprite = () => {
+//         this.offlineSprite = new Sprite(this.offlineSignTexture)
+//         this.offlineSprite.label = "offline_sign"
+//         this.offlineSprite.anchor.set(0.5)
+//         this.offlineSprite.x = 0
+//         this.offlineSprite.y = 0
+//         this.offlineSprite.scale.set(0.2, 0.2)
+//     }
+
+//     buildSign = () => {
+//         //add the correct sprite as child of sign container
+//         if (this.onlineStatusObject.isOnline == false){
+//             this.mainContainer.addChild(this.offlineSprite, this.hitbox)
+//         }
+//         else{
+//             this.mainContainer.addChild(this.onlineSprite, this.hitbox)
+//             this.mainContainer.children[0].play()
+//         }
+//         //add the status bubble as a child too
+//         this.mainContainer.addChild(this.onlineStatusBubble)
+//          //add signContainer to scene
+//         this.roomEntitiesContainer.addChild(this.mainContainer)
+//     }
+
+//     getIsDesktopDisplaying = () => {
+//         this.desktopIsDisplaying = this.app.stage.children.some(cont => cont.label == 'desktop_container')
+//     }
+
+//     handleMouseIn = () => {
+//         if(this.desktopIsDisplaying == false){
+
+//         //add outline effect
+//         this.mainContainer.filters = [new GlowFilter({alpha: 0.2, color: '#bbb4f3'})]
+//         //display hovering arrow
+//         this.app.stage.addChild(this.selectionArrow.sprite)
+//     }
+//     }
+
+//     handleMouseOut = () => {
+//         if(this.desktopIsDisplaying == false){
+
+//         // remove outline effect from this
+//         this.mainContainer.filters = null
+//        //display hovering arrow
+//         this.app.stage.removeChild(this.selectionArrow.sprite)
+//         }
+//     }
+
+//     handleClick = () => {
+//         this.onlineStatusBubble.isDisplaying
+//         ? this.onlineStatusBubble.handleHide()
+//         : this.onlineStatusBubble.handleDisplay()
+//     }
+// }
+
+import EmissiveObject from "../base_classes/EmissiveObject"
 import { Sprite, AnimatedSprite, Container, Text, TextStyle } from "pixi.js"
 import { Tween, Easing } from "@tweenjs/tween.js"
 import SelectionArrow from "./SelectionArrow"
 import { GlowFilter } from "pixi-filters"
 import { timeAgo } from "../../utils"
 
-export default class OnlineOfflineSign {
-    constructor(onlineSpritesheet, offlineSignTexture, x_pos, y_pos, app, arrowSpriteSheet, roomEntitiesContainer, desktopContainer, onlineStatusBubbleTexture, onlineStatusObject, hitboxTexture, label, hitboxConfig){
-    
-        this.app = app
-        //for the sign, either the online sprite or offline sprite is added to signContainer
-        //then THAT is what is added to the scene ^-^
-        this.mainContainer = new Container()
-        this.mainContainer.label = label
-        this.mainContainer.x = x_pos
-        this.mainContainer.y = y_pos
+export default class OnlineOfflineSign extends EmissiveObject {
+    constructor(
+        onlineSpritesheet,
+        offlineSignTexture,
+        x_pos,
+        y_pos,
+        app,
+        arrowSpriteSheet,
+        roomEntitiesContainer,
+        desktopContainer,
+        onlineStatusBubbleTexture,
+        onlineStatusObject,
+        hitboxTexture,
+        label,
+        hitboxConfig,
+        lightManager
+    ){
 
-        this.hitbox = new Sprite(hitboxTexture)
-        this.hitbox.position.set(hitboxConfig.offsetX,hitboxConfig.offsetY)
-        this.hitbox.eventMode = 'static'
-        this.hitbox.label = 'hitbox'
-        this.hitbox.alpha = 0
-        this.hitbox.on('pointerover', this.handleMouseIn)
-        this.hitbox.on('pointerout', this.handleMouseOut)
-        this.hitbox.on('click', this.handleClick)
-
-        this.roomEntitiesContainer = roomEntitiesContainer
-        this.desktopContainer = desktopContainer
-        this.desktopIsDisplaying = false
-        this.app.ticker.add(this.getIsDesktopDisplaying)
+        super(
+            onlineSpritesheet, 
+            x_pos,
+            y_pos,
+            app,
+            arrowSpriteSheet,
+            roomEntitiesContainer,
+            desktopContainer,
+            hitboxTexture,
+            label,
+            hitboxConfig,
+            lightManager,
+            'onlineSign'
+        )
 
         this.onlineStatusObject = onlineStatusObject
         this.onlineStatusBubbleTexture = onlineStatusBubbleTexture
-        this.onlineStatusBubble = new OnlineStatusBubble(this.app, this.onlineStatusBubbleTexture, this.onlineStatusObject)
 
-        
-        
-        this.onlineSpritesheet = onlineSpritesheet
-        this.offlineSignTexture = offlineSignTexture
+        this.mainContainer.removeChild(this.sprite) // remove base animated sprite
 
+        // =========================
+        // 🔥 ONLINE (animated neon)
+        // =========================
+        this.onlineSprite = new AnimatedSprite(onlineSpritesheet.animations.main)
+        this.onlineSprite.anchor.set(0.5)
+        this.onlineSprite.scale.set(.4)
+        this.onlineSprite.animationSpeed = 0.1666
 
-        this.initOnlineSignSprite()
-        this.initOfflineSignSprite()
-        //buildSign looks at online status and adds the correct sign to container
+        // =========================
+        // 🌑 OFFLINE (static, no light)
+        // =========================
+        this.offlineSprite = new Sprite(offlineSignTexture)
+        this.offlineSprite.anchor.set(0.5)
+        this.offlineSprite.scale.set(0.2)
+
+        // =========================
+        // 💬 STATUS BUBBLE
+        // =========================
+        this.onlineStatusBubble = new OnlineStatusBubble(
+            this.app,
+            this.onlineStatusBubbleTexture,
+            this.onlineStatusObject
+        )
+
+        // =========================
+        // BUILD INITIAL STATE
+        // =========================
         this.buildSign()
 
-        //set up selection arrow
-        this.selection_arrow_sprite_sheet = arrowSpriteSheet
-        this.selectionArrow = new SelectionArrow(this.selection_arrow_sprite_sheet, x_pos, y_pos, app, this.mainContainer.children[0].height) 
+        // neon tuning
+        this.baseAlpha = 0.25
+        this.flickerStrength = 0.12
+        this.time = 0
 
-    }
+        // make glow slightly bigger
+        this.emissionSprite.scale.set(0.4)
 
-    initOnlineSignSprite = () => {
-        this.onlineSprite = new AnimatedSprite(this.onlineSpritesheet.animations.main)
-        this.onlineSprite.label = "online_sign"
-        this.onlineSprite.animationSpeed = 0.1666
-        this.onlineSprite.anchor.set(0.5)
-        this.onlineSprite.x = 0
-        this.onlineSprite.y = 0
-        this.onlineSprite.scale.set(0.8, 0.8)
-    }
-
-    initOfflineSignSprite = () => {
-        this.offlineSprite = new Sprite(this.offlineSignTexture)
-        this.offlineSprite.label = "offline_sign"
-        this.offlineSprite.anchor.set(0.5)
-        this.offlineSprite.x = 0
-        this.offlineSprite.y = 0
-        this.offlineSprite.scale.set(0.2, 0.2)
+        //reposition the hitbox on this one
+        this.hitbox.position.set(-.5, .5)
     }
 
     buildSign = () => {
-        //add the correct sprite as child of sign container
-        if (this.onlineStatusObject.isOnline == false){
+        this.mainContainer.removeChildren()
+
+        if (!this.onlineStatusObject.isOnline) {
             this.mainContainer.addChild(this.offlineSprite, this.hitbox)
-        }
-        else{
+
+            this.setLightState(false)
+            this.emissionSprite.alpha = 0
+        } else {
             this.mainContainer.addChild(this.onlineSprite, this.hitbox)
-            this.mainContainer.children[0].play()
+            this.onlineSprite.play()
+
+            this.setLightState(true)
         }
-        //add the status bubble as a child too
+
         this.mainContainer.addChild(this.onlineStatusBubble)
-         //add signContainer to scene
-        this.roomEntitiesContainer.addChild(this.mainContainer)
     }
 
-    getIsDesktopDisplaying = () => {
-        this.desktopIsDisplaying = this.app.stage.children.some(cont => cont.label == 'desktop_container')
-    }
+    // =========================
+    // ✨ NEON FLICKER
+    // =========================
+    // updateEmission = () => {
+    //     this.time += this.app.ticker.deltaTime
 
-    handleMouseIn = () => {
-        if(this.desktopIsDisplaying == false){
+    //     this.emissionSprite.position.set(
+    //         this.mainContainer.x,
+    //         this.mainContainer.y
+    //     )
 
-        //add outline effect
-        this.mainContainer.filters = [new GlowFilter({alpha: 0.2, color: '#bbb4f3'})]
-        //display hovering arrow
-        this.app.stage.addChild(this.selectionArrow.sprite)
-    }
-    }
+    //     if (!this.onlineStatusObject.isOnline) {
+    //         this.emissionSprite.alpha = 0
+    //         return
+    //     }
 
-    handleMouseOut = () => {
-        if(this.desktopIsDisplaying == false){
+    //     const flicker =
+    //         Math.sin(this.time * 0.2) * this.flickerStrength +
+    //         (Math.random() * 0.05)
 
-        // remove outline effect from this
-        this.mainContainer.filters = null
-       //display hovering arrow
-        this.app.stage.removeChild(this.selectionArrow.sprite)
+    //     this.emissionSprite.alpha = this.baseAlpha + flicker
+    // }
+
+    //over riding the base class here bc this one has a neon flickerr!!
+    updateEmission = () => {
+        // always keep emission sprite positioned
+        this.emissionSprite.position.set(
+            this.mainContainer.x,
+            this.mainContainer.y
+        )
+
+        // if offline no light at all
+        if (!this.onlineStatusObject.isOnline) {
+            this.emissionSprite.alpha = 0
+            this.lightManager.setLightIntensity(this.lightId, 0)
+            return
         }
+
+        // flicker
+        const offFrames = new Set([3, 5, 7, 16, 18, 30])
+        const frame = this.onlineSprite.currentFrame
+        const isFlicker = offFrames.has(frame)
+
+        // emission
+        if (isFlicker) {
+            this.emissionSprite.alpha = 0.05
+        } else {
+            const base = 0.25
+            const variation = Math.sin(frame * 0.8) * 0.05
+            this.emissionSprite.alpha = base + variation
+        }
+
+        // LIGHT MANAGER (room light)
+        this.lightManager.setLightIntensity(
+            this.lightId,
+            isFlicker ? 0.05 : 0.25
+        )
     }
 
     handleClick = () => {
         this.onlineStatusBubble.isDisplaying
-        ? this.onlineStatusBubble.handleHide()
-        : this.onlineStatusBubble.handleDisplay()
+            ? this.onlineStatusBubble.handleHide()
+            : this.onlineStatusBubble.handleDisplay()
     }
 }
 

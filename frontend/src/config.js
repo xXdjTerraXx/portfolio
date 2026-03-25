@@ -5,3 +5,7 @@ export const SOCIAL_LINKS = {
     soundcloud: {url: ''},
     github: {url: ''}
 }
+
+export const ANIMATION_SPEED = {
+    tvStand: 0.2
+}

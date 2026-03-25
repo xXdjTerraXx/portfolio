@@ -30,6 +30,7 @@ import SocialIconDiscord from './img/icons/socials/discord.png'
 import DefaultAlbumArt from './img/png/default_track_art.png'
 
 
+
 //preload all audio
 const sounds = {
     RoomSound: {audio: new Howl({ src: [RoomSound]}), title: 'room sound'},
@@ -359,49 +360,6 @@ class PersonalStatusWindow extends BaseWindow {
     }
 }
 
-// class LastPlayedWindow extends BaseWindow {
-//     constructor() {
-//         super({
-//             iconSrc: PixelMusicIcon,
-//             titleText: "last song",
-//             containerClass: "music-container",
-//             titleClass: "music-title"
-//         })
-
-//         this.bodyParagraph = document.createElement('h5')
-//         this.bodyParagraphAgo = document.createElement('p')
-//         this.blinkerContainer = document.createElement('div')
-//         this.timeAgoContainer = document.createElement('div')
-//     }
-
-//     init(lastPlayed) {
-//         this.setupBase()
-
-//         this.titleContainerDiv.classList.add("music-title-container-div")
-//         this.bodyContainerDiv.classList.add("music-body-container-div")
-
-//         this.bodyParagraph.classList.add("music-body-paragraph")
-//         this.bodyParagraphAgo.classList.add("music-body-paragraph")
-
-//         const blinker = new Image()
-//         blinker.src = lastPlayed.playedAgo === 'Currently Playing'
-//             ? LiveBlinkerGif
-//             : GreyCircle
-//         blinker.classList.add("live-blinker")
-
-//         this.bodyParagraph.textContent = `${lastPlayed.artistName} - ${lastPlayed.songTitle}`
-//         this.bodyParagraphAgo.textContent = lastPlayed.playedAgo
-
-//         this.blinkerContainer.append(blinker)
-//         this.timeAgoContainer.append(this.bodyParagraphAgo)
-
-//         this.bodyContainerDiv.append(this.bodyParagraph, this.blinkerContainer)
-//         this.containerDiv.append(this.timeAgoContainer)
-
-//         this.mount()
-//     }
-// }
-
 class LastPlayedWindow extends BaseWindow {
     constructor() {
         super({
@@ -559,6 +517,7 @@ export default class Application{
             // const assets = await PIXI.Assets.loadBundle('png');
             this.soundsObject = soundsObject
             this.assets = await PIXI.Assets.loadBundle('png');
+            this.lights = await PIXI.Assets.loadBundle('lights')
             this.sprite_sheets = await PIXI.Assets.loadBundle('sprite_sheets')
             this.icons = await PIXI.Assets.loadBundle('icons')
             this.weatherIcons = await PIXI.Assets.loadBundle('weather_icons')
@@ -566,12 +525,13 @@ export default class Application{
             this.stateManager = new StateManager('room_scene')
             this.currentState = this.stateManager.currentState
 
+
             this.onlineStatusObject = onlineStatusObject
             this.personalStatus = personalStatus
             this.notesArray = notesArray
             this.mood = mood
 
-            this.roomScene = new RoomScene(this.app, this.set_state, this.assets, this.sprite_sheets, this.fonts, this.onlineStatusObject, this.icons, weatherJson, this.weatherIcons, lastPlayedJson, this.soundsObject, this.personalStatus, this.notesArray, this.mood)
+            this.roomScene = new RoomScene(this.app, this.set_state, this.assets, this.sprite_sheets, this.fonts, this.onlineStatusObject, this.icons, weatherJson, this.weatherIcons, lastPlayedJson, this.soundsObject, this.personalStatus, this.notesArray, this.mood, this.lights)
             this.desktopScene = new DesktopScene(this.app, this.set_state, this.assets, this.sprite_sheets)
 
             this.statesObject = {

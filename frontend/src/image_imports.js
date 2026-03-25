@@ -121,6 +121,11 @@ import PixelEmulator from './fonts/PixelEmulator.ttf'
 import Pixellari from './fonts/Pixellari.ttf'
 import NotesFont from './fonts/gloriahallelujah.ttf'
 
+//lights
+import RadialGlowImg from './img/png/lights/radial_glow.png'
+import WideGlowImg from './img/png/lights/wide_glow.png'
+import OnlineGlowImg from './img/png/lights/online_glow.png'
+
 export const roomSceneManifest =  {
    "bundles":[
       //pngs
@@ -571,6 +576,24 @@ export const roomSceneManifest =  {
             {
                "alias": "NotesFont",
                "src": NotesFont
+            }
+         ]
+      },
+      //lights
+      {
+         "name": "lights",
+         "assets":[
+            {
+               "alias": 'RadialGlow',
+               "src": RadialGlowImg
+            },
+            {
+               "alias": 'WideGlow',
+               "src": WideGlowImg
+            },
+            {
+               "alias": 'OnlineGlow',
+               "src": OnlineGlowImg
             }
          ]
       }

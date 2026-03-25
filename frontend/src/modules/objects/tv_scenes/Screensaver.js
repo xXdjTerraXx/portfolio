@@ -68,13 +68,15 @@ export default class Screensaver{
         this.tempText.position.set(230, 260)
 
         // this.load()
-        console.log('A;SLDFA;LSJDHF;ALSDJKF;LAKSDJFL;ASKJ', this.currentWeatherIcon)
-        this.container.filters = [new CRTFilter()]
+        this.crtFilter = new CRTFilter()
+        this.container.filters = [this.crtFilter]
         this.container.addChild(this.background, this.mask, this.timeText, this.weatherText, this.tempText, this.glareForeground )
         
     }
 
     animate = () => {
+        //animate crt filter
+        this.crtFilter.time += 0.1
         this.timeText.text = moment().format('LTS')
     }
 
