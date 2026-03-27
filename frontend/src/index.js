@@ -520,6 +520,7 @@ export default class Application{
             this.lights = await PIXI.Assets.loadBundle('lights')
             this.sprite_sheets = await PIXI.Assets.loadBundle('sprite_sheets')
             this.icons = await PIXI.Assets.loadBundle('icons')
+            this.windowAssets = await PIXI.Assets.loadBundle('window')
             this.weatherIcons = await PIXI.Assets.loadBundle('weather_icons')
             this.fonts = await PIXI.Assets.loadBundle('fonts')
             this.stateManager = new StateManager('room_scene')
@@ -531,7 +532,7 @@ export default class Application{
             this.notesArray = notesArray
             this.mood = mood
 
-            this.roomScene = new RoomScene(this.app, this.set_state, this.assets, this.sprite_sheets, this.fonts, this.onlineStatusObject, this.icons, weatherJson, this.weatherIcons, lastPlayedJson, this.soundsObject, this.personalStatus, this.notesArray, this.mood, this.lights)
+            this.roomScene = new RoomScene(this.app, this.set_state, this.assets, this.sprite_sheets, this.fonts, this.onlineStatusObject, this.icons, weatherJson, this.weatherIcons, lastPlayedJson, this.soundsObject, this.personalStatus, this.notesArray, this.mood, this.lights, this.windowAssets)
             this.desktopScene = new DesktopScene(this.app, this.set_state, this.assets, this.sprite_sheets)
 
             this.statesObject = {

@@ -70,7 +70,14 @@ import BonsaiStation_GrowLightSwitchOnImg from './img/png/bonsai_station/grow_li
 import BonsaiStation_GrowLightBeamImg from './img/png/bonsai_station/grow_light_beam.png'
 import BonsaiStation_GrowLight_NewShadingImg from './img/png/bonsai_station/grow_light_on_new_shading.png'
 import BonsaiStationHitboxImg from './img/png/bonsai_station/bonsai_station_hitbox.png'
+
+//weather window
+import WindowGlassImg from './img/png/window/glass.png'
+import WindowFrameAndRodImg from './img/png/window/frame_and_rod.png'
+import WindowCurtainsImg from './img/png/window/curtains.png'
 import WindowHitboxImg from './img/png/window_hitbox.png'
+import WindowSunsetSkyGradientImg from './img/png/window/sunset_sky_gradient.png'
+import WindowMaskImg from './img/png/window/window_mask.png'
 
 //icons
 import MyComputerIcon from './img/png/icons/my_computer_icon.png'
@@ -412,10 +419,6 @@ export const roomSceneManifest =  {
             {
                "alias": "BonsaiStationHitbox",
                "src": BonsaiStationHitboxImg
-            },
-            {
-               "alias": "WindowHitbox",
-               "src": WindowHitboxImg
             }
          ]
       },
@@ -517,6 +520,36 @@ export const roomSceneManifest =  {
                "alias":"XButtonRed",
                "src": XButtonRed
             }
+         ]
+      },
+      //weather window
+      {
+         "name": "window",
+         "assets": [
+            {
+               "alias": "WindowHitbox",
+               "src": WindowHitboxImg
+            },
+            {
+               "src": WindowGlassImg,
+               "alias": "WindowGlass"
+            },
+            {
+               "src": WindowFrameAndRodImg,
+               "alias": "WindowFrameAndRod"
+            },
+            {
+               "src": WindowCurtainsImg,
+               "alias": "WindowCurtains"
+            },
+            {
+               "src": WindowSunsetSkyGradientImg,
+               "alias": "WindowSunsetSkyGradient"
+            },
+            {
+               "src": WindowMaskImg,
+               "alias": "WindowMask"
+            },
          ]
       },
       //weahter icons

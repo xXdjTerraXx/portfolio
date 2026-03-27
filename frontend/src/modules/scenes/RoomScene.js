@@ -52,12 +52,13 @@ import LightManager from '../objects/LightManager.js'
 import { LIGHTING_CONFIG } from '../../config.lightingSystem.js'
 
 export default class RoomScene{
-    constructor(app, set_state, assets, sprite_sheets, fonts, onlineStatusObject, icons, weatherJson, weatherIcons, lastPlayedJson, soundsObject, personalStatus, notesArray, mood, lights){
+    constructor(app, set_state, assets, sprite_sheets, fonts, onlineStatusObject, icons, weatherJson, weatherIcons, lastPlayedJson, soundsObject, personalStatus, notesArray, mood, lights, windowAssets){
         this.app = app
         this.set_state = set_state
 
         this.assets = assets
         this.soundsObject = soundsObject
+        this.windowAssets = windowAssets
         this.sprite_sheets = sprite_sheets
         this.icons = icons
         this.fonts = fonts
@@ -194,7 +195,7 @@ export default class RoomScene{
         this.rugObject = new Rug(this.assets.RugImg, 276, 378, this.app, this.roomEntitiesContainer)
         await this.create_speaker_object()
         await this.create_outside_window_object()
-        this.windowObject = new WindowFrame(this.assets.WindowImg, 0, 0, this.app, this.roomEntitiesContainer)
+        // this.windowObject = new WindowFrame(this.assets.WindowImg, 0, 0, this.app, this.roomEntitiesContainer)
         await this.create_notes_board_object()
         this.cablesObject = new Cables(this.assets.CablesImg, 0, 0, this.app, this.roomEntitiesContainer)
         // this.tvStandObject = new TV_Stand(this.assets.TVStandImg, 0, 0, this.app, this.roomEntitiesContainer)
@@ -411,7 +412,7 @@ export default class RoomScene{
         );
         await spritesheet.parse();
 
-        this.outsideWindow = new OutsideWindow(spritesheet, 190, 200, this.app, arrowSpriteSheet, this.roomEntitiesContainer, this.desktopContainer, this.assets.WindowHitbox, "weather_window")
+        this.outsideWindow = new OutsideWindow(spritesheet, 190, 200, this.app, arrowSpriteSheet, this.roomEntitiesContainer, this.desktopContainer, this.windowAssets.WindowHitbox, "weather_window", this.windowAssets, this.weatherJson)
     }
 
     create_desk_animated_object = async () => {
