@@ -72,7 +72,7 @@ export default class OutsideWindow extends AnimatedObject{
         this.staticWindowAssetsContainer.addChild(this.glass, this.windowFrameAndCurtainRod, this.curtains)
         this.mainContainer.addChild(this.dynamicWindowAssetsContainer, this.staticWindowAssetsContainer, this.dynamicAssetsMask)
 
-        this.app.ticker.add(this.updateSkyPosition)
+        this.app.ticker.add(this.update)
     }
 
     //this function just returns state!!
@@ -82,36 +82,70 @@ export default class OutsideWindow extends AnimatedObject{
         const sunrise = this.weatherJson.sunrise * 1000
         const sunset = this.weatherJson.sunset * 1000
 
-        let skyPhase
-        let isDaytime = false
+        // define active window (sunset -> night)
+        // 30 min before
+        const sunsetStart = sunset - (30 * 60 * 1000) 
+        // 2 hours after
+        const nightEnd = sunset + (2 * 60 * 60 * 1000) 
 
-        if (now < sunrise) {
-            skyPhase = "night"
-        } else if (now < sunset) {
-            skyPhase = "day"
-            isDaytime = true
-        } else {
-            skyPhase = "sunset"
-        }
+        const isWindowActive = now >= sunsetStart && now <= nightEnd
 
-        const weatherType = this.weatherJson.weather[0].main.toLowerCase()
+        // const weatherType = this.weatherJson.weather[0].main.toLowerCase()
 
         return {
-            skyPhase,
-            isDaytime,
-            weatherType
+            isWindowActive,
+            sunsetStart,
+            nightEnd,
+            // weatherType
         }
     }
 
-    updateSkyPosition = () => {
+    // ===============================
+    // SKY MOVEMENT (ONLY WHEN ACTIVE)
+    // ===============================
+    updateSkyPosition = (start, end) => {
         const now = Date.now()
-        const dayMs = 86400000
 
-        const timeOfDay = (now % dayMs) / dayMs
+        let progress = (now - start) / (end - start)
+        progress = Math.max(0, Math.min(1, progress)) // clamp
 
         const range = this.gradientSkyEndY - this.gradientSkyStartY
 
         this.gradientSky.y =
-            this.gradientSkyStartY + (timeOfDay * range)
+            this.gradientSkyStartY + (progress * range)
     }
+
+    // ===============================
+    // CURTAINS + VISIBILITY
+    // ===============================
+    updateCurtainsAndVisibility = (env) => {
+        // day → closed, sunset/night → open
+        this.curtains.visible = !env.isWindowActive
+
+        // only show sky + weather when active
+        this.dynamicWindowAssetsContainer.visible = env.isWindowActive
+    }
+
+    // ===============================
+    // WEATHER (simple for now)
+    // ===============================
+    updateWeather = (env) => {
+        // placeholder — expand later
+        // you can swap animations here
+    }
+
+    // ===============================
+    // MAIN UPDATE LOOP
+    // ===============================
+    update = () => {
+        const env = this.getEnvironmentState()
+
+        if (env.isWindowActive) {
+            this.updateSkyPosition(env.sunsetStart, env.nightEnd)
+        }
+
+        this.updateCurtainsAndVisibility(env)
+        this.updateWeather(env)
+    }
+
 }
