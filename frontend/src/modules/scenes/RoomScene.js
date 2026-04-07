@@ -95,7 +95,7 @@ export default class RoomScene{
         this.volumeLevel = 0.5
 
         this.roomEntitiesContainer = new PIXI.Container()
-
+        // this.roomEntitiesContainer.scale.set(1.25)
         //the lights collection of images from the asset loader
         this.lights = lights
         this.lightManager = new LightManager(this.app, LIGHTING_CONFIG, this.lights, this.roomEntitiesContainer)

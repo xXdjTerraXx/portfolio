@@ -123,7 +123,9 @@ export default class OutsideWindow extends AnimatedObject{
         this.curtains.visible = !env.isWindowActive
 
         // only show sky + weather when active
-        this.dynamicWindowAssetsContainer.visible = env.isWindowActive
+        // this.dynamicWindowAssetsContainer.visible = env.isWindowActive
+        //THIS IS JUST A QUICK FIX: CHANGE LATER:
+        this.dynamicWindowAssetsContainer.visible = true
     }
 
     // ===============================

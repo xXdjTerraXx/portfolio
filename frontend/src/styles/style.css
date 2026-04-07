@@ -48,6 +48,8 @@ body{
   canvas{
     /* position:fixed; */
     z-index: 1;
+    width: auto;
+    height: 100%;
   }
 
   .cursor-canvas{
