@@ -194,7 +194,7 @@ video{
     position: fixed;
     top: 20px;
     left: 0; 
-    height: clamp(100px, 350px, 500px);
+    height: clamp(50px, 250px, 300px);
     transform: rotate(-25deg);
     width: auto;
 }

@@ -10,5 +10,17 @@ module.exports = merge(common, {
         new Dotenv({
       path: './.env.development'
     })
-    ]
+    ],
+    devServer: {
+    host: '0.0.0.0',
+    allowedHosts: 'all',
+    historyApiFallback: {
+        rewrites: [
+            { from: /^\/admin/, to: '/admin.html' },
+            { from: /^\/album/, to: '/album.html' },
+            { from: /^\/welcome/, to: '/welcome.html' },
+            { from: /./, to: '/index.html' } // fallback for everything else, including root
+        ]
+    }
+},
 })
