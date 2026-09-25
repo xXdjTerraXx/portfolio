@@ -45,3 +45,28 @@ export function setStyles(element, stylesObect){
         element.style[key] = stylesObect[key]
     })
 }
+
+/** creates, sets class names, and returns any html element
+ * @param {String} tagNameString - the elements idnetifying string (img, div, etc)
+ * @param {Array} classesArray - an array of class names
+ * @param {Element} parentElement - the parent container
+ */
+export function createNewElement(tagNameString, classesArray, parentElement){
+    const ele = document.createElement(`${tagNameString}`)
+    if(classesArray.length > 0)ele.classList = classesArray
+    parentElement.append(ele)
+    return ele
+}
+
+/** creates, sets class names, and returns an <img> element
+ * @param {String} source - the image elements source
+ * @param {Array} classesArray - an array of class names
+ * @param {Element} parentElement - the parent container
+ */
+export function createImageElement(source, classesArray, parentElement){
+    const imageEle = document.createElement("img")
+    imageEle.src = source
+    if(classesArray.length > 0)imageEle.classList = classesArray
+    parentElement.append(imageEle)
+    return imageEle
+}

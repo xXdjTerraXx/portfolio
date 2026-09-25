@@ -1,0 +1,278 @@
+@font-face {
+  font-family: 'TakeAShot';
+  src: url('../fonts/TakeAShot.ttf') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'PlatinumSign';
+  src: url('../fonts/PlatinumSign.ttf') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+
+
+body {
+    background-color: black;
+    display: flex;
+    gap: 50px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    cursor: url('../img/album/heart_reticle.png'), auto;
+}
+
+a{
+    text-decoration: none;
+    color: white;
+}
+
+.background-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* fills the space without distorting aspect ratio */
+    z-index: -2; /* sits behind everything else */
+    opacity: 0.3;
+    mix-blend-mode: screen; /* or multiply, overlay, luminosity — worth trying a few */
+    filter: blur(4px);
+}
+
+
+/* HEADER DIV STUFF */
+.header-div{
+    display: flex;
+    gap: 50px;
+    justify-content: center;
+    align-items: center;
+}
+
+.header-text{
+    color: white;
+    font-size: 2rem;
+    font-family: "Comic Sans MS", "Comic Neue", monospace;
+}
+
+.rainbow-animated {
+  background: linear-gradient(to right, red, orange, yellow, BLUE);
+  background-size: 400% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: rainbow-move 5s linear infinite;
+}
+
+@keyframes rainbow-move {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+.skull-sticker{
+    height: clamp(50px, 60px, 75px);
+}
+
+/* LOGO DIV STUFF */
+.logo-div{
+    display: flex;
+    flex-direction: column;
+}
+
+.text-logo{
+    object-fit: cover; 
+    z-index: -1; 
+    width: 600px;
+}
+
+.sigil-logo{
+    height: 300px;
+    width: auto;
+}
+
+
+/* STREAMING NOW DIV STUFF */
+.streaming-div{
+    display: flex;
+    flex-direction: column;
+}
+
+.streaming-subcontainer-div{
+    display: flex;
+}
+
+.streaming-now-text{
+    
+}
+
+/* LINKS SECTION */
+.links-div{
+    position: relative;
+    display: flex;
+}
+
+.links-title-div{
+    display: flex;
+}
+
+.links-title{
+    color: WHITE;
+    font-size: 2rem;
+    font-family: "PlatinumSign";
+}
+
+.metro-border{
+    position: absolute;
+}
+
+.links-div{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.links-block{
+    position: absolute;
+    left: -50%;
+    top: 0px;
+    z-index: -1;
+}
+
+
+/* ABOUT ME SECTION */
+
+.about-div{
+    /* position: relative; */
+    border: 100px solid transparent; /* Required for border-image */
+    padding: 15px;
+    border-image: url('../img/album/border_barbed.png') 300 round;
+    width: 300px;
+    height: 300px;
+    background-color: black;
+}
+
+.butterfly-fixed{
+    position: absolute;
+    top: 20px;
+    left: 0px;
+}
+
+.cross-fixed{
+    position: absolute;
+    top: 50px;
+    right: 50px;
+}
+
+
+video{
+    z-index: 1;
+}
+
+.mud{
+    position: absolute;
+    mix-blend-mode: multiply; /* or multiply, overlay, luminosity — worth trying a few */
+}
+
+.barbed{
+    position: fixed;
+    top: 0;
+    right: 0;
+}
+
+.chain{
+    position: fixed;
+    bottom: 20px;
+    right: 0;
+}
+
+.sponsored{
+    position: fixed;
+    top: 20px;
+    left: 0; 
+    height: clamp(100px, 350px, 500px);
+    transform: rotate(-25deg);
+    width: auto;
+}
+
+
+.dirt-road{
+    position: fixed;
+    bottom:0;
+    left: 0;
+    width: 50%;
+    height: auto;
+    z-index: 0;
+}
+
+.anime-angel{
+    position: fixed;
+    bottom:0;
+    right: 0;
+    width: 20%;
+    height: auto; 
+    z-index: 0;
+}
+
+.mini-album{
+    height: 250px;
+    width: auto;
+}
+
+.bandcamp-embed{
+    
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    z-index: 2;
+}
+
+.container-right{
+    justify-content: space-evenly;
+    gap: 40px;
+}
+
+
+/* stuff for social links */
+.social-list-link{
+  /* background-image: url('../img/album/tire_bg.png');
+  background-size: cover; */
+    font-family: "TakeAShot";
+    font-size: 6rem;
+    color: rgb(255, 153, 0)
+}
+
+.link-container-div{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    background-image: url('../img/album/tire_bg1.png');
+    background-size: cover;
+    width: clamp(200px, 80vw, 400px);
+    height: clamp(100px, 20vw, 200px);
+}
+
+.link-icon{
+    /* position: absolute; */
+    max-height: 100px;
+    /* opacity: 50%; */
+}
+
+.tire-bg-img{
+    position: absolute;
+    z-index: -2;
+}
+
+canvas{
+    margin-bottom: 100px;
+}
+

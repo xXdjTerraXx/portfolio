@@ -37,7 +37,16 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+// app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../frontend/dist')))
+
+//these routes just for serving album.html and welcome.html
+app.get('/welcome', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/dist', 'welcome.html'))
+})
+app.get('/album', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/dist', 'welcome.html'))
+})
 
 app.use('/discord', discordRouter)
 app.use('/weather', weatherRouter)
