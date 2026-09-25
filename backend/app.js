@@ -45,7 +45,7 @@ app.get('/welcome', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/dist', 'welcome.html'))
 })
 app.get('/album', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/dist', 'welcome.html'))
+    res.sendFile(path.join(__dirname, '../frontend/dist', 'album.html'))
 })
 
 app.use('/discord', discordRouter)
