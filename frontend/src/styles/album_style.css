@@ -1,27 +1,32 @@
 @font-face {
   font-family: 'TakeAShot';
-  src: url('../fonts/TakeAShot.ttf') format('woff2');
+  src: url('../fonts/TakeAShot.ttf') format('truetype'); /* was 'woff2' — wrong hint for a .ttf, iOS Safari can choke on it */
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'PlatinumSign';
-  src: url('../fonts/PlatinumSign.ttf') format('woff2');
+  src: url('../fonts/PlatinumSign.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 
 
-
+/* just asafety net */
+img {
+    max-width: 100%;
+    height: auto;
+}
 
 body {
     background-color: black;
     display: flex;
-    gap: 50px;
+    gap: clamp(30px, 6vw, 50px);
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    padding-inline: 16px; 
     cursor: url('../img/album/heart_reticle.png'), auto;
 }
 
@@ -36,25 +41,35 @@ a{
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover; /* fills the space without distorting aspect ratio */
-    z-index: -2; /* sits behind everything else */
+    object-fit: cover; 
+    z-index: -2; /*has to sit behind everything */
     opacity: 0.3;
-    mix-blend-mode: screen; /* or multiply, overlay, luminosity — worth trying a few */
+    mix-blend-mode: screen;
     filter: blur(4px);
+}
+
+/* everything else is above the fixed decorations */
+.content-section,
+.divider,
+canvas {
+    position: relative;
+    z-index: 1;
+    max-width: 100%;
 }
 
 
 /* HEADER DIV STUFF */
 .header-div{
     display: flex;
-    gap: 50px;
+    gap: clamp(10px, 4vw, 50px);
     justify-content: center;
     align-items: center;
 }
 
 .header-text{
     color: white;
-    font-size: 2rem;
+    font-size: clamp(1rem, 4.5vw, 2rem);
+    text-align: center;
     font-family: "Comic Sans MS", "Comic Neue", monospace;
 }
 
@@ -73,23 +88,24 @@ a{
 }
 
 .skull-sticker{
-    height: clamp(50px, 60px, 75px);
+    height: clamp(30px, 8vw, 60px);
+    width: auto;
 }
 
 /* LOGO DIV STUFF */
 .logo-div{
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 .text-logo{
     object-fit: cover; 
-    z-index: -1; 
-    width: 600px;
+    width: min(600px, 90vw);
 }
 
 .sigil-logo{
-    height: 300px;
+    height: clamp(150px, 40vw, 300px);
     width: auto;
 }
 
@@ -98,24 +114,40 @@ a{
 .streaming-div{
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 .streaming-subcontainer-div{
     display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.streaming-now-text{
-    
+.mini-album{
+    height: clamp(150px, 40vw, 250px);
+    width: auto;
 }
+
+/* iframe element itself needs its size from here */
+.bandcamp-embed{
+    border: 0;
+    width: min(400px, 90vw);
+    height: 500px;
+}
+
 
 /* LINKS SECTION */
 .links-div{
     position: relative;
     display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .links-title-div{
     display: flex;
+    align-items: center;
 }
 
 .links-title{
@@ -128,14 +160,6 @@ a{
     position: absolute;
 }
 
-.links-div{
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
 .links-block{
     position: absolute;
     left: -50%;
@@ -144,11 +168,10 @@ a{
 }
 
 
-/* ABOUT ME SECTION */
+/* ABOUT ME SECTION (currently commented out in the js) */
 
 .about-div{
-    /* position: relative; */
-    border: 100px solid transparent; /* Required for border-image */
+    border: 100px solid transparent; 
     padding: 15px;
     border-image: url('../img/album/border_barbed.png') 300 round;
     width: 300px;
@@ -169,36 +192,36 @@ a{
 }
 
 
-video{
-    z-index: 1;
-}
+/* FIXED DECORATIONS — z-index 0 keeps them under the content which isz-index 1) */
 
 .mud{
     position: absolute;
-    mix-blend-mode: multiply; /* or multiply, overlay, luminosity — worth trying a few */
+    mix-blend-mode: multiply;
 }
 
 .barbed{
     position: fixed;
     top: 0;
     right: 0;
+    z-index: 0;
 }
 
 .chain{
     position: fixed;
     bottom: 20px;
     right: 0;
+    z-index: 0;
 }
 
 .sponsored{
     position: fixed;
     top: 20px;
     left: 0; 
-    height: clamp(50px, 250px, 300px);
-    transform: rotate(-25deg);
+    height: clamp(100px, 30vw, 250px);
     width: auto;
+    transform: rotate(-25deg);
+    z-index: 0;
 }
-
 
 .dirt-road{
     position: fixed;
@@ -218,14 +241,6 @@ video{
     z-index: 0;
 }
 
-.mini-album{
-    height: 250px;
-    width: auto;
-}
-
-.bandcamp-embed{
-    
-}
 
 .container{
     display: flex;
@@ -243,10 +258,8 @@ video{
 
 /* stuff for social links */
 .social-list-link{
-  /* background-image: url('../img/album/tire_bg.png');
-  background-size: cover; */
     font-family: "TakeAShot";
-    font-size: 6rem;
+    font-size: clamp(3rem, 12vw, 6rem);
     color: rgb(255, 153, 0)
 }
 
@@ -262,9 +275,7 @@ video{
 }
 
 .link-icon{
-    /* position: absolute; */
-    max-height: 100px;
-    /* opacity: 50%; */
+    max-height: clamp(50px, 12vw, 100px);
 }
 
 .tire-bg-img{
@@ -276,3 +287,35 @@ canvas{
     margin-bottom: 100px;
 }
 
+
+/* PHONES */
+@media (max-width: 700px) {
+    /* album art + player side by side is ~650px wide, so stack them */
+    .streaming-subcontainer-div{
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .butterfly{
+        max-height: 50px;
+        width: auto;
+    }
+
+    /* decorations get smaller so they frame the page */
+    .barbed,
+    .chain{
+        max-width: 60vw;
+    }
+
+    .dirt-road{
+        width: 80%;
+    }
+
+    .anime-angel{
+        width: 35%;
+    }
+
+    canvas{
+        margin-bottom: 40px;
+    }
+}

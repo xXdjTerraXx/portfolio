@@ -27,11 +27,26 @@ import WarningSticker from '../../img/album/rotating_warning.gif'
 import StreamingBlinky from '../../img/album/streaming_blinky.gif'
 import FruitigerMetroBorder from '../../img/album/border.png'
 import AboutMeBlockImage from '../../img/album/links_block.png'
+import DividerLights from '../../img/album/divider_lights.png'
+import DividerCross from '../../img/album/diver_cross.png'
+import DividerSword from '../../img/album/sword.gif'
+import DividerFlames from '../../img/album/divider_flames.gif'
+import DividerMonster from '../../img/album/divider_monster.gif'
+import DividerWysteria from '../../img/album/wysteria.png'
+import BlinkyDeer from '../../img/album/deer.gif'
+import BlinkySkull from '../../img/album/green_skull.gif'
+import BlinkyWhiteTrash from '../../img/album/white_trash.gif'
+import BlinkyInsane from '../../img/album/insane_maniac.gif'
+import BlinkyAmerica from '../../img/album/america.gif'
+import BlinkyBitch from '../../img/album/bitch.gif'
+import BlinkyPlastic from '../../img/album/plastic.gif'
+import BlinkyWassup from '../../img/album/wassup.gif'
+import BlinkyPossum from '../../img/album/possums.gif'
 import { createImageElement, createNewElement } from '../../utils'
 
 //SETUP
 const linksArray = [
-    {url: 'http://www.instagram.com/xxdjterraxx', label: "insta", icon: SocialIconIG },
+    {url: 'http://www.instagram.com/xxdjterraxx', label: "ig", icon: SocialIconIG },
     {url: 'http://www.soundcloud.com/xxdjterraxx', label: "sc", icon: SocialIconSC },
     {url: 'https://www.youtube.com/@xxdjterraxx', label: "yt", icon: SocialIconYT },
 ]
@@ -51,7 +66,7 @@ albumBody.appendChild(canVideo)
 
 
 //HEADER DIV
-const headerDiv = document.createElement("dv")
+const headerDiv = document.createElement("div") // was "dv"
 const headerText = document.createElement("h5")
 const skullSticker1 = document.createElement("img")
 const skullSticker2 = document.createElement("img")
@@ -65,6 +80,8 @@ skullSticker2.src = SkullSticker
 headerDiv.append(skullSticker1, headerText, skullSticker2)
 albumBody.append(headerDiv)
 
+const dividerFlames = createImageElement(DividerMonster, ["divider"], albumBody)
+
 //LOGOS SECTION
 const logosDiv = document.createElement("div")
 logosDiv.classList.add("content-section", "logo-div")
@@ -72,9 +89,11 @@ const sigilLogo = createImageElement(SigilLogo, ["sigil-logo"], logosDiv)
 const textLogo = createImageElement(DJTerraRealTree, ["text-logo"], logosDiv)
 albumBody.append(logosDiv)
 
+const dividerSword = createImageElement(DividerSword, ["divider"], albumBody)
+
 //STREAMING NOW SECTION
-const streamingNowDiv = document.createElement("dv")
-const streamingSubContainer = document.createElement("dv")
+const streamingNowDiv = document.createElement("div") // was "dv"
+const streamingSubContainer = document.createElement("div") // was "dv"
 const streamingNowImg = document.createElement("img")
 const albumWithDisc = createImageElement(CoverAndDisc, ["mini-album"], streamingSubContainer)
 const bandcampEmbed = createBandcampEmbed(
@@ -89,6 +108,8 @@ streamingNowImg.src = StreamingBlinky
 
 streamingNowDiv.append(streamingNowImg, streamingSubContainer)
 albumBody.append(streamingNowDiv)
+
+const dividerWysteria = createImageElement(DividerWysteria, ["divider"], albumBody) // added "divider" class so it sits above the fixed decorations
 
 //LINKS SECTION
 const linksSectionTitleContainer = document.createElement("div")
@@ -161,13 +182,24 @@ const buschLight = createImageElement(BuschLight, ["sponsored"], albumBody)
 
 ////*~~*~~*`+~~*~~*~~*+~~*~~*~~*+~~THREE STUFF*`~~*~~*+~~*~~*~~*+~~*`~~*+~~*~~*~~*////
 
-const WIDTH = 400
-const HEIGHT = 400
+const MAX_CANVAS_SIZE = 400
+function getCanvasSize() {
+    return Math.min(MAX_CANVAS_SIZE, window.innerWidth - 32)
+}
+
+let canvasSize = getCanvasSize()
 const scene = new THREE.Scene()
-const camera = new THREE.PerspectiveCamera(50, WIDTH / HEIGHT, 0.1, 100)
-const renderer = new THREE.WebGLRenderer({ alpha: true }) // alpha: true = transparent canvas bg
-renderer.setSize(WIDTH, HEIGHT)
+const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 100) 
+const renderer = new THREE.WebGLRenderer({ alpha: true }) 
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)) 
+renderer.setSize(canvasSize, canvasSize)
 albumBody.appendChild(renderer.domElement)
+
+// rotating the phone or resizing the window recalculates size
+window.addEventListener('resize', () => {
+    canvasSize = getCanvasSize()
+    renderer.setSize(canvasSize, canvasSize)
+})
 
 let dipcanModel
 const loader = new GLTFLoader()
@@ -185,7 +217,7 @@ loader.load(
     }
 )
 
-// basic lighting so the model isn't pitch black
+// basic lighting so model isnt pitch black
 scene.add(new THREE.AmbientLight(0xffffff, 1))
 scene.add(new THREE.DirectionalLight(0xffffff, 1))
 //position camera
@@ -199,7 +231,6 @@ function animate() {
         dipcanModel.rotation.x += 0.01 
     }
     renderer.render(scene, camera)
-    console.log("RUNNING....")
 }
 animate()
 
@@ -245,5 +276,3 @@ function createALinkListItem(linkListEntry, index, parentContainer){
     parentContainer.append(aElement)
     return aElement
 }
-
-
