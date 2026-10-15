@@ -72,7 +72,7 @@ const skullSticker1 = document.createElement("img")
 const skullSticker2 = document.createElement("img")
 headerDiv.classList.add("content-section", "header-div")
 headerText.classList.add("header-text", "rainbow-animated")
-headerText.textContent = "SOUTHERN IMMORTALITY ONLINE"
+headerText.textContent = "HYPER COUNTRY ONLINE"
 skullSticker1.classList.add("skull-sticker", "sticker")
 skullSticker1.src = SkullSticker
 skullSticker2.classList.add("skull-sticker", "sticker")

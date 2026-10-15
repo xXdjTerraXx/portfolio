@@ -31,13 +31,13 @@ exports.getRecentMessages = async function(){
     .from('chat_messages')
     .select('*')
     .limit(50)
-    .order('created_at', { ascending: true })
+    .order('created_at', { ascending: false })
 
   if (error) {
     console.error(error)
     return res.status(500).json({ error: "Database error" })
   }
-
+  console.log("ZOMG VERY IMPORTANT DONT SKIP: ", data)
   return data
 }
 
