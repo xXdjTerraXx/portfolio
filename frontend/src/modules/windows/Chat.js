@@ -157,6 +157,10 @@ export default class ChatWindow{
       })
 
       this.socket.on("load history", (messages) => {
+        //empty chat container div before this foreach loop
+        while (this.chatContainerDiv.firstChild){
+          this.chatContainerDiv.removeChild(this.chatContainerDiv.firstChild)
+        }
         messages.forEach((msg) => this.displayMessage(msg))
       })
 
@@ -179,12 +183,19 @@ export default class ChatWindow{
         this.displayMessage(msg)
       })
 
+      this.socket.on("connect", () => this.sendClientReady())
+
+      if(this.socket.connected) this.sendClientReady()
+
       //this for debuggin
       this.socket.onAny((event, ...args) => {
         console.log("DEBUG: Socket event:", event, args)
       })
 
-      // tell server ready to receiveeeee
+  }
+
+  // tell server ready to receiveeeee
+  sendClientReady = () => {
       this.socket.emit("client ready", this.username)
   }
 
@@ -192,7 +203,7 @@ export default class ChatWindow{
     const username = this.username
     const text = this.inputBox.value.trim()
     const messageObject = { username:username ?? null, text, user_ip: null }
-    if (messageObject.text.length > 1) {
+    if (messageObject.text.length >= 1) {
       this.socket.emit("chat message", messageObject)
       //reset input box
       this.inputBox.value = ""
@@ -202,7 +213,7 @@ export default class ChatWindow{
 
   displayMessage(msg) {
     let messageType
-    msg.username === 'system' ? 'system' : 'user'
+    msg.username === 'system' ? messageType = 'system' : messageType = 'user'
     const messageElem = new Message(msg.username, msg.text, messageType, {color: msg.color})
     this.chatContainerDiv.appendChild(messageElem.container)
     this.chatContainerDiv.scrollTop = this.chatContainerDiv.scrollHeight

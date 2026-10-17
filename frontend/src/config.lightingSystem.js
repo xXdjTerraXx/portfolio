@@ -1,7 +1,7 @@
 // lighting config vi babyyyyy
 
 export const LIGHTING_CONFIG = {
-    // 🌑 Global lighting behavior
+    // global lighting behavior
     global: {
         maxLight: 1.0,        // clamp total brightness
         maxDarkness: 0.5,     // max overlay alpha

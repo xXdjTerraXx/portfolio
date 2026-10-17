@@ -1,6 +1,6 @@
 const { systemMessageColors, chatCommands } = require('../config/chatConfig')
 const supabase = require('../services/supabaseClient')
-const { getUsername, getAllUsers, onlineUsers, getSocketId, addUser, usernameExists } = require('../state/onlineUsers')
+const { getUsername, getAllUsers, onlineUsers, getSocketId, addUser, usernameExists, isUsernameValid } = require('../state/onlineUsers')
 const timeAgo = require('../utils/timeAgo')
 
 exports.saveMessage = async function(message){
@@ -34,11 +34,11 @@ exports.getRecentMessages = async function(){
     .order('created_at', { ascending: false })
 
   if (error) {
-    console.error(error)
-    return res.status(500).json({ error: "Database error" })
+    console.error("something went wrong when fetching chat history: ",error)
+    return []
   }
-  console.log("ZOMG VERY IMPORTANT DONT SKIP: ", data)
-  return data
+  
+  return data.reverse()
 }
 
 exports.handleChatCommand = async function(messageObj, socket, io){
@@ -57,17 +57,18 @@ exports.handleChatCommand = async function(messageObj, socket, io){
       //handle if user omits a username
       if(!newUsername){
         socket.emit('system message', {
-          user: 'system',
+          username: 'system',
           text: `something went wrong. to change username: ${chatCommands.nick.usage}`,
           color: systemMessageColors.error
         })
         break
       }
-      //check if username already taken
-      if(usernameExists(newUsername)){
+      //check if username is invalid
+      const validityObject = isUsernameValid(newUsername)
+      if(!validityObject.isValid){
         socket.emit('system message', {
-          user: 'system',
-          text: 'nooo that name\'s already taken T-T',
+          username: 'system',
+          text: `nooo ${validityObject.reason} T-T`,
           color: systemMessageColors.error
         })
         break

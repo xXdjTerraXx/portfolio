@@ -43,14 +43,19 @@ const chatCommands = {
   }
 }
 
+const reservedUsernames = ["terra", "system"]
+
 const CHAT_MESSAGE_MAX_SIZE = 400
 const USERNAME_MAX_SIZE = 18
+const USERNAME_MIN_SIZE = 3
 const CHAT_HISTORY_LIMIT = 50
 
 module.exports = {
     systemMessageColors,
     chatCommands,
     CHAT_MESSAGE_MAX_SIZE,
+    USERNAME_MIN_SIZE,
     USERNAME_MAX_SIZE,
-    CHAT_HISTORY_LIMIT 
+    CHAT_HISTORY_LIMIT,
+    reservedUsernames 
 }
