@@ -1,13 +1,13 @@
 import './styles/style.css'
-import DesktopScene from "./modules/scenes/DesktopScene"
-import RoomScene from "./modules/scenes/RoomScene"
-import StateManager from "./modules/base_classes/StateManager"
+import DesktopScene from "./js/home/scenes/DesktopScene"
+import RoomScene from "./js/home/scenes/RoomScene"
+import StateManager from "./js/home/base_classes/StateManager"
 import { formatTimestamp, importAll, timeAgo } from "./utils.js"
 import * as PIXI from 'pixi.js'
 import { roomSceneManifest, loadAssets, pngImages } from './image_imports.js'
 import * as TWEEN from "@tweenjs/tween.js"
 import { Howl, Howler } from 'howler';
-import ChatWindow from './modules/windows/Chat.js'
+import ChatWindow from './js/home/windows/Chat.js'
 import PixelLinksIcon from './img/icons/links.png'
 import PixelLoveIcon from './img/icons/love.png'
 import PixelWindowIcon from './img/icons/heart_window.png'

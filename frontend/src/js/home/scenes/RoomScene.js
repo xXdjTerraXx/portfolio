@@ -19,7 +19,7 @@ import { desk_spritesheet_json2, lava_lamp_spritesheet_json, character_spriteshe
     selection_arrow_sprite_sheet_json, tv_stand_sprite_sheet_json,
     rain_sprite_sheet, speaker_sprite_sheet_json,
     journal_spritesheet_json,
-    notes_board_spritesheet_json} from '../../json/desk_spritesheet'
+    notes_board_spritesheet_json} from '../../../json/desk_spritesheet'
 import Plant from '../objects/Plant'
 import DesktopBackground from '../objects/DesktopBackground'
 import { CRTFilter, PixelateFilter } from 'pixi-filters'
@@ -49,7 +49,7 @@ import Rug from '../objects/Rug'
 import Note from '../base_classes/Note'
 import BonsaiStation from '../objects/BonsaiStation'
 import LightManager from '../objects/LightManager.js'
-import { LIGHTING_CONFIG } from '../../config.lightingSystem.js'
+import { LIGHTING_CONFIG } from '../../../config.lightingSystem.js'
 
 export default class RoomScene{
     constructor(app, set_state, assets, sprite_sheets, fonts, onlineStatusObject, icons, weatherJson, weatherIcons, lastPlayedJson, soundsObject, personalStatus, notesArray, mood, lights, windowAssets){

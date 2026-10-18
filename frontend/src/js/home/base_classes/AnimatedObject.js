@@ -2,7 +2,7 @@
 // const ctx = canvas.getContext('2d')
 import * as PIXI from 'pixi.js'
 import { GlowFilter } from 'pixi-filters'
-import { desk_spritesheet_json2 } from '../../json/desk_spritesheet'
+import { desk_spritesheet_json2 } from '../../../json/desk_spritesheet'
 import SelectionArrow from '../objects/SelectionArrow'
 
 export default class AnimatedObject {

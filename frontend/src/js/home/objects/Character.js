@@ -1,7 +1,7 @@
 import { Container, Sprite, Text, TextStyle } from "pixi.js"
 import AnimatedObject from "../base_classes/AnimatedObject"
 import SelectionArrow from "./SelectionArrow"
-import { formatTimestamp, timeAgo } from "../../utils"
+import { formatTimestamp, timeAgo } from "../../../utils"
 import { Tween, Easing } from "@tweenjs/tween.js"
 
 export default class Character extends AnimatedObject{

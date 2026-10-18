@@ -120,7 +120,7 @@ import { Sprite, AnimatedSprite, Container, Text, TextStyle } from "pixi.js"
 import { Tween, Easing } from "@tweenjs/tween.js"
 import SelectionArrow from "./SelectionArrow"
 import { GlowFilter } from "pixi-filters"
-import { timeAgo } from "../../utils"
+import { timeAgo } from "../../../utils"
 
 export default class OnlineOfflineSign extends EmissiveObject {
     constructor(

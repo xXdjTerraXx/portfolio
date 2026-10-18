@@ -3,10 +3,11 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
     devtool: false,
+
     // entry: './src/index.js',
     entry: {
         main: './src/index.js',
-        admin: './src/admin.js',
+        admin: './src/js/admin/main.js',
         welcome: './src/js/welcome/main.js',
         album: './src/js/album/main.js'
     },
@@ -62,24 +63,24 @@ module.exports = {
     plugins: [
         //for outputting main index.html
         new HtmlWebpackPlugin({
-        template: './src/template.html',
+        template: './src/html/template.html',
         chunks: ['main']
       }),
         //for outputting admin/cms html file
         new HtmlWebpackPlugin({
-        template: './src/admin.html',
+        template: './src/html/admin.html',
         filename: 'admin.html',
         chunks: ['admin']
     }),
         //for outputting album html file
         new HtmlWebpackPlugin({
-        template: './src/album.html',
+        template: './src/html/album.html',
         filename: 'album.html',
         chunks: ['album']
     }),
        //for outputting welcome html file
         new HtmlWebpackPlugin({
-        template: './src/welcome.html',
+        template: './src/html/welcome.html',
         filename: 'welcome.html',
         chunks: ['welcome']
     })

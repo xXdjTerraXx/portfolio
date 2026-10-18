@@ -2,12 +2,12 @@
 // const ctx = canvas.getContext('2d')
 import * as PIXI from 'pixi.js'
 import { GlowFilter } from 'pixi-filters'
-import { desk_spritesheet_json2 } from '../../json/desk_spritesheet'
+import { desk_spritesheet_json2 } from '../../../json/desk_spritesheet'
 import SelectionArrow from './SelectionArrow'
 import RokuScene from './tv_scenes/RokuScene'
 import Screensaver from './tv_scenes/Screensaver'
 import EmissiveObject from '../base_classes/EmissiveObject'
-import { ANIMATION_SPEED } from '../../config'
+import { ANIMATION_SPEED } from '../../../config'
 
 // export default class TVStand {
 //     constructor(sprite_sheet, x_pos, y_pos, app, arrowSpriteSheet, roomEntitiesContainer, desktopContainer, TVStandImage, pngAssets, weatherJson, weatherIcons, lastPlayedJson, hitboxTexture, label, hitboxConfig){

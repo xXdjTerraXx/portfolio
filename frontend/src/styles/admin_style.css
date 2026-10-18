@@ -1,0 +1,121 @@
+@font-face {
+  font-family: JetBrains;
+  src: url(../fonts/JetBrains.ttf);
+  font-weight: lighter;
+}
+
+@font-face {
+  font-family: Tengwar_Title;
+  src: url(../fonts/tnganb.ttf);
+  font-weight: lighter;
+}
+
+@font-face {
+  font-family: Tengwar_Small;
+  src: url(../fonts/tnganbi.ttf);
+  font-weight: lighter;
+}
+
+*{
+    box-sizing: border-box;
+    
+}
+
+#login-container input {
+    font-family: Tengwar_Small;
+}
+
+/* override for hidden */
+[hidden]{
+    display: none !important;
+}
+
+body{
+    margin: 0px;
+    padding: 16px;
+    background-color: black;
+    background-image: url("../img/wallpapers/doors_of_durin.png");
+    background-size: cover;   
+    background-position: center; 
+    min-height: 100dvh;
+    display: grid;
+    place-items: center;
+}
+
+section{
+    border: 2px solid grey;
+    background-color: rgb(43, 43, 43);
+    color: rgb(205, 238, 238);
+}
+
+input, button, label{
+    width: 100%;
+    font-size: 24px;
+}
+
+button{
+    height: 50px;
+    font-family: JetBrains;
+}
+
+h1{
+    font-family: Tengwar_Title;
+    text-shadow: rgba(0,174,255,0.9) 0px 0px 39px;
+}
+
+label{
+    font-family: JetBrains;
+}
+
+#login-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    max-width: 400px;
+    padding: 16px;
+}
+
+#login-section-title-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap:20px;
+}
+
+#dashboard-container{
+    height: 100dvh;
+    width: 100dvw;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.error-text{
+    color: red;
+    font-family: JetBrains;
+}

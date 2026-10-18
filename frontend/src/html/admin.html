@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>🌐terraverse</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  </head>
+  <body>
+    <section id="login-container" hidden>
+        <div id="login-section-title-container">
+            <h1>Speak friend and enter</h1>
+        </div>
+        <div class="login-section">
+            <form id="login-form" method="post">
+                <div class="form-section">
+                    <label for="email-input">Email:</label>
+                    <input type="email" id="email-input" name="email" autocomplete="username" required>
+                </div>    
+                <div class="form-section">
+                    <label for="password-input">Password:</label>
+                    <input type="password" id="password-input" name="password" autocomplete="current-password" required>
+                </div>  
+                <div class="form-section">
+                    <button type="submit">Submit</button>
+                </div>
+                <div class="form-section" id="error-container"></div>
+            </form>
+        </div>
+    </section>
+    <section id="dashboard-container" hidden>
+        <h3>Dashboard</h3>
+        <button type="submit" id="logout-button">Log out</button>
+    </section>
+  </body>
+</html>

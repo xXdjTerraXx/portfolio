@@ -1,4 +1,4 @@
-import SelectionArrowSpriteSheet from '../../img/sprite_sheets/selection_arrow_sprite_sheet.png'
+import SelectionArrowSpriteSheet from '../../../img/sprite_sheets/selection_arrow_sprite_sheet.png'
 import * as PIXI from 'pixi.js'
 import { AlphaFilter, DropShadowFilter } from 'pixi-filters'
 

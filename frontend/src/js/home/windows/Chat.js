@@ -1,7 +1,7 @@
-import socket from "../../socket"
-import PixelChatIcon from '../../img/icons/chat.png'
-import ChatSettingsIconTexture from '../../img/icons/chat_settings_icon.png'
-import { setStyles } from "../../utils"
+import socket from "../../../socket"
+import PixelChatIcon from '../../../img/icons/chat.png'
+import ChatSettingsIconTexture from '../../../img/icons/chat_settings_icon.png'
+import { setStyles } from "../../../utils"
 
 //class for frontend messages that display in the chat window
 class Message {
