@@ -2,6 +2,7 @@ import socket from "../../../socket"
 import PixelChatIcon from '../../../img/icons/chat.png'
 import ChatSettingsIconTexture from '../../../img/icons/chat_settings_icon.png'
 import { setStyles } from "../../../utils"
+import { supabaseClient } from "../../../supabase"
 
 //class for frontend messages that display in the chat window
 class Message {
@@ -63,8 +64,9 @@ export default class ChatWindow{
         
     }
 
-    init = (parentDiv, messagesArray) =>{
-        
+    init = async (parentDiv, messagesArray) =>{
+        const supabaseSesh = await supabaseClient.auth.getSession()
+        console.log("THIUS IS A DEBUG OF SUPABASE CLIENT: ", supabaseSesh)
 
         this.icon.classList.add("small-icon")
         this.titleContainerDiv.classList.add("about-title-container-div", "chat-title-container-div")

@@ -5,6 +5,7 @@ const { addUser, deleteUser, getUsername, generateUsername, isUsernameValid } = 
 const registerChatHandlers = (socket, io) => {
 
   socket.on('client ready', async (username) => {
+    console.log("WE DEBUGGING AUTH: ", socket.handshake.auth)
     // validity obj are like this { isValid, reason, username }
     const usernameValidityObject = isUsernameValid(username) 
     //check if the username stored in local storage of the user trying to connect is valid

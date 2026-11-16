@@ -26,6 +26,7 @@ import SocialIconGithub from './img/icons/socials/github.png'
 import SocialIconInstagram from './img/icons/socials/instagram.png'
 import SocialIconSoundcloud from './img/icons/socials/soundcloud.png'
 import SocialIconYoutube from './img/icons/socials/youtube.png'
+import SocialIconBandcamp from './img/icons/socials/bandcamp.png'
 import SocialIconDiscord from './img/icons/socials/discord.png'
 import DefaultAlbumArt from './img/png/default_track_art.png'
 
@@ -256,7 +257,7 @@ window.onload = async () => {
     const mainOutsideContainerRight = document.createElement('div')
     mainOutsideContainerRight.classList.add('main-outside-container')
     document.body.append(mainOutsideContainerRight)
-    chatWindow.init(mainOutsideContainerRight)
+    await chatWindow.init(mainOutsideContainerRight)
     linksWindow.init(mainOutsideContainerRight)
 }
 
@@ -442,11 +443,31 @@ class LinksWindow extends BaseWindow {
         this.socialsList = document.createElement('ul')
 
         this.socialsArray = [
-            {labelText: 'discord', url: '#', iconImageSource: SocialIconDiscord},
-            {labelText: 'instagram', url: '#', iconImageSource: SocialIconInstagram},
-            {labelText: 'github', url: '#', iconImageSource: SocialIconGithub},
-            {labelText: 'soundcloud', url: '#', iconImageSource: SocialIconSoundcloud},
-            {labelText: 'youtube', url: '#', iconImageSource: SocialIconYoutube},
+            {
+                labelText: 'discord', 
+                url: '#', 
+                iconImageSource: SocialIconDiscord
+            },
+            {
+                labelText: 'instagram', 
+                url: 'https://www.instagram.com/xxdjterraxx', 
+                iconImageSource: SocialIconInstagram
+            },
+            {
+                labelText: 'github', 
+                url: '#', 
+                iconImageSource: SocialIconGithub
+            },
+            {
+                labelText: 'soundcloud', 
+                url: 'http://www.soundcloud.com/xxdjterraxx', 
+                iconImageSource: SocialIconSoundcloud
+            },
+            {
+                labelText: 'bandcamp', 
+                url: 'https://xxdjterraxx.bandcamp.com/album/southern-immortality-vol-1-2026', 
+                iconImageSource: SocialIconBandcamp
+            },
         ]
     }
 

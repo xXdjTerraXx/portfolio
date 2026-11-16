@@ -66,7 +66,7 @@ export default class AboutMe{
         });
     
         this.richText = new Text({
-            text: 'hi i\'m terra. i love coding and music and language learning. thx for checking out my portfolio',
+            text: 'hi i\'m terra. i love coding and making electornic music and language learning. thx for checking out my site, more coming sooooonn',
             style,
         });
 
